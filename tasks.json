@@ -66,13 +66,14 @@
     {
       "id": 7,
       "title": "規劃金澤北陸7天6夜旅遊行程",
-      "description": "6/13-6/20金澤及北陸地區完整旅遊規劃，含景點、美食、住宿建議",
+      "description": "輕鬆慢旅行規劃：福井恐龍館、立山黑部、金澤市區，每天10:00-17:00單一行程",
       "category": "開發",
-      "status": "in-progress",
+      "status": "completed",
       "createdAt": "2026-02-07T01:03:01.000Z",
-      "updatedAt": "2026-02-07T01:03:01.000Z",
-      "source": "telegram"
+      "updatedAt": "2026-02-07T07:11:40.000Z",
+      "source": "telegram",
+      "detailUrl": "task-7-kanazawa-itinerary.html"
     }
   ],
-  "lastUpdated": "2026-02-07T01:03:01.000Z"
+  "lastUpdated": "2026-02-07T07:11:40.000Z"
 }

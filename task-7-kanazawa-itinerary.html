@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金澤北陸 7天6夜 輕鬆慢旅行</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .trip-concept {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 5px solid #a8edea;
+        }
+
+        .trip-concept h2 {
+            color: #5f9ea0;
+            margin-bottom: 15px;
+        }
+
+        .trip-concept p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.5);
+            transform: translateX(-5px);
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .day-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #a8edea 0%, #5f9ea0 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .day-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .day-date {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .day-theme {
+            font-size: 1.4em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .schedule {
+            background: #f8fffe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #a8edea;
+            margin-bottom: 20px;
+        }
+
+        .time-slot {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0f7fa;
+        }
+
+        .time-slot:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .time {
+            background: #5f9ea0;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .activity {
+            flex: 1;
+        }
+
+        .activity-name {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .activity-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin-top: 15px;
+        }
+
+        .highlight::before {
+            content: '⭐ ';
+            font-weight: bold;
+        }
+
+        .tips-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .tips-box strong {
+            color: #1976d2;
+        }
+
+        .must-visit-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-card h2 {
+            color: #5f9ea0;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #a8edea;
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: #f8fffe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #5f9ea0;
+        }
+
+        .info-item h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .info-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-item li {
+            padding: 8px 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .info-item li::before {
+            content: '✓ ';
+            color: #5f9ea0;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .time-slot {
+                flex-direction: column;
+            }
+            
+            .time {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回任務列表</a>
+
+        <header>
+            <h1>🌸 金澤北陸 7天6夜輕鬆慢旅行</h1>
+            <p>2026年6月13日-20日 | 每天一個重點，悠閒享受</p>
+        </header>
+
+        <div class="trip-concept">
+            <h2>🎯 行程理念</h2>
+            <p>
+                <strong>慢旅行哲學：</strong>不趕行程、不走馬看花。每天只安排一個主要景點，從早上10點開始到下午5點，留給你充足的時間深度體驗。
+                早晨可以睡到自然醒，晚上有時間探索當地美食和夜景。這才是真正的旅行！
+            </p>
+        </div>
+
+        <!-- Day 1 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 1</div>
+                <div class="day-date">6月13日（五）</div>
+                <div class="day-theme">✈️ 抵達日 - 輕鬆適應</div>
+            </div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">抵達</div>
+                    <div class="activity">
+                        <div class="activity-name">小松機場 → 金澤市區</div>
+                        <div class="activity-desc">
+                            搭乘機場巴士前往金澤（約40分鐘，¥1,300）。抵達後先到飯店check-in，放下行李休息。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">下午自由</div>
+                    <div class="activity">
+                        <div class="activity-name">飯店附近散步 + 熟悉環境</div>
+                        <div class="activity-desc">
+                            今天不排行程！在飯店附近輕鬆走走，找間喜歡的咖啡廳或餐廳。可以到金澤站逛逛百番街，熟悉環境。
+                        </div>
+                        <div class="tips-box">
+                            <strong>建議：</strong>在超商買些零食飲料、調整時差、早點休息，為明天儲備體力。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 2 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 2</div>
+                <div class="day-date">6月14日（六）</div>
+                <div class="day-theme">🏯 金澤市區深度遊</div>
+            </div>
+            <div class="must-visit-badge">✨ 必去行程</div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">10:00</div>
+                    <div class="activity">
+                        <div class="activity-name">兼六園</div>
+                        <div class="activity-desc">
+                            日本三大名園之一！慢慢散步、拍照，欣賞園內美景。必看：霞池、徽軫燈籠、唐崎松。
+                        </div>
+                        <div class="highlight">門票 ¥320 | 停留時間：1.5小時</div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">12:00</div>
+                    <div class="activity">
+                        <div class="activity-name">近江町市場午餐</div>
+                        <div class="activity-desc">
+                            金澤的廚房！品嚐新鮮海鮮丼、加能蟹、白蝦。邊吃邊逛，感受市場活力。
+                        </div>
+                        <div class="highlight">推薦：山さん壽司、いきいき亭 | 預算：¥2,000-3,000</div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">14:00</div>
+                    <div class="activity">
+                        <div class="activity-name">金澤21世紀美術館</div>
+                        <div class="activity-desc">
+                            現代藝術的殿堂！必看《游泳池》藝術裝置。圓形建築本身就是藝術品，光線自然流動超美。
+                        </div>
+                        <div class="highlight">門票 ¥450 | 停留時間：1.5小時</div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">16:30</div>
+                    <div class="activity">
+                        <div class="activity-name">東茶屋街</div>
+                        <div class="activity-desc">
+                            江戶時代茶屋建築群，古色古香。品嚐金箔冰淇淋（¥891），逛逛金箔工藝品店。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tips-box">
+                <strong>小Linda貼心提醒：</strong>景點都在市區，可搭巴士或步行。今天會走比較多路，穿舒適的鞋子喔！
+            </div>
+        </div>
+
+        <!-- Day 3 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 3</div>
+                <div class="day-date">6月15日（日）</div>
+                <div class="day-theme">🦕 福井恐龍博物館</div>
+            </div>
+            <div class="must-visit-badge">✨ 必去行程</div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">09:00</div>
+                    <div class="activity">
+                        <div class="activity-name">金澤 → 福井</div>
+                        <div class="activity-desc">
+                            搭乘JR特急前往福井站（約50分鐘，¥2,810）。抵達後轉乘前往恐龍博物館的巴士。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">10:30</div>
+                    <div class="activity">
+                        <div class="activity-name">福井縣立恐龍博物館</div>
+                        <div class="activity-desc">
+                            日本最大恐龍博物館！館藏超過40隻恐龍骨架化石，包括福井龍等珍貴標本。
+                            互動展區、恐龍動畫、化石挖掘體驗區，超適合拍照！
+                        </div>
+                        <div class="highlight">
+                            門票 ¥730 | 停留時間：3-4小時<br>
+                            <strong>必看：</strong>暴龍骨架、福井龍、恐龍動態模型、化石挖掘體驗
+                        </div>
+                        <div class="tips-box">
+                            <strong>午餐：</strong>館內餐廳有恐龍主題餐點，也可以帶便當野餐
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">15:00</div>
+                    <div class="activity">
+                        <div class="activity-name">返回金澤</div>
+                        <div class="activity-desc">
+                            搭巴士回福井站，再搭JR返回金澤。晚上可以在金澤站百番街採購伴手禮或享用晚餐。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tips-box">
+                <strong>交通資訊：</strong><br>
+                • 福井站 → 恐龍博物館：巴士約30分鐘（¥800）<br>
+                • 建議購買JR高山北陸周遊券，可省交通費<br>
+                • 博物館週二公休，請留意
+            </div>
+        </div>
+
+        <!-- Day 4 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 4</div>
+                <div class="day-date">6月16日（一）</div>
+                <div class="day-theme">🏔️ 立山黑部阿爾卑斯路線</div>
+            </div>
+            <div class="must-visit-badge">✨ 必去行程</div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">08:00</div>
+                    <div class="activity">
+                        <div class="activity-name">金澤 → 富山 → 立山</div>
+                        <div class="activity-desc">
+                            提早出發！搭JR到富山（約40分鐘），轉乘富山地鐵到立山站（約60分鐘）。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">10:00-15:00</div>
+                    <div class="activity">
+                        <div class="activity-name">立山黑部阿爾卑斯山岳觀光</div>
+                        <div class="activity-desc">
+                            世界級的山岳景觀！搭乘纜車、高原巴士穿越立山連峰。6月初雪之大谷仍有雪牆可以欣賞。
+                        </div>
+                        <div class="highlight">
+                            <strong>推薦路線：</strong>立山 → 美女平 → 室堂（最高點，海拔2,450m）<br>
+                            <strong>在室堂：</strong>雪之大谷、御庫裏池、立山玉殿の湧水<br>
+                            <strong>費用：</strong>來回 ¥4,570（立山-室堂）<br>
+                            <strong>停留：</strong>室堂建議停留2-3小時
+                        </div>
+                        <div class="tips-box">
+                            <strong>重要：</strong>山上溫度約10°C，記得帶外套！自備午餐或在室堂車站用餐。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">17:00</div>
+                    <div class="activity">
+                        <div class="activity-name">返回富山/金澤</div>
+                        <div class="activity-desc">
+                            今天會比較累，回程後早點休息。可選擇住富山（較近）或返回金澤。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 5 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 5</div>
+                <div class="day-date">6月17日（二）</div>
+                <div class="day-theme">🏘️ 白川鄉合掌村</div>
+            </div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">09:00</div>
+                    <div class="activity">
+                        <div class="activity-name">金澤 → 白川鄉</div>
+                        <div class="activity-desc">
+                            搭乘濃飛巴士前往白川鄉（約75分鐘，¥2,000，需預約）。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">10:30-15:00</div>
+                    <div class="activity">
+                        <div class="activity-name">白川鄉合掌村</div>
+                        <div class="activity-desc">
+                            世界文化遺產！漫步在童話般的合掌造建築群中。登上展望台俯瞰整個村落，6月綠意盎然超美。
+                        </div>
+                        <div class="highlight">
+                            <strong>必做：</strong><br>
+                            • 登展望台拍全景（徒步15分鐘或搭接駁車¥200）<br>
+                            • 參觀和田家（¥300）<br>
+                            • 品嚐飛驒牛可樂餅、五平餅<br>
+                            • 在村內找間咖啡廳休息
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">15:30</div>
+                    <div class="activity">
+                        <div class="activity-name">返回金澤</div>
+                        <div class="activity-desc">
+                            搭巴士返回金澤，傍晚可以在主計町茶屋街散步、欣賞淺野川夕陽。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 6 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 6</div>
+                <div class="day-date">6月18日（三）</div>
+                <div class="day-theme">🎨 高山老街散策</div>
+            </div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">09:00</div>
+                    <div class="activity">
+                        <div class="activity-name">金澤 → 高山</div>
+                        <div class="activity-desc">
+                            搭JR特急飛驒號（約2小時，¥3,420）前往高山。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">11:00-16:00</div>
+                    <div class="activity">
+                        <div class="activity-name">高山三町老街</div>
+                        <div class="activity-desc">
+                            「小京都」高山！保存完好的江戶時代街道，邊走邊吃邊買伴手禮。
+                        </div>
+                        <div class="highlight">
+                            <strong>必吃：</strong><br>
+                            • 飛驒牛握壽司（¥500-800/顆）<br>
+                            • 飛驒牛可樂餅（¥300）<br>
+                            • 五平餅、醬油糰子<br>
+                            • 高山拉麵
+                        </div>
+                        <div class="tips-box">
+                            <strong>伴手禮：</strong>飛驒牛相關產品、猴寶寶吊飾、日本酒
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">17:00</div>
+                    <div class="activity">
+                        <div class="activity-name">返回金澤</div>
+                        <div class="activity-desc">
+                            搭JR返回金澤（當日來回）。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 7 -->
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-number">Day 7</div>
+                <div class="day-date">6月20日（五）</div>
+                <div class="day-theme">🛫 回家日</div>
+            </div>
+
+            <div class="schedule">
+                <div class="time-slot">
+                    <div class="time">上午</div>
+                    <div class="activity">
+                        <div class="activity-name">最後採購 + 退房</div>
+                        <div class="activity-desc">
+                            在飯店附近做最後的採購。推薦：金箔面膜、白蝦仙貝、加賀棒茶。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-slot">
+                    <div class="time">依航班</div>
+                    <div class="activity">
+                        <div class="activity-name">金澤 → 小松機場</div>
+                        <div class="activity-desc">
+                            搭巴士前往小松機場（40分鐘，¥1,300）。建議提前3小時抵達機場。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 實用資訊 -->
+        <div class="section-card">
+            <h2>💰 預算估算（每人）</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>大項支出</h3>
+                    <ul>
+                        <li>機票：NT$ 20,000</li>
+                        <li>住宿6晚：NT$ 18,000</li>
+                        <li>JR周遊券5日：NT$ 3,800</li>
+                        <li>餐飲：NT$ 12,000</li>
+                        <li>門票：NT$ 2,500</li>
+                        <li>購物：NT$ 10,000</li>
+                    </ul>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #5f9ea0;">
+                        <strong style="font-size: 1.1em;">總計：約 NT$ 66,300</strong>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <h3>住宿建議</h3>
+                    <ul>
+                        <li>金澤站附近飯店（交通方便）</li>
+                        <li>商務飯店：NT$ 2,500-3,500/晚</li>
+                        <li>推薦：Hotel Mystays、Dormy Inn</li>
+                        <li>提前2-3個月訂房較便宜</li>
+                    </ul>
+                </div>
+
+                <div class="info-item">
+                    <h3>交通票券</h3>
+                    <ul>
+                        <li>JR高山北陸周遊券5日：¥14,260</li>
+                        <li>涵蓋金澤-福井-富山-高山</li>
+                        <li>立山黑部需另購票</li>
+                        <li>白川鄉巴士需預約</li>
+                    </ul>
+                </div>
+
+                <div class="info-item">
+                    <h3>6月天氣穿搭</h3>
+                    <ul>
+                        <li>平地氣溫：20-25°C</li>
+                        <li>立山黑部山上：5-10°C</li>
+                        <li>帶薄外套、防風衣</li>
+                        <li>可能有梅雨，帶雨具</li>
+                        <li>舒適好走的鞋子</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 小Linda貼心提醒 -->
+        <div class="section-card">
+            <h2>💙 小Linda的貼心提醒</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>行前準備</h3>
+                    <ul>
+                        <li>提前3個月訂機票和飯店</li>
+                        <li>白川鄉巴士一定要預約！</li>
+                        <li>下載Google Maps離線地圖</li>
+                        <li>準備日本上網SIM卡</li>
+                        <li>SUICA/ICOCA卡很實用</li>
+                    </ul>
+                </div>
+
+                <div class="info-item">
+                    <h3>必帶物品</h3>
+                    <ul>
+                        <li>護照、訂房確認單</li>
+                        <li>信用卡+現金（準備¥50,000）</li>
+                        <li>薄外套、雨具</li>
+                        <li>相機、行動電源</li>
+                        <li>常備藥品</li>
+                    </ul>
+                </div>
+
+                <div class="info-item">
+                    <h3>實用APP</h3>
+                    <ul>
+                        <li>Google Maps（導航）</li>
+                        <li>Google翻譯（離線翻譯）</li>
+                        <li>乘換案內（查交通）</li>
+                        <li>Tabelog（美食評價）</li>
+                        <li>Currency（匯率換算）</li>
+                    </ul>
+                </div>
+
+                <div class="info-item">
+                    <h3>省錢秘訣</h3>
+                    <ul>
+                        <li>JR周遊券坐3-4趟就回本</li>
+                        <li>便利商店買飲料零食</li>
+                        <li>市場午餐比餐廳便宜</li>
+                        <li>免稅商品記得退稅</li>
+                        <li>多比較藥妝店價格</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <h3 style="color: #5f9ea0; margin-bottom: 15px;">🌸 祝你旅途愉快！</h3>
+                <p style="color: #666; line-height: 1.8;">
+                    這是一個輕鬆悠閒的行程規劃，讓你真正享受旅行的樂趣。<br>
+                    不用趕時間，不用擔心行程太滿，慢慢體驗北陸之美。<br>
+                    有任何問題隨時問小Linda！💙
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" class="back-link">← 返回任務列表</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateTime = new Date().toLocaleString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const timeNote = document.createElement('p');
+            timeNote.style.cssText = 'text-align: center; color: white; opacity: 0.9; margin-top: 20px; font-size: 0.9em;';
+            timeNote.textContent = `行程更新時間：${updateTime} | by 小Linda 💙`;
+            document.querySelector('.container').appendChild(timeNote);
+        });
+    </script>
+</body>
+</html>
