@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣 ⇄ 日本小松機場 機票比價</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .flight-info-banner {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .flight-route {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .airport {
+            text-align: center;
+        }
+
+        .airport-code {
+            font-size: 3em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .airport-name {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .flight-arrow {
+            font-size: 2em;
+            color: #4facfe;
+        }
+
+        .date-info {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .date-info strong {
+            color: #4facfe;
+            font-size: 1.2em;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .booking-sites {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .site-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .site-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .site-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .site-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+        }
+
+        .site-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .price-estimate {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .price-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-size: 1.8em;
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        .features {
+            margin: 15px 0;
+        }
+
+        .feature-item {
+            padding: 8px 0;
+            color: #666;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-item::before {
+            content: '✓ ';
+            color: #4facfe;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .search-btn {
+            display: block;
+            width: 100%;
+            background: #4facfe;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .search-btn:hover {
+            background: #3b8dd4;
+            transform: scale(1.02);
+        }
+
+        .airline-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .airline-section h2 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .airline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .airline-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .airline-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .airline-info {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .tips-box {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tips-box h3 {
+            color: #4facfe;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .tips-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-box li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tips-box li:last-child {
+            border-bottom: none;
+        }
+
+        .tips-box li::before {
+            content: '💡 ';
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .flight-route {
+                flex-direction: column;
+            }
+            
+            .booking-sites {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回任務列表</a>
+
+        <header>
+            <h1>✈️ 台灣 ⇄ 日本小松機場</h1>
+            <p>機票比價與訂票資訊</p>
+        </header>
+
+        <div class="flight-info-banner">
+            <div class="flight-route">
+                <div class="airport">
+                    <div class="airport-code">TPE</div>
+                    <div class="airport-name">台灣桃園機場</div>
+                </div>
+                <div class="flight-arrow">✈️</div>
+                <div class="airport">
+                    <div class="airport-code">KMQ</div>
+                    <div class="airport-name">日本小松機場<br>(石川縣 北陸)</div>
+                </div>
+            </div>
+            
+            <div class="date-info">
+                <strong>出發：</strong>2026年6月13日（五）<br>
+                <strong>回程：</strong>2026年6月20日（五）<br>
+                <strong>旅程：</strong>7天6夜
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>📌 重要提醒：</strong>台灣到小松機場無直飛航班，需在日本其他城市轉機（如東京、大阪、名古屋）。以下價格包含轉機航班。
+        </div>
+
+        <!-- 訂票網站 -->
+        <h2 style="color: white; text-align: center; margin-bottom: 20px; font-size: 2em;">🔍 推薦訂票網站</h2>
+
+        <div class="booking-sites">
+            <div class="site-card">
+                <div class="site-header">
+                    <div class="site-icon">🔵</div>
+                    <div class="site-name">Skyscanner</div>
+                </div>
+                <div class="price-estimate">
+                    <div class="price-label">預估價格區間</div>
+                    <div class="price">NT$ 18,000 ~ 28,000</div>
+                </div>
+                <div class="features">
+                    <div class="feature-item">整合所有航空公司價格</div>
+                    <div class="feature-item">價格追蹤提醒功能</div>
+                    <div class="feature-item">顯示最佳轉機組合</div>
+                    <div class="feature-item">中文介面、評價高</div>
+                </div>
+                <a href="https://www.skyscanner.com.tw/transport/flights/tpe/kmq/260613/260620/" target="_blank" class="search-btn">
+                    前往 Skyscanner 搜尋 →
+                </a>
+            </div>
+
+            <div class="site-card">
+                <div class="site-header">
+                    <div class="site-icon">🟢</div>
+                    <div class="site-name">Google Flights</div>
+                </div>
+                <div class="price-estimate">
+                    <div class="price-label">預估價格區間</div>
+                    <div class="price">NT$ 17,500 ~ 30,000</div>
+                </div>
+                <div class="features">
+                    <div class="feature-item">Google 強大搜尋引擎</div>
+                    <div class="feature-item">價格趨勢圖表分析</div>
+                    <div class="feature-item">彈性日期比價</div>
+                    <div class="feature-item">快速、介面簡潔</div>
+                </div>
+                <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhooagwIAhIIL20vMDNfbDMSCjIwMjYtMDYtMTNyDAgDEggvbS8wNGp3dyoKMjAyNi0wNi0yMA&curr=TWD" target="_blank" class="search-btn">
+                    前往 Google Flights 搜尋 →
+                </a>
+            </div>
+
+            <div class="site-card">
+                <div class="site-header">
+                    <div class="site-icon">🔴</div>
+                    <div class="site-name">Trip.com</div>
+                </div>
+                <div class="price-estimate">
+                    <div class="price-label">預估價格區間</div>
+                    <div class="price">NT$ 19,000 ~ 32,000</div>
+                </div>
+                <div class="features">
+                    <div class="feature-item">機+酒套裝優惠</div>
+                    <div class="feature-item">會員積分回饋</div>
+                    <div class="feature-item">24小時中文客服</div>
+                    <div class="feature-item">信用卡分期付款</div>
+                </div>
+                <a href="https://www.trip.com/flights/taipei-to-komatsu/tickets-tpe-kmq?dcity=tpe&acity=kmq&ddate=2026-06-13&rdate=2026-06-20" target="_blank" class="search-btn">
+                    前往 Trip.com 搜尋 →
+                </a>
+            </div>
+
+            <div class="site-card">
+                <div class="site-header">
+                    <div class="site-icon">🟡</div>
+                    <div class="site-name">易遊網</div>
+                </div>
+                <div class="price-estimate">
+                    <div class="price-label">預估價格區間</div>
+                    <div class="price">NT$ 20,000 ~ 35,000</div>
+                </div>
+                <div class="features">
+                    <div class="feature-item">台灣本土旅行社</div>
+                    <div class="feature-item">提供旅遊套裝行程</div>
+                    <div class="feature-item">刷卡優惠活動多</div>
+                    <div class="feature-item">本地客服支援</div>
+                </div>
+                <a href="https://flight.eztravel.com.tw/" target="_blank" class="search-btn">
+                    前往易遊網搜尋 →
+                </a>
+            </div>
+
+            <div class="site-card">
+                <div class="site-header">
+                    <div class="site-icon">🟣</div>
+                    <div class="site-name">雄獅旅遊</div>
+                </div>
+                <div class="price-estimate">
+                    <div class="price-label">預估價格區間</div>
+                    <div class="price">NT$ 21,000 ~ 38,000</div>
+                </div>
+                <div class="features">
+                    <div class="feature-item">老牌旅行社信譽佳</div>
+                    <div class="feature-item">含導遊套裝行程</div>
+                    <div class="feature-item">會員折扣優惠</div>
+                    <div class="feature-item">旅遊諮詢服務完善</div>
+                </div>
+                <a href="https://flight.liontravel.com/" target="_blank" class="search-btn">
+                    前往雄獅旅遊搜尋 →
+                </a>
+            </div>
+
+            <div class="site-card">
+                <div class="site-header">
+                    <div class="site-icon">🟠</div>
+                    <div class="site-name">Expedia</div>
+                </div>
+                <div class="price-estimate">
+                    <div class="price-label">預估價格區間</div>
+                    <div class="price">NT$ 18,500 ~ 29,000</div>
+                </div>
+                <div class="features">
+                    <div class="feature-item">國際大型訂票平台</div>
+                    <div class="feature-item">機+酒一站購足</div>
+                    <div class="feature-item">積分累積計畫</div>
+                    <div class="feature-item">多幣別支付選項</div>
+                </div>
+                <a href="https://www.expedia.com.tw/Flights-Search?leg1=from:TPE,to:KMQ,departure:2026-06-13&leg2=from:KMQ,to:TPE,departure:2026-06-20&mode=search" target="_blank" class="search-btn">
+                    前往 Expedia 搜尋 →
+                </a>
+            </div>
+        </div>
+
+        <!-- 航空公司資訊 -->
+        <div class="airline-section">
+            <h2>✈️ 主要航空公司與轉機選項</h2>
+            <div class="airline-grid">
+                <div class="airline-card">
+                    <h3>🇯🇵 日本航空 (JAL)</h3>
+                    <div class="airline-info">
+                        轉機：東京成田/羽田<br>
+                        預估：NT$ 22,000 起<br>
+                        優點：服務優質、準點率高
+                    </div>
+                </div>
+
+                <div class="airline-card">
+                    <h3>🇯🇵 全日空 (ANA)</h3>
+                    <div class="airline-info">
+                        轉機：東京成田/羽田<br>
+                        預估：NT$ 23,000 起<br>
+                        優點：高品質、會員計畫優</div>
+                </div>
+
+                <div class="airline-card">
+                    <h3>🇹🇼 長榮航空</h3>
+                    <div class="airline-info">
+                        轉機：東京/大阪<br>
+                        預估：NT$ 20,000 起<br>
+                        優點：台灣航空、中文服務
+                    </div>
+                </div>
+
+                <div class="airline-card">
+                    <h3>🇹🇼 中華航空</h3>
+                    <div class="airline-info">
+                        轉機：東京/名古屋<br>
+                        預估：NT$ 19,500 起<br>
+                        優點：本土品牌、票價實惠
+                    </div>
+                </div>
+
+                <div class="airline-card">
+                    <h3>🛩️ 星宇航空</h3>
+                    <div class="airline-info">
+                        轉機：東京<br>
+                        預估：NT$ 24,000 起<br>
+                        優點：新航空、服務創新
+                    </div>
+                </div>
+
+                <div class="airline-card">
+                    <h3>💺 廉價航空組合</h3>
+                    <div class="airline-info">
+                        如：酷航、虎航、樂桃<br>
+                        預估：NT$ 15,000 起<br>
+                        注意：需自行轉機、無託運
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 購票建議 -->
+        <div class="tips-box">
+            <h3>💰 訂票建議與省錢技巧</h3>
+            <ul>
+                <li>提早訂票通常可省 20-30%，建議提前 2-3 個月預訂</li>
+                <li>比較多個訂票網站，價格可能差異 NT$ 2,000-5,000</li>
+                <li>考慮轉機時間，建議至少預留 2-3 小時轉機</li>
+                <li>查看信用卡機票優惠和回饋（如中信、國泰世華）</li>
+                <li>避開週五、週日等熱門時段，改選週二、週三可能較便宜</li>
+                <li>考慮購買旅遊不便險，保障航班延誤或取消</li>
+                <li>注意託運行李限制，廉航通常需額外付費</li>
+                <li>加入航空公司會員累積里程，可折抵未來機票</li>
+            </ul>
+        </div>
+
+        <!-- 小松機場資訊 -->
+        <div class="airline-section" style="margin-top: 30px;">
+            <h2>🏛️ 小松機場與北陸旅遊資訊</h2>
+            <div style="color: #666; line-height: 1.8;">
+                <p><strong>機場位置：</strong>石川縣小松市，距離金澤市約 40 分鐘車程</p>
+                <p><strong>交通方式：</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>巴士直達金澤站（約 40 分鐘，¥1,300）</li>
+                    <li>巴士到福井、富山等北陸城市</li>
+                    <li>租車自駕遊覽北陸景點</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>推薦景點：</strong>金澤兼六園、金澤21世紀美術館、合掌村、立山黑部、富山灣</p>
+                <p><strong>最佳季節：</strong>6月初夏季節，氣候宜人，適合旅遊</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" class="back-link">← 返回任務列表</a>
+        </div>
+    </div>
+
+    <script>
+        // 自動更新時間
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateTime = new Date().toLocaleString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const timeNote = document.createElement('p');
+            timeNote.style.cssText = 'text-align: center; color: white; opacity: 0.9; margin-top: 20px; font-size: 0.9em;';
+            timeNote.textContent = `最後更新時間：${updateTime}`;
+            document.querySelector('.container').appendChild(timeNote);
+        });
+    </script>
+</body>
+</html>
