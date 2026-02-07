@@ -19,7 +19,17 @@
       "createdAt": "2026-02-07T00:20:00.000Z",
       "updatedAt": "2026-02-07T00:33:00.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 3,
+      "title": "查詢十大富豪排名",
+      "description": "找出2025年全球前十大億萬富翁及其國家分布",
+      "category": "研究",
+      "status": "completed",
+      "createdAt": "2026-02-07T00:41:22.000Z",
+      "updatedAt": "2026-02-07T00:41:22.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-07T00:39:00.000Z"
+  "lastUpdated": "2026-02-07T00:41:22.000Z"
 }
