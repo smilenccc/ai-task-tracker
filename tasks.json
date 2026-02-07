@@ -29,7 +29,17 @@
       "createdAt": "2026-02-07T00:41:22.000Z",
       "updatedAt": "2026-02-07T00:41:22.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 4,
+      "title": "查詢台灣廚餘大師air價格",
+      "description": "找出最便宜的三個購物網站並提供網址連結",
+      "category": "研究",
+      "status": "in-progress",
+      "createdAt": "2026-02-07T00:48:45.000Z",
+      "updatedAt": "2026-02-07T00:48:45.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-07T00:41:22.000Z"
+  "lastUpdated": "2026-02-07T00:48:45.000Z"
 }
