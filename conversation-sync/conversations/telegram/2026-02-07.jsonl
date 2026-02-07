@@ -1,0 +1,2 @@
+{"timestamp": "2026-02-07T12:34:53.563143Z", "role": "user", "content": "測試訊息：你好", "source": "telegram", "agent": "小Linda", "metadata": {"test": true}}
+{"timestamp": "2026-02-07T12:34:53.563360Z", "role": "assistant", "content": "測試回覆：你好！我是小Linda", "source": "telegram", "agent": "小Linda", "metadata": {"test": true}}
