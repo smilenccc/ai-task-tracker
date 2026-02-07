@@ -62,7 +62,17 @@
       "updatedAt": "2026-02-07T00:58:13.000Z",
       "source": "telegram",
       "detailUrl": "task-6-komatsu-flight.html"
+    },
+    {
+      "id": 7,
+      "title": "規劃金澤北陸7天6夜旅遊行程",
+      "description": "6/13-6/20金澤及北陸地區完整旅遊規劃，含景點、美食、住宿建議",
+      "category": "開發",
+      "status": "in-progress",
+      "createdAt": "2026-02-07T01:03:01.000Z",
+      "updatedAt": "2026-02-07T01:03:01.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-07T00:58:13.000Z"
+  "lastUpdated": "2026-02-07T01:03:01.000Z"
 }
