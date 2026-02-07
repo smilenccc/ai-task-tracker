@@ -271,9 +271,23 @@
         <div class="section-card">
             <h2>🚀 快速設定（5分鐘完成）</h2>
             
+            <div class="note">
+                <strong>Windows 用戶請看這裡：</strong>
+                <a href="conversation-sync/WINDOWS-SETUP.md" target="_blank" style="color: #2196f3;">
+                    點此查看 Windows 完整設定指南（PowerShell/CMD 版本）
+                </a>
+            </div>
+            
             <div class="step">
                 <span class="step-number">1</span>
                 <div class="step-title">在你的電腦上 Clone Repository</div>
+                
+                <p style="margin: 10px 0; color: #666;"><strong>Windows (PowerShell/CMD)：</strong></p>
+                <div class="code-block"><code>cd %USERPROFILE%
+git clone git@github.com:smilenccc/ai-task-tracker.git
+cd ai-task-tracker</code></div>
+                
+                <p style="margin: 15px 0 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
                 <div class="code-block"><code>cd ~/
 git clone git@github.com:smilenccc/ai-task-tracker.git
 cd ai-task-tracker</code></div>
@@ -282,7 +296,13 @@ cd ai-task-tracker</code></div>
             <div class="step">
                 <span class="step-number">2</span>
                 <div class="step-title">初始化同步系統</div>
+                
+                <p style="margin: 10px 0; color: #666;"><strong>Windows：</strong></p>
+                <div class="code-block"><code>python conversation-sync\claude-code-sync.py --setup</code></div>
+                
+                <p style="margin: 15px 0 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
                 <div class="code-block"><code>python3 conversation-sync/claude-code-sync.py --setup</code></div>
+                
                 <div class="success">看到「✅ 設定完成！」就代表成功了</div>
             </div>
 
@@ -290,6 +310,13 @@ cd ai-task-tracker</code></div>
                 <span class="step-number">3</span>
                 <div class="step-title">開始記錄對話</div>
                 <p style="margin: 15px 0; color: #666;">每次在 Claude Code 完成重要對話後，執行：</p>
+                
+                <p style="margin: 10px 0; color: #666;"><strong>Windows：</strong></p>
+                <div class="code-block"><code>python conversation-sync\claude-code-sync.py --log user "你的問題"
+python conversation-sync\claude-code-sync.py --log assistant "AI回答"
+python conversation-sync\claude-code-sync.py --sync</code></div>
+                
+                <p style="margin: 15px 0 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
                 <div class="code-block"><code>python3 conversation-sync/claude-code-sync.py --log user "你的問題"
 python3 conversation-sync/claude-code-sync.py --log assistant "AI回答"
 python3 conversation-sync/claude-code-sync.py --sync</code></div>
@@ -299,6 +326,15 @@ python3 conversation-sync/claude-code-sync.py --sync</code></div>
                 <span class="step-number">4</span>
                 <div class="step-title">查看對方的對話</div>
                 <p style="margin: 15px 0; color: #666;">在 Claude Code 查看 Telegram（小Linda）的對話：</p>
+                
+                <p style="margin: 10px 0; color: #666;"><strong>Windows：</strong></p>
+                <div class="code-block"><code># 查看最近7天的對話
+python conversation-sync\claude-code-sync.py --telegram 7
+
+# 搜尋關鍵字
+python conversation-sync\claude-code-sync.py --search "金澤旅遊" 7</code></div>
+                
+                <p style="margin: 15px 0 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
                 <div class="code-block"><code># 查看最近7天的對話
 python3 conversation-sync/claude-code-sync.py --telegram 7
 
@@ -332,6 +368,24 @@ python3 conversation-sync/claude-code-sync.py --status</code></div>
 
         <div class="section-card">
             <h2>🛠️ 常用指令</h2>
+            
+            <p style="margin: 10px 0; color: #666;"><strong>Windows：</strong></p>
+            <div class="code-block"><code># 查看系統狀態
+python conversation-sync\claude-code-sync.py --status
+
+# 手動同步到 GitHub
+python conversation-sync\claude-code-sync.py --sync
+
+# 從 GitHub 拉取最新對話
+python conversation-sync\claude-code-sync.py --pull
+
+# 查看 Telegram 對話
+python conversation-sync\claude-code-sync.py --telegram 7
+
+# 搜尋所有對話
+python conversation-sync\claude-code-sync.py --search "關鍵字" 30</code></div>
+            
+            <p style="margin: 15px 0 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
             <div class="code-block"><code># 查看系統狀態
 python3 conversation-sync/claude-code-sync.py --status
 
@@ -355,6 +409,12 @@ python3 conversation-sync/claude-code-sync.py --search "關鍵字" 30</code></di
             <div class="step">
                 <span class="step-number">1</span>
                 <div class="step-title">在 Claude Code 記錄測試訊息</div>
+                
+                <p style="margin: 10px 0; color: #666;"><strong>Windows：</strong></p>
+                <div class="code-block"><code>python conversation-sync\claude-code-sync.py --log user "測試訊息：系統運作中"
+python conversation-sync\claude-code-sync.py --sync</code></div>
+                
+                <p style="margin: 15px 0 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
                 <div class="code-block"><code>python3 conversation-sync/claude-code-sync.py --log user "測試訊息：系統運作中"
 python3 conversation-sync/claude-code-sync.py --sync</code></div>
             </div>
@@ -381,6 +441,11 @@ python3 conversation-sync/claude-code-sync.py --sync</code></div>
             <div class="feature-item" style="margin-bottom: 15px;">
                 <h3>Q: 找不到 Telegram 的對話？</h3>
                 <p>手動拉取最新版本：</p>
+                <p style="margin: 10px 0; color: #666;"><strong>Windows：</strong></p>
+                <div class="code-block"><code>cd %USERPROFILE%\ai-task-tracker
+git pull origin main
+dir conversations\telegram\</code></div>
+                <p style="margin: 10px 0; color: #666;"><strong>Mac/Linux：</strong></p>
                 <div class="code-block"><code>cd ~/ai-task-tracker
 git pull origin main
 ls -la conversations/telegram/</code></div>
