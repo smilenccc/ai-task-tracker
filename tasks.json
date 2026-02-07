@@ -79,11 +79,12 @@
       "title": "建立 Telegram ⇄ Claude Code 對話同步系統",
       "description": "實現雙向完整對話同步，讓兩邊的 AI 都能看到對方的對話內容",
       "category": "開發",
-      "status": "in-progress",
+      "status": "completed",
       "createdAt": "2026-02-07T12:32:53.000Z",
-      "updatedAt": "2026-02-07T12:32:53.000Z",
-      "source": "telegram"
+      "updatedAt": "2026-02-07T12:36:12.000Z",
+      "source": "telegram",
+      "detailUrl": "task-8-conversation-sync.html"
     }
   ],
-  "lastUpdated": "2026-02-07T12:32:53.000Z"
+  "lastUpdated": "2026-02-07T12:36:12.000Z"
 }

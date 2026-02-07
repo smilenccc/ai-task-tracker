@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram ⇄ Claude Code 對話同步系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .diagram {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .diagram-content {
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+            color: #333;
+            overflow-x: auto;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-item h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .feature-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .step-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-block code {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .command {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #2196f3;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .note::before {
+            content: '💡 ';
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+        }
+
+        .success::before {
+            content: '✅ ';
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回任務列表</a>
+
+        <header>
+            <h1>🔄 Telegram ⇄ Claude Code</h1>
+            <p>對話完全同步系統</p>
+        </header>
+
+        <div class="diagram">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 20px;">系統架構</h2>
+            <div class="diagram-content">
+                <pre>
+┌─────────────────┐                          ┌─────────────────┐
+│   Telegram      │                          │  Claude Code    │
+│   (小Linda)     │                          │   (你的電腦)     │
+└────────┬────────┘                          └────────┬────────┘
+         │                                            │
+         │ 自動記錄每次對話                            │ 自動記錄每次對話
+         │                                            │
+         ▼                                            ▼
+┌────────────────────────────────────────────────────────────┐
+│                  GitHub Repository                         │
+│                     (同步中心)                              │
+│                                                            │
+│  📁 conversations/                                         │
+│     ├── telegram/                                          │
+│     │   └── 2026-02-07.jsonl  ← 小Linda 的對話            │
+│     │                                                      │
+│     └── claude-code/                                       │
+│         └── 2026-02-07.jsonl  ← Claude Code 的對話        │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+         ▲                                            ▲
+         │                                            │
+         │ 即時讀取對方的對話                          │ 即時讀取對方的對話
+         │                                            │
+         └──────────────── 雙向同步 ─────────────────┘
+                </pre>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>✨ 功能特色</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>🤖 自動記錄</h3>
+                    <p>兩邊的每一句對話都會自動保存到 GitHub，不會遺漏任何內容</p>
+                </div>
+                <div class="feature-item">
+                    <h3>⚡ 即時同步</h3>
+                    <p>對話記錄會立即推送到 GitHub，通常 30 秒內就能在另一邊看到</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔍 智能搜尋</h3>
+                    <p>可以搜尋任一方的對話，快速找到需要的資訊</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📊 完整歷史</h3>
+                    <p>所有對話都完整保留，隨時可以回顧和查詢</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔒 安全隱私</h3>
+                    <p>所有資料儲存在你的私有 GitHub，只有你能訪問</p>
+                </div>
+                <div class="feature-item">
+                    <h3>💡 上下文感知</h3>
+                    <p>兩邊的 AI 都能參考對方的對話，提供更好的回答</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>🚀 快速設定（5分鐘完成）</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">在你的電腦上 Clone Repository</div>
+                <div class="code-block"><code>cd ~/
+git clone git@github.com:smilenccc/ai-task-tracker.git
+cd ai-task-tracker</code></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">初始化同步系統</div>
+                <div class="code-block"><code>python3 conversation-sync/claude-code-sync.py --setup</code></div>
+                <div class="success">看到「✅ 設定完成！」就代表成功了</div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-title">開始記錄對話</div>
+                <p style="margin: 15px 0; color: #666;">每次在 Claude Code 完成重要對話後，執行：</p>
+                <div class="code-block"><code>python3 conversation-sync/claude-code-sync.py --log user "你的問題"
+python3 conversation-sync/claude-code-sync.py --log assistant "AI回答"
+python3 conversation-sync/claude-code-sync.py --sync</code></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <div class="step-title">查看對方的對話</div>
+                <p style="margin: 15px 0; color: #666;">在 Claude Code 查看 Telegram（小Linda）的對話：</p>
+                <div class="code-block"><code># 查看最近7天的對話
+python3 conversation-sync/claude-code-sync.py --telegram 7
+
+# 搜尋關鍵字
+python3 conversation-sync/claude-code-sync.py --search "金澤旅遊" 7</code></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>💬 使用範例</h2>
+            
+            <div class="feature-item" style="margin-bottom: 20px;">
+                <h3>在 Telegram 問小Linda</h3>
+                <div class="command">Linda，Claude Code 最近在討論什麼？</div>
+                <div class="command">Linda，幫我找 Claude Code 關於 Python 的對話</div>
+                <div class="command">Linda，Claude Code 上次說要怎麼做那個功能？</div>
+            </div>
+
+            <div class="feature-item">
+                <h3>在 Claude Code 查詢</h3>
+                <div class="code-block"><code># 查看小Linda 最近的對話
+python3 conversation-sync/claude-code-sync.py --telegram 7
+
+# 搜尋特定主題
+python3 conversation-sync/claude-code-sync.py --search "任務統計" 30
+
+# 查看今天的統計
+python3 conversation-sync/claude-code-sync.py --status</code></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>🛠️ 常用指令</h2>
+            <div class="code-block"><code># 查看系統狀態
+python3 conversation-sync/claude-code-sync.py --status
+
+# 手動同步到 GitHub
+python3 conversation-sync/claude-code-sync.py --sync
+
+# 從 GitHub 拉取最新對話
+python3 conversation-sync/claude-code-sync.py --pull
+
+# 查看 Telegram 對話
+python3 conversation-sync/claude-code-sync.py --telegram 7
+
+# 搜尋所有對話
+python3 conversation-sync/claude-code-sync.py --search "關鍵字" 30</code></div>
+        </div>
+
+        <div class="section-card">
+            <h2>🧪 測試系統</h2>
+            <div class="note">完成設定後，建議先測試一下</div>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">在 Claude Code 記錄測試訊息</div>
+                <div class="code-block"><code>python3 conversation-sync/claude-code-sync.py --log user "測試訊息：系統運作中"
+python3 conversation-sync/claude-code-sync.py --sync</code></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">在 Telegram 問小Linda</div>
+                <div class="command">Linda，Claude Code 剛剛說了什麼？</div>
+            </div>
+
+            <div class="success">如果小Linda 能看到你的測試訊息，代表系統運作正常！🎉</div>
+        </div>
+
+        <div class="section-card">
+            <h2>❓ 常見問題</h2>
+            
+            <div class="feature-item" style="margin-bottom: 15px;">
+                <h3>Q: Git push 失敗怎麼辦？</h3>
+                <p>確認 SSH Key 設定正確：</p>
+                <div class="code-block"><code>ssh -T git@github.com</code></div>
+                <p style="margin-top: 10px;">應該顯示：Hi smilenccc! You've successfully authenticated...</p>
+            </div>
+
+            <div class="feature-item" style="margin-bottom: 15px;">
+                <h3>Q: 找不到 Telegram 的對話？</h3>
+                <p>手動拉取最新版本：</p>
+                <div class="code-block"><code>cd ~/ai-task-tracker
+git pull origin main
+ls -la conversations/telegram/</code></div>
+            </div>
+
+            <div class="feature-item">
+                <h3>Q: 對話會佔用很多空間嗎？</h3>
+                <p>不會！JSONL 格式非常精簡，一個月的對話大約只有幾 MB。</p>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>📚 詳細文件</h2>
+            <p style="color: #666; line-height: 1.8; margin-bottom: 15px;">
+                完整的技術文件和進階功能說明，請查看：
+            </p>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>📖 README.md</h3>
+                    <p>完整系統說明</p>
+                    <div class="command">conversation-sync/README.md</div>
+                </div>
+                <div class="feature-item">
+                    <h3>🚀 QUICKSTART.md</h3>
+                    <p>快速入門指南</p>
+                    <div class="command">conversation-sync/QUICKSTART.md</div>
+                </div>
+                <div class="feature-item">
+                    <h3>💻 claude-code-sync.py</h3>
+                    <p>Claude Code 同步工具</p>
+                    <div class="command">conversation-sync/claude-code-sync.py --help</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <h3 style="color: #667eea; margin-bottom: 15px;">🎉 現在開始使用！</h3>
+                <p style="color: #666; line-height: 1.8;">
+                    Telegram 的小Linda 和 Claude Code 現在可以互相看到對方的對話了！<br>
+                    這讓你的 AI 助手更了解完整的脈絡，提供更好的幫助。<br>
+                    <br>
+                    有任何問題隨時問小Linda！💙
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" class="back-link">← 返回任務列表</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateTime = new Date().toLocaleString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const timeNote = document.createElement('p');
+            timeNote.style.cssText = 'text-align: center; color: white; opacity: 0.9; margin-top: 20px; font-size: 0.9em;';
+            timeNote.textContent = `系統文件更新時間：${updateTime} | by 小Linda 💙`;
+            document.querySelector('.container').appendChild(timeNote);
+        });
+    </script>
+</body>
+</html>
