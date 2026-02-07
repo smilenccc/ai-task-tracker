@@ -1,66 +1,66 @@
-# 🤖 AI 任務統計系統
+# 🤖 AI 任務統計系統（自動同步版本）
 
-這是一個簡單但強大的任務追蹤和統計系統，用於記錄和管理所有交辦給 AI 的工作。
+這是一個自動追蹤 AI 交辦任務的統計系統。當你在 Telegram 交辦任務給 AI 時，系統會自動記錄並同步到網站。
+
+## 🌐 網站網址
+
+**https://smilenccc.github.io/ai-task-tracker/**
 
 ## ✨ 功能特色
 
-- 📊 **即時統計** - 顯示總任務數、已完成、進行中、待處理的數量
-- 📝 **任務管理** - 新增、刪除、更新任務狀態
-- 🏷️ **分類標籤** - 開發、研究、資料處理、設計等分類
-- 💾 **本地儲存** - 使用 localStorage，資料不會丟失
+- 🤖 **自動記錄** - AI 收到任務時自動新增
+- 🔄 **即時同步** - 資料儲存在 GitHub，網站自動更新
+- 📊 **統計儀表板** - 即時顯示總任務、已完成、進行中、待處理
 - 📱 **響應式設計** - 支援手機、平板、電腦
-- 🎨 **美觀介面** - 現代化的漸層設計
+- 💾 **永久儲存** - 資料保存在 GitHub repository
 
-## 🚀 如何使用
+## 🎯 使用方式
 
-### 方法 1：直接開啟（最簡單）
+### 對使用者
 
-```bash
-# 在瀏覽器中直接打開
-open /root/.openclaw/workspace/task-tracker/index.html
+**你只需要：**
+1. 在 Telegram 交辦任務給 AI
+2. 打開網站查看統計
+
+**就這麼簡單！** 🎉
+
+### 對 AI
+
+當收到 Telegram 任務時，使用以下方式新增：
+
+#### Python 方式（推薦）
+
+```python
+from pathlib import Path
+import sys
+sys.path.append('/root/.openclaw/workspace/task-tracker')
+from add_task import TaskManager
+
+manager = TaskManager()
+manager.add_task(
+    title="任務標題",
+    description="任務描述",
+    category="開發",  # 開發、研究、資料處理、設計、其他
+    status="pending"  # pending、in-progress、completed
+)
+manager.push_to_github("新增任務: 任務標題")
 ```
 
-或者用任何瀏覽器打開 `index.html` 檔案即可！
-
-### 方法 2：使用 Python 伺服器
+#### 命令列方式
 
 ```bash
 cd /root/.openclaw/workspace/task-tracker
-python3 -m http.server 8000
+python3 add_task.py "任務標題" "任務描述" "類型" "狀態"
 ```
 
-然後在瀏覽器訪問：`http://localhost:8000`
+#### Shell 腳本方式
 
-### 方法 3：部署到網路
+```bash
+cd /root/.openclaw/workspace/task-tracker
+./add-task.sh "任務標題" "任務描述" "類型" "狀態"
+```
 
-可以部署到：
-- **GitHub Pages**（免費）
-- **Netlify**（免費）
-- **Vercel**（免費）
-
-## 📖 使用說明
-
-### 新增任務
-
-1. 在右側表單填寫任務資訊
-2. 選擇任務類型和狀態
-3. 點擊「新增任務」
-
-### 管理任務
-
-- **標記完成**：點擊「✓ 完成」按鈕
-- **刪除任務**：點擊「🗑️ 刪除」按鈕
-- 任務會依照建立時間排序（最新在前）
-
-### 查看統計
-
-頂部的統計卡片會即時更新：
-- 總任務數
-- 已完成數量
-- 進行中數量
-- 待處理數量
-
-## 🎨 任務分類
+## 📊 任務類別
 
 - 💻 **開發** - 程式開發、網站建置
 - 🔍 **研究** - 資料查詢、調查分析
@@ -68,67 +68,92 @@ python3 -m http.server 8000
 - 🎨 **設計** - UI/UX 設計
 - 📦 **其他** - 其他類型任務
 
-## 💡 範例任務
+## 🔧 系統架構
 
-以下是一些可以加入的範例：
-
-1. **亞馬遜搜尋網站** - 開發 - 已完成
-2. **Playmobil 城堡商品調查** - 研究 - 已完成
-3. **億萬富翁排名統計** - 資料處理 - 已完成
-4. **台中天氣查詢** - 研究 - 已完成
-
-## 📦 資料儲存
-
-所有任務資料儲存在瀏覽器的 localStorage 中：
-- 資料不會遺失（除非清除瀏覽器資料）
-- 完全離線工作
-- 無需資料庫或後端伺服器
-
-## 🔧 自訂修改
-
-可以輕鬆修改的部分：
-- 顏色主題（CSS 變數）
-- 任務分類（JavaScript taskCategory）
-- 統計項目（HTML dashboard）
-
-## 🌐 部署到線上
-
-### GitHub Pages
-
-```bash
-# 建立 git repository
-cd /root/.openclaw/workspace/task-tracker
-git init
-git add .
-git commit -m "Initial commit"
-
-# 推送到 GitHub
-git remote add origin YOUR_GITHUB_REPO_URL
-git push -u origin main
-
-# 在 GitHub 設定中啟用 Pages
+```
+┌─────────────┐
+│  Telegram   │ 交辦任務
+└──────┬──────┘
+       │
+       v
+┌─────────────┐
+│     AI      │ 執行任務 + 記錄
+└──────┬──────┘
+       │
+       v
+┌─────────────┐
+│   GitHub    │ tasks.json 儲存
+│ Repository  │
+└──────┬──────┘
+       │
+       v
+┌─────────────┐
+│GitHub Pages │ 網站自動更新
+│   網站顯示   │
+└─────────────┘
 ```
 
-### Netlify（拖放部署）
+## 📁 檔案結構
 
-1. 訪問 https://app.netlify.com/drop
-2. 將 `task-tracker` 資料夾拖放進去
-3. 立即取得網址！
+```
+task-tracker/
+├── index.html      # 網站主頁（自動從 tasks.json 讀取）
+├── tasks.json      # 任務資料庫
+├── add_task.py     # Python 新增任務腳本
+├── add-task.sh     # Shell 新增任務腳本
+└── README.md       # 說明文件
+```
 
-## 📝 更新日誌
+## 🔄 更新任務狀態
 
-### v1.0.0 (2026-02-06)
-- ✨ 初始版本發布
-- 📊 基本統計功能
-- 📝 任務 CRUD 操作
-- 💾 LocalStorage 儲存
-- 🎨 響應式設計
+```python
+manager = TaskManager()
+manager.update_task_status(task_id=1, status="completed")
+manager.push_to_github("更新任務狀態")
+```
+
+## 📝 資料格式
+
+`tasks.json` 格式：
+
+```json
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "任務標題",
+      "description": "任務描述",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-07T00:00:00.000Z",
+      "updatedAt": "2026-02-07T01:00:00.000Z",
+      "source": "telegram"
+    }
+  ],
+  "lastUpdated": "2026-02-07T01:00:00.000Z"
+}
+```
+
+## 🚀 部署流程
+
+1. AI 新增任務到 `tasks.json`
+2. Git commit & push 到 GitHub
+3. GitHub Pages 自動重新部署（約 1-2 分鐘）
+4. 網站自動更新顯示新任務
+
+## 💡 注意事項
+
+- 網站每 30 秒自動重新整理資料
+- 可以手動點擊「重新整理」按鈕立即更新
+- 所有時間使用 UTC 時區
+- 資料永久保存在 GitHub
 
 ## 📧 支援
 
-如需修改或新增功能，隨時告訴我！
+有任何問題或需要新增功能，隨時在 Telegram 告訴 AI！
 
 ---
 
 **製作：** OpenClaw AI Assistant  
-**日期：** 2026-02-06
+**日期：** 2026-02-07  
+**版本：** 2.0 (Auto-Sync)
