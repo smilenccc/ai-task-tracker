@@ -26,10 +26,10 @@ class ClaudeCodeSync:
             repo_path = home / "ai-task-tracker"
         
         self.repo_path = Path(repo_path)
-        self.conversations_dir = self.repo_path / "conversations" / "claude-code"
+        self.conversations_dir = self.repo_path / "conversation-sync" / "conversations" / "claude-code"
         self.conversations_dir.mkdir(parents=True, exist_ok=True)
         
-        self.telegram_dir = self.repo_path / "conversations" / "telegram"
+        self.telegram_dir = self.repo_path / "conversation-sync" / "conversations" / "telegram"
     
     def log_message(self, role, content, metadata=None):
         """
