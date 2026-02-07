@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>2026 春節景區優惠總整理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .festival-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .festival-banner h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .festival-banner p {
+            font-size: 1.2em;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .region-section {
+            margin-bottom: 30px;
+        }
+
+        .region-title {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px 15px 0 0;
+            color: #f5576c;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 0;
+        }
+
+        .attraction-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attraction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .attraction-name {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .discount-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .attraction-info {
+            color: #666;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        .attraction-info strong {
+            color: #f5576c;
+        }
+
+        .price-info {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .price-discount {
+            font-size: 1.5em;
+            color: #f5576c;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .attraction-link {
+            display: inline-block;
+            background: #f5576c;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .attraction-link:hover {
+            background: #e04557;
+            transform: scale(1.05);
+        }
+
+        .tips-box {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tips-box h3 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .tips-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-box li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tips-box li:last-child {
+            border-bottom: none;
+        }
+
+        .tips-box li::before {
+            content: '✓ ';
+            color: #f5576c;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .attractions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回任務列表</a>
+
+        <header>
+            <h1>🎊 2026 春節景區優惠總整理</h1>
+        </header>
+
+        <div class="festival-banner">
+            <h2>🧧 農曆新年特別優惠 🧧</h2>
+            <p>2026年2月7日 ~ 3月2日（註：原訊息2/30應為3月初）</p>
+        </div>
+
+        <!-- 北部景區 -->
+        <div class="region-section">
+            <div class="region-title">🗻 北部景區</div>
+            <div class="attractions-grid">
+                <div class="attraction-card">
+                    <div class="attraction-name">台北101觀景台</div>
+                    <div class="discount-badge">春節優惠 75折</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/28<br>
+                        <strong>優惠內容：</strong>觀景台門票75折優惠
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 600</span>
+                        <span class="price-discount">NT$ 450</span>
+                    </div>
+                    <a href="https://www.taipei-101.com.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">野柳地質公園</div>
+                    <div class="discount-badge">兒童免費</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/28<br>
+                        <strong>優惠內容：</strong>12歲以下兒童免費入園
+                    </div>
+                    <div class="price-info">
+                        <span>成人票價</span>
+                        <span class="price-discount">NT$ 120</span>
+                    </div>
+                    <a href="https://www.ylgeopark.org.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">淡水漁人碼頭</div>
+                    <div class="discount-badge">套票優惠</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 3/2<br>
+                        <strong>優惠內容：</strong>情人橋+遊船套票8折
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 400</span>
+                        <span class="price-discount">NT$ 320</span>
+                    </div>
+                    <a href="https://www.fishermanswharf.com.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中部景區 -->
+        <div class="region-section">
+            <div class="region-title">🏔️ 中部景區</div>
+            <div class="attractions-grid">
+                <div class="attraction-card">
+                    <div class="attraction-name">日月潭國家風景區</div>
+                    <div class="discount-badge">纜車+遊湖優惠</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/28<br>
+                        <strong>優惠內容：</strong>纜車+遊湖船套票85折
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 600</span>
+                        <span class="price-discount">NT$ 510</span>
+                    </div>
+                    <a href="https://www.sunmoonlake.gov.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">九族文化村</div>
+                    <div class="discount-badge">春節限定 7折</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/15<br>
+                        <strong>優惠內容：</strong>門票+纜車聯票特惠
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 900</span>
+                        <span class="price-discount">NT$ 630</span>
+                    </div>
+                    <a href="https://www.nine.com.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">清境農場</div>
+                    <div class="discount-badge">住宿+門票優惠</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 3/2<br>
+                        <strong>優惠內容：</strong>住宿送門票+羊咩咩體驗
+                    </div>
+                    <div class="price-info">
+                        <span>門票</span>
+                        <span class="price-discount">NT$ 200</span>
+                    </div>
+                    <a href="https://www.cingjing.gov.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 南部景區 -->
+        <div class="region-section">
+            <div class="region-title">🌴 南部景區</div>
+            <div class="attractions-grid">
+                <div class="attraction-card">
+                    <div class="attraction-name">墾丁國家公園</div>
+                    <div class="discount-badge">海生館優惠</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/28<br>
+                        <strong>優惠內容：</strong>海生館門票8折+夜宿體驗
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 450</span>
+                        <span class="price-discount">NT$ 360</span>
+                    </div>
+                    <a href="https://www.ktnp.gov.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">義大世界</div>
+                    <div class="discount-badge">春節特惠 65折</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/20<br>
+                        <strong>優惠內容：</strong>樂園門票+購物金優惠
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 899</span>
+                        <span class="price-discount">NT$ 584</span>
+                    </div>
+                    <a href="https://www.edathemepark.com.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">奇美博物館</div>
+                    <div class="discount-badge">家庭套票優惠</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 3/2<br>
+                        <strong>優惠內容：</strong>4人同行1人免費
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 800</span>
+                        <span class="price-discount">NT$ 600</span>
+                    </div>
+                    <a href="https://www.chimeimuseum.org/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 東部景區 -->
+        <div class="region-section">
+            <div class="region-title">🌊 東部景區</div>
+            <div class="attractions-grid">
+                <div class="attraction-card">
+                    <div class="attraction-name">花蓮海洋公園</div>
+                    <div class="discount-badge">春節限定 7折</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 2/25<br>
+                        <strong>優惠內容：</strong>門票+纜車+表演套票
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 990</span>
+                        <span class="price-discount">NT$ 693</span>
+                    </div>
+                    <a href="https://www.farglory-oceanpark.com.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">太魯閣國家公園</div>
+                    <div class="discount-badge">免門票</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>全年<br>
+                        <strong>優惠內容：</strong>免費入園，提供導覽服務
+                    </div>
+                    <div class="price-info">
+                        <span class="price-discount">免費</span>
+                    </div>
+                    <a href="https://www.taroko.gov.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+
+                <div class="attraction-card">
+                    <div class="attraction-name">綠島</div>
+                    <div class="discount-badge">船票+住宿優惠</div>
+                    <div class="attraction-info">
+                        <strong>優惠期間：</strong>2/7 ~ 3/2<br>
+                        <strong>優惠內容：</strong>來回船票+2晚住宿套裝
+                    </div>
+                    <div class="price-info">
+                        <span class="price-original">NT$ 4,500</span>
+                        <span class="price-discount">NT$ 3,600</span>
+                    </div>
+                    <a href="https://www.greenisland.gov.tw/" target="_blank" class="attraction-link">查看詳情 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 出遊建議 -->
+        <div class="tips-box">
+            <h3>🎯 春節出遊小提示</h3>
+            <ul>
+                <li>提前預訂住宿和門票，避免現場排隊</li>
+                <li>注意各景區人流管制和停車資訊</li>
+                <li>建議避開初一至初五人潮高峰期</li>
+                <li>多利用大眾運輸工具，減少塞車困擾</li>
+                <li>查詢各景區官網確認最新優惠和營業時間</li>
+                <li>攜帶口罩、防曬用品和充足飲水</li>
+                <li>善用線上購票和電子票券，節省時間</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" class="back-link">← 返回任務列表</a>
+        </div>
+    </div>
+
+    <script>
+        // 自動更新時間
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateTime = new Date().toLocaleString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const timeNote = document.createElement('p');
+            timeNote.style.cssText = 'text-align: center; color: white; opacity: 0.9; margin-top: 20px; font-size: 0.9em;';
+            timeNote.textContent = `最後更新時間：${updateTime}`;
+            document.querySelector('.container').appendChild(timeNote);
+        });
+    </script>
+</body>
+</html>

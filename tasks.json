@@ -35,21 +35,23 @@
       "title": "查詢台灣廚餘大師air價格",
       "description": "找出最便宜的三個購物網站並提供網址連結",
       "category": "研究",
-      "status": "in-progress",
+      "status": "completed",
       "createdAt": "2026-02-07T00:48:45.000Z",
-      "updatedAt": "2026-02-07T00:48:45.000Z",
-      "source": "telegram"
+      "updatedAt": "2026-02-07T00:49:55.000Z",
+      "source": "telegram",
+      "detailUrl": "task-4-kitchen-master-air.html"
     },
     {
       "id": 5,
       "title": "製作過年景區優惠網站",
       "description": "整理2/7~2/30過年期間各大景區優惠資訊並建立網站",
       "category": "開發",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-02-07T00:48:50.000Z",
-      "updatedAt": "2026-02-07T00:48:50.000Z",
-      "source": "telegram"
+      "updatedAt": "2026-02-07T00:51:02.000Z",
+      "source": "telegram",
+      "detailUrl": "lunar-new-year-attractions.html"
     }
   ],
-  "lastUpdated": "2026-02-07T00:48:50.000Z"
+  "lastUpdated": "2026-02-07T00:51:02.000Z"
 }

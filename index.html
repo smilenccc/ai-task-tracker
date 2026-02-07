@@ -407,6 +407,13 @@
                             <span>📅 ${this.formatDate(task.createdAt)}</span>
                             <span>💬 ${task.source}</span>
                         </div>
+                        ${task.detailUrl ? `
+                        <div class="task-actions" style="margin-top: 15px;">
+                            <a href="${task.detailUrl}" class="btn btn-detail" style="display: inline-block; background: #667eea; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 0.9em; transition: all 0.3s;">
+                                📄 查看詳情 →
+                            </a>
+                        </div>
+                        ` : ''}
                     </div>
                 `).join('');
             }
