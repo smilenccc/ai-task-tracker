@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 任務統計系統</title>
+    <title>AI 任務統計系統 - 即時同步</title>
     <style>
         * {
             margin: 0;
@@ -38,6 +38,24 @@
         header p {
             font-size: 1.1em;
             opacity: 0.9;
+        }
+
+        .sync-status {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .sync-status.syncing {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        .sync-status.success {
+            background: rgba(16, 185, 129, 0.3);
         }
 
         .dashboard {
@@ -86,12 +104,6 @@
         }
 
         .main-content {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 20px;
-        }
-
-        .task-section, .add-task-section {
             background: white;
             border-radius: 15px;
             padding: 25px;
@@ -104,6 +116,25 @@
             color: #333;
             border-bottom: 3px solid #667eea;
             padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
         }
 
         .task-item {
@@ -113,6 +144,18 @@
             margin-bottom: 15px;
             border-radius: 8px;
             transition: all 0.3s;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .task-item:hover {
@@ -181,102 +224,62 @@
             color: #999;
         }
 
-        .task-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-
-        .btn-complete {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-complete:hover {
-            background: #059669;
-        }
-
-        .btn-delete {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: #667eea;
-            color: white;
-            padding: 15px;
-            font-size: 1.1em;
-            font-weight: bold;
-        }
-
-        .btn-submit:hover {
-            background: #5568d3;
-        }
-
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .empty-state {
             text-align: center;
-            padding: 40px;
+            padding: 60px 40px;
             color: #999;
         }
 
-        .empty-state img {
-            width: 100px;
+        .empty-state .icon {
+            font-size: 4em;
             margin-bottom: 20px;
-            opacity: 0.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .info-box h4 {
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            color: #1e3a8a;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -284,123 +287,91 @@
     <div class="container">
         <header>
             <h1>🤖 AI 任務統計系統</h1>
-            <p>追蹤所有交辦任務的進度和統計</p>
+            <p>自動追蹤 Telegram 交辦任務</p>
+            <div class="sync-status" id="syncStatus">
+                🔄 載入中...
+            </div>
         </header>
 
         <div class="dashboard">
             <div class="stat-card">
                 <h3>總任務數</h3>
-                <div class="number" id="totalTasks">0</div>
+                <div class="number" id="totalTasks">-</div>
             </div>
             <div class="stat-card completed">
                 <h3>已完成</h3>
-                <div class="number" id="completedTasks">0</div>
+                <div class="number" id="completedTasks">-</div>
             </div>
             <div class="stat-card in-progress">
                 <h3>進行中</h3>
-                <div class="number" id="inProgressTasks">0</div>
+                <div class="number" id="inProgressTasks">-</div>
             </div>
             <div class="stat-card pending">
                 <h3>待處理</h3>
-                <div class="number" id="pendingTasks">0</div>
+                <div class="number" id="pendingTasks">-</div>
             </div>
         </div>
 
         <div class="main-content">
-            <div class="task-section">
-                <h2 class="section-title">📋 任務列表</h2>
-                <div id="taskList"></div>
+            <div class="info-box">
+                <h4>💡 使用說明</h4>
+                <p>這個系統會自動記錄你在 Telegram 交辦給 AI 的所有任務。每當你交辦新任務，系統會自動更新。點擊「重新整理」可手動更新資料。</p>
             </div>
 
-            <div class="add-task-section">
-                <h2 class="section-title">➕ 新增任務</h2>
-                <form id="taskForm">
-                    <div class="form-group">
-                        <label for="taskTitle">任務標題</label>
-                        <input type="text" id="taskTitle" required placeholder="例如：建立亞馬遜搜尋網站">
-                    </div>
-                    <div class="form-group">
-                        <label for="taskDescription">任務描述</label>
-                        <textarea id="taskDescription" placeholder="詳細說明任務內容..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskCategory">任務類型</label>
-                        <select id="taskCategory">
-                            <option value="開發">💻 開發</option>
-                            <option value="研究">🔍 研究</option>
-                            <option value="資料處理">📊 資料處理</option>
-                            <option value="設計">🎨 設計</option>
-                            <option value="其他">📦 其他</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskStatus">任務狀態</label>
-                        <select id="taskStatus">
-                            <option value="pending">待處理</option>
-                            <option value="in-progress">進行中</option>
-                            <option value="completed">已完成</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-submit">新增任務</button>
-                </form>
+            <h2 class="section-title">
+                📋 任務列表
+                <button class="refresh-btn" onclick="loadTasks()">🔄 重新整理</button>
+            </h2>
+            <div id="taskList">
+                <div class="loading">載入任務資料中</div>
             </div>
         </div>
     </div>
 
     <script>
-        // 任務管理系統
-        class TaskTracker {
+        // 任務管理系統 - 從 GitHub 讀取
+        class TaskTrackerSync {
             constructor() {
-                this.tasks = this.loadTasks();
+                this.tasks = [];
+                this.dataUrl = 'tasks.json';
                 this.init();
             }
 
-            init() {
-                this.renderTasks();
-                this.updateStats();
-                this.setupEventListeners();
+            async init() {
+                await this.loadTasks();
+                // 每 30 秒自動重新整理
+                setInterval(() => this.loadTasks(), 30000);
             }
 
-            loadTasks() {
-                const saved = localStorage.getItem('aiTasks');
-                return saved ? JSON.parse(saved) : [];
-            }
-
-            saveTasks() {
-                localStorage.setItem('aiTasks', JSON.stringify(this.tasks));
-            }
-
-            addTask(task) {
-                const newTask = {
-                    id: Date.now(),
-                    ...task,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                };
-                this.tasks.unshift(newTask);
-                this.saveTasks();
-                this.renderTasks();
-                this.updateStats();
-            }
-
-            deleteTask(id) {
-                if (confirm('確定要刪除這個任務嗎？')) {
-                    this.tasks = this.tasks.filter(task => task.id !== id);
-                    this.saveTasks();
+            async loadTasks() {
+                try {
+                    this.updateSyncStatus('syncing', '🔄 同步中...');
+                    
+                    // 加上時間戳避免快取
+                    const response = await fetch(`${this.dataUrl}?t=${Date.now()}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('無法載入資料');
+                    }
+                    
+                    const data = await response.json();
+                    this.tasks = data.tasks || [];
+                    
                     this.renderTasks();
                     this.updateStats();
+                    this.updateSyncStatus('success', `✓ 已同步 (${this.formatTime(data.lastUpdated)})`);
+                    
+                } catch (error) {
+                    console.error('載入任務失敗:', error);
+                    this.updateSyncStatus('error', '⚠️ 同步失敗');
+                    this.showError();
                 }
             }
 
-            updateTaskStatus(id, status) {
-                const task = this.tasks.find(t => t.id === id);
-                if (task) {
-                    task.status = status;
-                    task.updatedAt = new Date().toISOString();
-                    this.saveTasks();
-                    this.renderTasks();
-                    this.updateStats();
-                }
+            updateSyncStatus(status, text) {
+                const statusEl = document.getElementById('syncStatus');
+                statusEl.textContent = text;
+                statusEl.className = `sync-status ${status}`;
             }
 
             renderTasks() {
@@ -409,15 +380,20 @@
                 if (this.tasks.length === 0) {
                     taskList.innerHTML = `
                         <div class="empty-state">
-                            <div style="font-size: 4em;">📭</div>
-                            <h3>還沒有任務</h3>
-                            <p>開始新增你的第一個任務吧！</p>
+                            <div class="icon">📭</div>
+                            <h3>還沒有任務記錄</h3>
+                            <p>當你在 Telegram 交辦任務給 AI 時，任務會自動出現在這裡</p>
                         </div>
                     `;
                     return;
                 }
 
-                taskList.innerHTML = this.tasks.map(task => `
+                // 按時間排序（最新在前）
+                const sortedTasks = [...this.tasks].sort((a, b) => 
+                    new Date(b.createdAt) - new Date(a.createdAt)
+                );
+
+                taskList.innerHTML = sortedTasks.map(task => `
                     <div class="task-item ${task.status}">
                         <div class="task-header">
                             <div class="task-title">${this.escapeHtml(task.title)}</div>
@@ -429,11 +405,7 @@
                         <div class="task-meta">
                             <span>📁 ${task.category}</span>
                             <span>📅 ${this.formatDate(task.createdAt)}</span>
-                        </div>
-                        <div class="task-actions">
-                            ${task.status !== 'completed' ? 
-                                `<button class="btn btn-complete" onclick="tracker.updateTaskStatus(${task.id}, 'completed')">✓ 完成</button>` : ''}
-                            <button class="btn btn-delete" onclick="tracker.deleteTask(${task.id})">🗑️ 刪除</button>
+                            <span>💬 ${task.source}</span>
                         </div>
                     </div>
                 `).join('');
@@ -449,20 +421,15 @@
                     this.tasks.filter(t => t.status === 'pending').length;
             }
 
-            setupEventListeners() {
-                document.getElementById('taskForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    const task = {
-                        title: document.getElementById('taskTitle').value,
-                        description: document.getElementById('taskDescription').value,
-                        category: document.getElementById('taskCategory').value,
-                        status: document.getElementById('taskStatus').value
-                    };
-
-                    this.addTask(task);
-                    e.target.reset();
-                });
+            showError() {
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⚠️</div>
+                        <h3>無法載入任務資料</h3>
+                        <p>請稍後再試，或點擊上方的重新整理按鈕</p>
+                    </div>
+                `;
             }
 
             getStatusText(status) {
@@ -485,6 +452,15 @@
                 });
             }
 
+            formatTime(dateString) {
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                return date.toLocaleTimeString('zh-TW', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
             escapeHtml(text) {
                 const div = document.createElement('div');
                 div.textContent = text;
@@ -493,7 +469,18 @@
         }
 
         // 初始化系統
-        const tracker = new TaskTracker();
+        let tracker;
+        
+        function loadTasks() {
+            if (tracker) {
+                tracker.loadTasks();
+            }
+        }
+
+        // 頁面載入完成後初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            tracker = new TaskTrackerSync();
+        });
     </script>
 </body>
 </html>

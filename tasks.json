@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "建立任務統計網站",
+      "description": "製作一個可以自動記錄交辦任務的統計系統",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-07T00:15:00.000Z",
+      "updatedAt": "2026-02-07T00:39:00.000Z",
+      "source": "telegram"
+    },
+    {
+      "id": 2,
+      "title": "部署網站到 GitHub Pages",
+      "description": "將任務統計系統部署到 GitHub 並設定自動更新",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-07T00:20:00.000Z",
+      "updatedAt": "2026-02-07T00:33:00.000Z",
+      "source": "telegram"
+    }
+  ],
+  "lastUpdated": "2026-02-07T00:39:00.000Z"
+}
