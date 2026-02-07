@@ -73,7 +73,17 @@
       "updatedAt": "2026-02-07T07:11:40.000Z",
       "source": "telegram",
       "detailUrl": "task-7-kanazawa-itinerary.html"
+    },
+    {
+      "id": 8,
+      "title": "建立 Telegram ⇄ Claude Code 對話同步系統",
+      "description": "實現雙向完整對話同步，讓兩邊的 AI 都能看到對方的對話內容",
+      "category": "開發",
+      "status": "in-progress",
+      "createdAt": "2026-02-07T12:32:53.000Z",
+      "updatedAt": "2026-02-07T12:32:53.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-07T07:11:40.000Z"
+  "lastUpdated": "2026-02-07T12:32:53.000Z"
 }
