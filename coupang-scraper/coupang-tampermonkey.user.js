@@ -8,13 +8,15 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_notification
 // @connect      localhost
+// @connect      coupang-dashboard.onrender.com
 // ==/UserScript==
 
 (function() {
   'use strict';
 
   const SERVER_URL = 'http://localhost:5566/api/orders';
-  const DASHBOARD_URL = 'http://localhost:5566/index.html';
+  const RENDER_URL = 'https://coupang-dashboard.onrender.com/api/orders';
+  const DASHBOARD_URL = 'https://coupang-dashboard.onrender.com/index.html';
 
   // 等待頁面完全載入
   function waitForLoad() {
@@ -106,12 +108,12 @@
     return orders;
   }
 
-  // 傳送到 server
-  function sendToServer(orders) {
+  // 傳送到 server（單一目標）
+  function postOrders(url, orders) {
     return new Promise((resolve, reject) => {
       GM_xmlhttpRequest({
         method: 'POST',
-        url: SERVER_URL,
+        url,
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(orders),
         onload: function(response) {
@@ -127,6 +129,16 @@
         }
       });
     });
+  }
+
+  // 傳送到 server（本地優先，失敗則 fallback 到 Render）
+  async function sendToServer(orders) {
+    try {
+      return await postOrders(SERVER_URL, orders);
+    } catch {
+      console.log('[Coupang 提取] 本地 Server 無回應，改傳 Render...');
+      return await postOrders(RENDER_URL, orders);
+    }
   }
 
   // 顯示通知
