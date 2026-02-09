@@ -73,7 +73,7 @@ class ClaudeCodeSync:
                          cwd=self.repo_path, check=True)
             
             # 提交變更
-            subprocess.run(['git', 'add', 'conversations/claude-code/'], 
+            subprocess.run(['git', 'add', 'conversation-sync/conversations/'],
                          cwd=self.repo_path, check=True)
             
             result = subprocess.run(
