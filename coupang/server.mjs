@@ -73,7 +73,7 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.static(resolve(__dirname)));
 // 也提供 purchases.json
 app.get('/purchases.json', (req, res) => {
-  res.sendFile(PURCHASES_PATH);
+  res.json(loadPurchases());
 });
 
 // API：接收訂單資料
