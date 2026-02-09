@@ -124,7 +124,17 @@
       "createdAt": "2026-02-09T13:15:26.000Z",
       "updatedAt": "2026-02-09T13:15:26.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 13,
+      "title": "調查玉山銀行 API 連結方案",
+      "description": "研究玉山銀行是否提供開放銀行 API、連結方式、申請流程",
+      "category": "研究",
+      "status": "pending",
+      "createdAt": "2026-02-09T14:25:02.000Z",
+      "updatedAt": "2026-02-09T14:25:02.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-09T13:15:26.000Z"
+  "lastUpdated": "2026-02-09T14:25:02.000Z"
 }
