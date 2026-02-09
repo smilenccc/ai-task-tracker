@@ -114,7 +114,17 @@
       "createdAt": "2026-02-09T13:00:32.000Z",
       "updatedAt": "2026-02-09T13:00:32.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 12,
+      "title": "整理 Android WebSocket 整合測試資料",
+      "description": "完整測試資料、Python 測試腳本、Kotlin 範例程式碼，供明天整合使用",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-09T13:15:26.000Z",
+      "updatedAt": "2026-02-09T13:15:26.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-09T13:00:32.000Z"
+  "lastUpdated": "2026-02-09T13:15:26.000Z"
 }
