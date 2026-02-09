@@ -144,7 +144,17 @@
       "createdAt": "2026-02-09T14:46:14.000Z",
       "updatedAt": "2026-02-09T14:46:14.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 15,
+      "title": "整合 Sendgrid API 發送郵件",
+      "description": "使用 Sendgrid API 取代 SMTP，繞過 port 465 限制，完成 Email 自動化系統",
+      "category": "開發",
+      "status": "pending",
+      "createdAt": "2026-02-09T15:25:35.000Z",
+      "updatedAt": "2026-02-09T15:25:35.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-09T14:46:14.000Z"
+  "lastUpdated": "2026-02-09T15:25:35.000Z"
 }
