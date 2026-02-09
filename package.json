@@ -1,0 +1,26 @@
+{
+  "name": "ai-task-tracker",
+  "version": "1.0.0",
+  "description": "這是一個自動追蹤 AI 交辦任務的統計系統。當你在 Telegram 交辦任務給 AI 時，系統會自動記錄並同步到網站。",
+  "main": "index.js",
+  "scripts": {
+    "coupang": "node --experimental-modules coupang/server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smilenccc/ai-task-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/smilenccc/ai-task-tracker/issues"
+  },
+  "homepage": "https://github.com/smilenccc/ai-task-tracker#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

@@ -1,10 +1,123 @@
 {
   "meta": {
-    "createdAt": "2026-02-08T15:34:00+08:00",
-    "lastUpdated": "2026-02-08T15:34:00+08:00",
+    "lastUpdated": "2026-02-09T04:37:48.399Z",
     "currency": "TWD",
-    "totalPurchases": 0,
-    "totalAmount": 0
+    "totalSpent": 3574,
+    "totalItems": 8,
+    "source": "coupang-scraper"
   },
-  "purchases": []
+  "purchases": [
+    {
+      "orderId": "coupang-2026-02-08-0-0",
+      "date": "2026-02-08",
+      "name": "Kao 花王 Magiclean 魔術靈 殺菌瞬潔 馬桶清潔劑 一般款 超分解垢潔淨 免刷洗, 500ml, 6瓶",
+      "price": 324,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "日用品/清潔",
+      "status": "配送中",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/sd_image/bd54/6a4ed1c8bacf0c47a71889caebb85aa89b52ddbf27fabf18c21a13eeb34c.png",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=263100112519174&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.726Z"
+    },
+    {
+      "orderId": "coupang-2026-02-07-1-0",
+      "date": "2026-02-07",
+      "name": "FELALA 費拉拉 西達摩 巧克力日曬咖啡 單向透氣閥包裝, 咖啡豆(無研磨), 454g, 1包",
+      "price": 289,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "食品/飲料",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/sd_image/8e26/cd53c4c5eef895a7866e7e73802758c8b1d2482b24e492edabd440e1192b.png",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=212079080325127&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-02-07-1-2",
+      "date": "2026-02-07",
+      "name": "FELALA 費拉拉 西達摩 果香日曬 咖啡豆, 454g, 1包",
+      "price": 259,
+      "currency": "TWD",
+      "quantity": 2,
+      "category": "食品/飲料",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/retail/images/425338272419952-9c269c30-060c-4868-b6a4-14fb45237a0c.jpg",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=212080464461824&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-02-07-1-4",
+      "date": "2026-02-07",
+      "name": "Pampers 幫寶適 日本境內版 尿布 褲型, XL, 126片",
+      "price": 1032,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "母嬰/寵物",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/retail/images/298334957708125-cdbed8ba-1c23-4309-8ee8-32fa682e144b.jpg",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=616112487972894&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-01-24-2-0",
+      "date": "2026-01-24",
+      "name": "Aiwibi 零觸感瞬吸褲型紙尿褲 2XL, 36片",
+      "price": 409,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "母嬰/寵物",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/rs_quotation_web/f6k9qyja/6094b46ac1a540cfb02e5be0be5e66f2.jpg",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=457135230009344&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-01-24-3-0",
+      "date": "2026-01-24",
+      "name": "Pampers 幫寶適 日本境內版 尿布 褲型, XL, 126片",
+      "price": 1057,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "母嬰/寵物",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/retail/images/298334957708125-cdbed8ba-1c23-4309-8ee8-32fa682e144b.jpg",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=616112487972894&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-01-20-4-0",
+      "date": "2026-01-20",
+      "name": "THiRTEEN 拾參家居 吸水抹布3件組 暮色暖調 超細纖維 廚房清潔抹布, 1組, 28 x 28cm",
+      "price": 69,
+      "currency": "TWD",
+      "quantity": 3,
+      "category": "日用品/清潔",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/retail/images/191831940974589-f557034f-ab59-4596-8833-a0a52006b5e1.jpg",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=556638779981824&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-01-20-4-2",
+      "date": "2026-01-20",
+      "name": "UHA 味覺糖 Kogumi 酷Q彌軟糖 100%果汁製作 小巧有嚼勁, 55g, 3包",
+      "price": 135,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "食品/飲料",
+      "status": "已送達",
+      "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/retail/images/411940047834147-7ff0c4f4-6e9c-4f79-837c-2172dce12e29.png",
+      "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=382056425013252&sourceType=MyCoupang_my_orders_list_product_image",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T03:53:03.730Z"
+    }
+  ]
 }

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coupang 酷澎 — 購物統計儀表板</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d28;
+      --card-hover: #22263a;
+      --border: #2a2e3f;
+      --text: #e4e4e7;
+      --text-dim: #9ca3af;
+      --accent: #c33332;
+      --accent-light: #e04444;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --purple: #a855f7;
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, var(--accent) 0%, #8b1a1a 100%);
+      padding: 2rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 1.8rem; font-weight: 700; }
+    .header p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin-top: 0.3rem; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+
+    /* ── Stats Grid ─────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      transition: background 0.2s;
+    }
+    .stat-card:hover { background: var(--card-hover); }
+    .stat-card .label { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.3rem; }
+    .stat-card .value { font-size: 1.5rem; font-weight: 700; }
+    .stat-card .sub { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; }
+    .stat-card .value.green { color: var(--green); }
+    .stat-card .value.red { color: var(--red); }
+    .stat-card .value.blue { color: var(--blue); }
+    .stat-card .value.purple { color: var(--purple); }
+    .stat-card .value.accent { color: var(--accent-light); }
+    .stat-card .value.yellow { color: var(--yellow); }
+
+    /* ── Budget Bar ─────────────────────── */
+    .budget-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .budget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    .budget-header h3 { font-size: 1rem; }
+    .budget-input {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .budget-input label { font-size: 0.8rem; color: var(--text-dim); }
+    .budget-input input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 0.3rem 0.6rem;
+      width: 120px;
+      font-size: 0.9rem;
+    }
+    .budget-bar-bg {
+      background: var(--bg);
+      border-radius: 8px;
+      height: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+    .budget-bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 0.5s ease, background 0.3s;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      min-width: fit-content;
+    }
+    .budget-bar-fill.green { background: var(--green); }
+    .budget-bar-fill.yellow { background: var(--yellow); color: #000; }
+    .budget-bar-fill.red { background: var(--red); }
+    .budget-info {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Charts ──────────────────────────── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+    }
+    .chart-card h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .chart-container {
+      position: relative;
+      height: 280px;
+    }
+
+    /* ── Habits Section ──────────────────── */
+    .habits-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .habits-section h3 { font-size: 1rem; margin-bottom: 0.8rem; }
+    .habits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .habit-item {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .habit-item .habit-label { font-size: 0.8rem; color: var(--text-dim); }
+    .habit-item .habit-value { font-size: 1.1rem; font-weight: 600; margin-top: 0.2rem; }
+
+    /* ── Controls ─────────────────────────── */
+    .controls {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .controls input, .controls select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.5rem 0.8rem;
+      font-size: 0.9rem;
+    }
+    .controls input { flex: 1; min-width: 200px; }
+    .controls select { min-width: 140px; }
+    .controls input:focus, .controls select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* ── Table ────────────────────────────── */
+    .table-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-header h3 { font-size: 1rem; }
+    .table-header .count { font-size: 0.85rem; color: var(--text-dim); }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      padding: 0.7rem 1rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+    th:hover { color: var(--text); }
+    th .sort-icon { margin-left: 4px; font-size: 0.65rem; }
+    td {
+      padding: 0.7rem 1rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--card-hover); }
+
+    .category-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .price { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    /* ── Empty State ─────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-dim);
+    }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h3 { font-size: 1.2rem; color: var(--text); margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 0.9rem; max-width: 400px; margin: 0 auto; }
+    .empty-state code {
+      display: inline-block;
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-top: 0.8rem;
+    }
+
+    /* ── Footer ──────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Responsive ──────────────────────── */
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .controls { flex-direction: column; }
+      .controls input, .controls select { min-width: 100%; }
+      .budget-header { flex-direction: column; gap: 0.5rem; }
+      th, td { padding: 0.5rem 0.6rem; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Coupang 酷澎 購物統計</h1>
+  <p id="lastUpdated">載入中...</p>
+</div>
+
+<div class="container">
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="label">總消費金額</div>
+      <div class="value accent" id="totalSpent">$0</div>
+      <div class="sub" id="avgPerOrder">平均每筆 $0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">訂單數量</div>
+      <div class="value blue" id="totalOrders">0</div>
+      <div class="sub" id="totalItems">共 0 件商品</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">本月消費</div>
+      <div class="value green" id="thisMonthSpent">$0</div>
+      <div class="sub" id="thisMonthOrders">0 筆訂單</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">月均消費</div>
+      <div class="value purple" id="monthlyAvg">$0</div>
+      <div class="sub" id="activeMonths">共 0 個月</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">最貴商品</div>
+      <div class="value red" id="mostExpensive">—</div>
+      <div class="sub" id="mostExpensiveName">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">最便宜商品</div>
+      <div class="value yellow" id="cheapest">—</div>
+      <div class="sub" id="cheapestName">—</div>
+    </div>
+  </div>
+
+  <!-- Budget Tracker -->
+  <div class="budget-section">
+    <div class="budget-header">
+      <h3>月預算追蹤</h3>
+      <div class="budget-input">
+        <label>月預算 NT$</label>
+        <input type="number" id="budgetInput" placeholder="5000" min="0" step="500">
+      </div>
+    </div>
+    <div class="budget-bar-bg">
+      <div class="budget-bar-fill green" id="budgetBar" style="width: 0%"></div>
+    </div>
+    <div class="budget-info">
+      <span id="budgetSpent">已花費 $0</span>
+      <span id="budgetRemaining">剩餘 $0</span>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>消費分類分布</h3>
+      <div class="chart-container">
+        <canvas id="categoryChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>每月消費趨勢</h3>
+      <div class="chart-container">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spending Habits -->
+  <div class="habits-section">
+    <h3>消費習慣分析</h3>
+    <div class="habits-grid">
+      <div class="habit-item">
+        <div class="habit-label">最常購物日</div>
+        <div class="habit-value" id="favDay">—</div>
+      </div>
+      <div class="habit-item">
+        <div class="habit-label">最高消費月</div>
+        <div class="habit-value" id="topMonth">—</div>
+      </div>
+      <div class="habit-item">
+        <div class="habit-label">最常買的分類</div>
+        <div class="habit-value" id="topCategory">—</div>
+      </div>
+      <div class="habit-item">
+        <div class="habit-label">平均購物頻率</div>
+        <div class="habit-value" id="frequency">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="搜尋商品名稱...">
+    <select id="categoryFilter">
+      <option value="">全部分類</option>
+    </select>
+    <select id="sortSelect">
+      <option value="date-desc">日期（新→舊）</option>
+      <option value="date-asc">日期（舊→新）</option>
+      <option value="price-desc">金額（高→低）</option>
+      <option value="price-asc">金額（低→高）</option>
+      <option value="name-asc">名稱 A→Z</option>
+    </select>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="table-wrapper">
+    <div class="table-header">
+      <h3>訂單明細</h3>
+      <span class="count" id="filteredCount">0 筆</span>
+    </div>
+    <div id="tableContent">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="date">日期 <span class="sort-icon"></span></th>
+            <th data-sort="name">商品</th>
+            <th data-sort="category">分類</th>
+            <th data-sort="price">金額 <span class="sort-icon"></span></th>
+            <th data-sort="status">狀態</th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="icon">🛒</div>
+      <h3>尚無訂單資料</h3>
+      <p>請先執行 Coupang 爬蟲來取得訂單資料</p>
+      <code>cd coupang-scraper && npm run scrape</code>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Coupang 酷澎購物統計儀表板 — 資料自動爬取 & 同步</p>
+</div>
+
+<script>
+// ── Data ─────────────────────────────────
+let allPurchases = [];
+let filteredPurchases = [];
+let categoryChart = null;
+let trendChart = null;
+
+const CATEGORY_COLORS = {
+  '食品/飲料': '#ef4444',
+  '3C/電子': '#3b82f6',
+  '日用品/清潔': '#22c55e',
+  '美妝/保養': '#ec4899',
+  '服飾/配件': '#a855f7',
+  '居家/傢俱': '#f97316',
+  '健康/運動': '#14b8a6',
+  '母嬰/寵物': '#f59e0b',
+  '書籍/文具': '#6366f1',
+  '其他': '#6b7280',
+};
+
+const WEEKDAYS = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+
+// ── Init ─────────────────────────────────
+async function init() {
+  try {
+    // Try server first, fallback to relative path
+    const resp = await fetch('/purchases.json').catch(() => fetch('../purchases.json'));
+    if (!resp.ok) throw new Error('Failed to load');
+    const data = await resp.json();
+    allPurchases = data.purchases || [];
+    filteredPurchases = [...allPurchases];
+
+    const lastUpdated = data.meta?.lastUpdated;
+    if (lastUpdated) {
+      document.getElementById('lastUpdated').textContent =
+        `最後更新：${new Date(lastUpdated).toLocaleString('zh-TW')}`;
+    }
+
+    // Load saved budget
+    const savedBudget = localStorage.getItem('coupang-budget');
+    if (savedBudget) {
+      document.getElementById('budgetInput').value = savedBudget;
+    }
+
+    populateCategories();
+    updateAll();
+    setupListeners();
+  } catch (err) {
+    console.error('載入資料失敗:', err);
+    document.getElementById('lastUpdated').textContent = '載入失敗 — 請確認 purchases.json 存在';
+    showEmptyState();
+  }
+}
+
+function setupListeners() {
+  document.getElementById('searchInput').addEventListener('input', applyFilters);
+  document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+  document.getElementById('sortSelect').addEventListener('change', applyFilters);
+  document.getElementById('budgetInput').addEventListener('input', (e) => {
+    localStorage.setItem('coupang-budget', e.target.value);
+    updateBudget();
+  });
+}
+
+// ── Formatting ───────────────────────────
+function fmt(n) {
+  return new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', maximumFractionDigits: 0 }).format(n);
+}
+
+function fmtNum(n) {
+  return new Intl.NumberFormat('zh-TW').format(Math.round(n));
+}
+
+// ── Filters ──────────────────────────────
+function populateCategories() {
+  const cats = [...new Set(allPurchases.map(p => p.category).filter(Boolean))].sort();
+  const sel = document.getElementById('categoryFilter');
+  cats.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('categoryFilter').value;
+  const sort = document.getElementById('sortSelect').value;
+
+  filteredPurchases = allPurchases.filter(p => {
+    if (search && !(p.name || '').toLowerCase().includes(search)) return false;
+    if (cat && p.category !== cat) return false;
+    return true;
+  });
+
+  // Sort
+  const [key, dir] = sort.split('-');
+  filteredPurchases.sort((a, b) => {
+    let va, vb;
+    if (key === 'date') { va = a.date || ''; vb = b.date || ''; }
+    else if (key === 'price') { va = a.price || 0; vb = b.price || 0; }
+    else if (key === 'name') { va = (a.name || '').toLowerCase(); vb = (b.name || '').toLowerCase(); }
+    else { va = a[key] || ''; vb = b[key] || ''; }
+    if (va < vb) return dir === 'asc' ? -1 : 1;
+    if (va > vb) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  renderTable();
+  document.getElementById('filteredCount').textContent = `${filteredPurchases.length} 筆`;
+}
+
+// ── Update All ───────────────────────────
+function updateAll() {
+  updateStats();
+  updateBudget();
+  updateCharts();
+  updateHabits();
+  applyFilters();
+}
+
+// ── Stats Cards ──────────────────────────
+function updateStats() {
+  const total = allPurchases.reduce((s, p) => s + (p.price || 0), 0);
+  const count = allPurchases.length;
+  const avg = count ? total / count : 0;
+
+  document.getElementById('totalSpent').textContent = fmt(total);
+  document.getElementById('totalOrders').textContent = fmtNum(count);
+  document.getElementById('avgPerOrder').textContent = `平均每筆 ${fmt(avg)}`;
+  document.getElementById('totalItems').textContent = `共 ${fmtNum(allPurchases.reduce((s, p) => s + (p.quantity || 1), 0))} 件商品`;
+
+  // This month
+  const now = new Date();
+  const thisMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const thisMonthPurchases = allPurchases.filter(p => (p.date || '').startsWith(thisMonth));
+  const thisMonthTotal = thisMonthPurchases.reduce((s, p) => s + (p.price || 0), 0);
+  document.getElementById('thisMonthSpent').textContent = fmt(thisMonthTotal);
+  document.getElementById('thisMonthOrders').textContent = `${thisMonthPurchases.length} 筆訂單`;
+
+  // Monthly average
+  const months = getMonthlyData();
+  const monthKeys = Object.keys(months);
+  const monthlyAvg = monthKeys.length ? total / monthKeys.length : 0;
+  document.getElementById('monthlyAvg').textContent = fmt(monthlyAvg);
+  document.getElementById('activeMonths').textContent = `共 ${monthKeys.length} 個月`;
+
+  // Most expensive / cheapest
+  if (count > 0) {
+    const sorted = [...allPurchases].sort((a, b) => (b.price || 0) - (a.price || 0));
+    const most = sorted[0];
+    const least = sorted[sorted.length - 1];
+    document.getElementById('mostExpensive').textContent = fmt(most.price || 0);
+    document.getElementById('mostExpensiveName').textContent = truncate(most.name || '—', 20);
+    document.getElementById('cheapest').textContent = fmt(least.price || 0);
+    document.getElementById('cheapestName').textContent = truncate(least.name || '—', 20);
+  }
+
+  if (count === 0) showEmptyState();
+}
+
+function truncate(s, max) {
+  return s.length > max ? s.slice(0, max) + '...' : s;
+}
+
+// ── Budget ───────────────────────────────
+function updateBudget() {
+  const budget = parseFloat(document.getElementById('budgetInput').value) || 0;
+  const now = new Date();
+  const thisMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const spent = allPurchases
+    .filter(p => (p.date || '').startsWith(thisMonth))
+    .reduce((s, p) => s + (p.price || 0), 0);
+
+  const bar = document.getElementById('budgetBar');
+  const pct = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
+
+  bar.style.width = `${pct}%`;
+  bar.textContent = budget > 0 ? `${Math.round(pct)}%` : '';
+
+  bar.className = 'budget-bar-fill ' + (pct < 60 ? 'green' : pct < 85 ? 'yellow' : 'red');
+
+  document.getElementById('budgetSpent').textContent = `已花費 ${fmt(spent)}`;
+  document.getElementById('budgetRemaining').textContent =
+    budget > 0 ? `剩餘 ${fmt(Math.max(budget - spent, 0))}` : '請設定預算';
+}
+
+// ── Charts ───────────────────────────────
+function getMonthlyData() {
+  const months = {};
+  allPurchases.forEach(p => {
+    if (!p.date) return;
+    const key = p.date.slice(0, 7);
+    months[key] = (months[key] || 0) + (p.price || 0);
+  });
+  return months;
+}
+
+function getCategoryData() {
+  const cats = {};
+  allPurchases.forEach(p => {
+    const cat = p.category || '其他';
+    cats[cat] = (cats[cat] || 0) + (p.price || 0);
+  });
+  return cats;
+}
+
+function updateCharts() {
+  updateCategoryChart();
+  updateTrendChart();
+}
+
+function updateCategoryChart() {
+  const data = getCategoryData();
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+  const colors = labels.map(l => CATEGORY_COLORS[l] || CATEGORY_COLORS['其他']);
+
+  const ctx = document.getElementById('categoryChart').getContext('2d');
+  if (categoryChart) categoryChart.destroy();
+
+  if (labels.length === 0) return;
+
+  categoryChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderColor: 'transparent',
+        borderWidth: 0,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { color: '#9ca3af', font: { size: 11 }, padding: 8, boxWidth: 12 },
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const pct = ((ctx.raw / total) * 100).toFixed(1);
+              return `${ctx.label}: ${fmt(ctx.raw)} (${pct}%)`;
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+function updateTrendChart() {
+  const monthlyData = getMonthlyData();
+  const keys = Object.keys(monthlyData).sort();
+  const values = keys.map(k => monthlyData[k]);
+  const labels = keys.map(k => {
+    const [y, m] = k.split('-');
+    return `${y}/${m}`;
+  });
+
+  const ctx = document.getElementById('trendChart').getContext('2d');
+  if (trendChart) trendChart.destroy();
+
+  if (keys.length === 0) return;
+
+  trendChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: '月消費',
+        data: values,
+        borderColor: '#e04444',
+        backgroundColor: 'rgba(224, 68, 68, 0.1)',
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: '#e04444',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          ticks: { color: '#9ca3af', font: { size: 11 } },
+          grid: { color: 'rgba(255,255,255,0.05)' },
+        },
+        y: {
+          ticks: {
+            color: '#9ca3af',
+            font: { size: 11 },
+            callback: v => fmt(v),
+          },
+          grid: { color: 'rgba(255,255,255,0.05)' },
+        },
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `消費: ${fmt(ctx.raw)}`,
+            title: (items) => {
+              const idx = items[0].dataIndex;
+              return keys[idx];
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+// ── Habits ───────────────────────────────
+function updateHabits() {
+  if (allPurchases.length === 0) return;
+
+  // Most common shopping day
+  const dayCounts = [0, 0, 0, 0, 0, 0, 0];
+  allPurchases.forEach(p => {
+    if (p.date) {
+      const d = new Date(p.date);
+      if (!isNaN(d)) dayCounts[d.getDay()]++;
+    }
+  });
+  const maxDayIdx = dayCounts.indexOf(Math.max(...dayCounts));
+  document.getElementById('favDay').textContent =
+    `${WEEKDAYS[maxDayIdx]}（${dayCounts[maxDayIdx]} 次）`;
+
+  // Top spending month
+  const months = getMonthlyData();
+  const topMonthKey = Object.entries(months).sort((a, b) => b[1] - a[1])[0];
+  if (topMonthKey) {
+    document.getElementById('topMonth').textContent =
+      `${topMonthKey[0]} — ${fmt(topMonthKey[1])}`;
+  }
+
+  // Top category by count
+  const catCounts = {};
+  allPurchases.forEach(p => {
+    const c = p.category || '其他';
+    catCounts[c] = (catCounts[c] || 0) + 1;
+  });
+  const topCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
+  if (topCat) {
+    document.getElementById('topCategory').textContent =
+      `${topCat[0]}（${topCat[1]} 次）`;
+  }
+
+  // Purchase frequency
+  if (allPurchases.length >= 2) {
+    const dates = allPurchases
+      .map(p => p.date ? new Date(p.date).getTime() : null)
+      .filter(d => d !== null)
+      .sort();
+    if (dates.length >= 2) {
+      const span = dates[dates.length - 1] - dates[0];
+      const days = span / (1000 * 60 * 60 * 24);
+      const freq = days / (dates.length - 1);
+      document.getElementById('frequency').textContent =
+        freq < 1 ? '每天' : `約每 ${Math.round(freq)} 天`;
+    }
+  }
+}
+
+// ── Table ────────────────────────────────
+function renderTable() {
+  const tbody = document.getElementById('ordersBody');
+  const empty = document.getElementById('emptyState');
+  const table = document.querySelector('#tableContent table');
+
+  if (filteredPurchases.length === 0 && allPurchases.length === 0) {
+    showEmptyState();
+    return;
+  }
+
+  empty.style.display = 'none';
+  table.style.display = '';
+
+  tbody.innerHTML = filteredPurchases.map(p => `
+    <tr>
+      <td>${escapeHtml(p.date || '—')}</td>
+      <td>${escapeHtml(p.name || '—')}</td>
+      <td><span class="category-badge">${escapeHtml(p.category || '其他')}</span></td>
+      <td class="price">${fmt(p.price || 0)}</td>
+      <td>${escapeHtml(p.status || '—')}</td>
+    </tr>
+  `).join('');
+}
+
+function showEmptyState() {
+  document.getElementById('emptyState').style.display = '';
+  const table = document.querySelector('#tableContent table');
+  if (table) table.style.display = 'none';
+}
+
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+// ── Start ────────────────────────────────
+init();
+</script>
+
+</body>
+</html>
