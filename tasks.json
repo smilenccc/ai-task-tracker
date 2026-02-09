@@ -104,7 +104,17 @@
       "createdAt": "2026-02-09T04:00:00.000Z",
       "updatedAt": "2026-02-09T12:53:00.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 11,
+      "title": "測試 OpenClaw Android WebSocket 整合",
+      "description": "完整流程測試：模擬 Android App 透過 WebSocket Bridge (port 8200) 連接 OpenClaw Gateway",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-09T13:00:32.000Z",
+      "updatedAt": "2026-02-09T13:00:32.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-09T13:56:00.000Z"
+  "lastUpdated": "2026-02-09T13:00:32.000Z"
 }
