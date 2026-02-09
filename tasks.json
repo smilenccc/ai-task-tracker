@@ -134,7 +134,17 @@
       "createdAt": "2026-02-09T14:25:02.000Z",
       "updatedAt": "2026-02-09T14:25:02.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 14,
+      "title": "建立 Linda 專屬工作信箱並整合 OpenClaw",
+      "description": "Gmail 帳號已建立：linda.openclaw@gmail.com，待完成：啟用 2FA、產生 App 密碼、整合到 OpenClaw",
+      "category": "開發",
+      "status": "pending",
+      "createdAt": "2026-02-09T14:46:14.000Z",
+      "updatedAt": "2026-02-09T14:46:14.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-09T14:25:02.000Z"
+  "lastUpdated": "2026-02-09T14:46:14.000Z"
 }
