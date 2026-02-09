@@ -1,9 +1,9 @@
 {
   "meta": {
-    "lastUpdated": "2026-02-09T04:37:48.399Z",
+    "lastUpdated": "2026-02-09T05:46:32.333Z",
     "currency": "TWD",
-    "totalSpent": 3574,
-    "totalItems": 8,
+    "totalSpent": 3643,
+    "totalItems": 9,
     "source": "coupang-scraper"
   },
   "purchases": [
@@ -118,6 +118,20 @@
       "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=382056425013252&sourceType=MyCoupang_my_orders_list_product_image",
       "source": "coupang",
       "scrapedAt": "2026-02-09T03:53:03.730Z"
+    },
+    {
+      "orderId": "coupang-2026-01-20-4-0",
+      "date": "2026-01-20",
+      "name": "THiRTEEN 拾叁家居 吸水抹布3件組 暮色暖調 超細纖維 廚房清潔抹布, 1組, 28 x 28cm",
+      "price": 69,
+      "currency": "TWD",
+      "quantity": 3,
+      "category": "食品/飲料",
+      "status": "已送達",
+      "imageUrl": "https://image.coupangcdn.com/image/badge/badge_19a1632f27c.png",
+      "productLink": "",
+      "source": "coupang",
+      "scrapedAt": "2026-02-09T05:46:31.367Z"
     }
   ]
 }

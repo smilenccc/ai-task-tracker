@@ -21,7 +21,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = resolve(__dirname, '..');
 
-const PORT = 5566;
+const PORT = process.env.PORT || 5566;
 const PURCHASES_PATH = resolve(ROOT, 'purchases.json');
 
 // ── 分類規則（與 config.mjs 同步） ──────────────────
