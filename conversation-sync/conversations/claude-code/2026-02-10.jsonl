@@ -4,3 +4,11 @@
 {"timestamp": "2026-02-10T00:30:00Z", "role": "assistant", "content": "讀取三份檔案（android-websocket-integration.md、test-websocket.py、OpenClawWebSocketExample.kt），安裝 websockets 套件後執行 Python 測試。測試成功：WebSocket 連線正常，AI 回覆 2+2=4，往返 < 2秒。確認 Hetzner chat-server (port 8200) 和 OpenClaw Gateway 運作正常，Android 整合可放心進行。", "source": "claude-code", "agent": "小八"}
 {"timestamp": "2026-02-10T00:35:00Z", "role": "user", "content": "要午休了，請記錄對話", "source": "claude-code", "agent": "小八"}
 {"timestamp": "2026-02-10T00:35:30Z", "role": "assistant", "content": "記錄午休前對話摘要並同步到 GitHub", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T01:10:00Z", "role": "user", "content": "在 AudioConnect SDK 開發 WebSocket 連線，同步 Linda 對話並測試", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T01:15:00Z", "role": "assistant", "content": "同步完成。Python測試全部通過：連線、多輪對話、重連、health check。", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T01:20:00Z", "role": "user", "content": "Button 6 還不能透過 WebSocket 連線成功，請修正", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T01:45:00Z", "role": "assistant", "content": "發現4個問題並修正：1)XML預設URL port錯誤(18789→8200) 2)SharedPreferences殘留舊URL 3)Error解析讀錯欄位 4)無自動重連。Build APK安裝到小米Mix2S。", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T01:50:00Z", "role": "user", "content": "看截圖，沒有版本標示無法確認是否更新。請每次修改後標示版本", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T02:00:00Z", "role": "assistant", "content": "v2版：新增版本標示、分離WS/SDK雙行狀態列。重新build安裝。用戶確認v2運作正常。", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T02:10:00Z", "role": "user", "content": "請做版本控管，上傳到GitHub", "source": "claude-code", "agent": "小八"}
+{"timestamp": "2026-02-10T02:20:00Z", "role": "assistant", "content": "安裝gh CLI，登入GitHub(smilenccc)，建立private repo: android-audioconnect-openclaw。初始commit 10bfc0e (977 files, v2)。效能測試：連線822ms，平均回應5.2s。", "source": "claude-code", "agent": "小八"}
