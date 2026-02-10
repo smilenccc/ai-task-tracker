@@ -214,7 +214,17 @@
       "createdAt": "2026-02-10T02:48:47.000Z",
       "updatedAt": "2026-02-10T02:48:47.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 22,
+      "title": "統一所有頁面配色和導航",
+      "description": "將所有頁面統一為 Hetzner 風格，並加入返回 Dashboard 的按鈕",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-10T02:59:20.000Z",
+      "updatedAt": "2026-02-10T02:59:20.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-10T02:48:47.000Z"
+  "lastUpdated": "2026-02-10T02:59:20.000Z"
 }
