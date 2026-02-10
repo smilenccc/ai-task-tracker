@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: credit-card-dashboard
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node credit-card/server.mjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000

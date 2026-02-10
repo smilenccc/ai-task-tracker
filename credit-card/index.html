@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💳 信用卡消費統計 - 玉山銀行</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #2d3748;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .summary-card .value {
+            color: #2d3748;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .summary-card .label {
+            color: #a0aec0;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .chart-container h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .transactions-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .transactions-section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .transaction-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-description {
+            color: #2d3748;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date {
+            color: #a0aec0;
+            font-size: 0.85em;
+        }
+
+        .transaction-amount {
+            color: #e53e3e;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-left: 10px;
+        }
+
+        .badge-food { background: #fed7d7; color: #c53030; }
+        .badge-transport { background: #bee3f8; color: #2c5282; }
+        .badge-shopping { background: #feebc8; color: #c05621; }
+        .badge-entertainment { background: #e9d8fd; color: #6b46c1; }
+        .badge-subscription { background: #c6f6d5; color: #276749; }
+        .badge-other { background: #e2e8f0; color: #4a5568; }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💳 信用卡消費統計</h1>
+            <p>玉山銀行 Pi 信用卡 - 114年12月帳單</p>
+        </header>
+
+        <div class="summary-cards" id="summaryCards"></div>
+
+        <div class="charts-section">
+            <div class="chart-container">
+                <h2>📊 消費類別分布</h2>
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>📈 每日消費趨勢</h2>
+                <canvas id="dailyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="transactions-section">
+            <h2>📝 消費明細</h2>
+            <div id="transactionsList"></div>
+        </div>
+
+        <footer>
+            <p>🤖 由小Linda自動產生 | 資料來源：玉山銀行信用卡帳單</p>
+        </footer>
+    </div>
+
+    <script>
+        // 載入消費資料
+        fetch('transactions.json')
+            .then(response => response.json())
+            .then(data => {
+                renderDashboard(data);
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+            });
+
+        function categorizeTransaction(description) {
+            const desc = description.toLowerCase();
+            if (desc.includes('肉圓') || desc.includes('豆花') || desc.includes('食')) {
+                return { name: '餐飲', class: 'food' };
+            } else if (desc.includes('etag') || desc.includes('運通') || desc.includes('特斯拉')) {
+                return { name: '交通', class: 'transport' };
+            } else if (desc.includes('康是美') || desc.includes('coupang') || desc.includes('酷澎')) {
+                return { name: '購物', class: 'shopping' };
+            } else if (desc.includes('youtube') || desc.includes('海洋館') || desc.includes('apple')) {
+                return { name: '娛樂', class: 'entertainment' };
+            } else if (desc.includes('中華電信') || desc.includes('會員')) {
+                return { name: '訂閱', class: 'subscription' };
+            } else {
+                return { name: '其他', class: 'other' };
+            }
+        }
+
+        function renderDashboard(transactions) {
+            // 計算統計
+            const total = transactions.reduce((sum, t) => sum + t.amount, 0);
+            const count = transactions.length;
+            const average = Math.round(total / count);
+
+            // 類別統計
+            const categories = {};
+            transactions.forEach(t => {
+                const cat = categorizeTransaction(t.description);
+                categories[cat.name] = (categories[cat.name] || 0) + t.amount;
+            });
+
+            // 每日統計
+            const daily = {};
+            transactions.forEach(t => {
+                const date = t.date.split('/').slice(1).join('/');
+                daily[date] = (daily[date] || 0) + t.amount;
+            });
+
+            // 渲染摘要卡片
+            const summaryHTML = `
+                <div class="summary-card">
+                    <h3>總消費金額</h3>
+                    <div class="value">NT$ ${total.toLocaleString()}</div>
+                    <div class="label">2025年12月</div>
+                </div>
+                <div class="summary-card">
+                    <h3>消費筆數</h3>
+                    <div class="value">${count}</div>
+                    <div class="label">筆交易</div>
+                </div>
+                <div class="summary-card">
+                    <h3>平均金額</h3>
+                    <div class="value">NT$ ${average.toLocaleString()}</div>
+                    <div class="label">每筆平均</div>
+                </div>
+                <div class="summary-card">
+                    <h3>最高單筆</h3>
+                    <div class="value">NT$ ${Math.max(...transactions.map(t => t.amount)).toLocaleString()}</div>
+                    <div class="label">單次消費</div>
+                </div>
+            `;
+            document.getElementById('summaryCards').innerHTML = summaryHTML;
+
+            // 渲染類別圓餅圖
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{
+                        data: Object.values(categories),
+                        backgroundColor: [
+                            '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#c9cbcf'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': NT$ ' + context.parsed.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 渲染每日趨勢圖
+            new Chart(document.getElementById('dailyChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(daily),
+                    datasets: [{
+                        label: '每日消費',
+                        data: Object.values(daily),
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'NT$ ' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'NT$ ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 渲染交易明細
+            const transactionsHTML = transactions
+                .sort((a, b) => b.amount - a.amount)
+                .map(t => {
+                    const cat = categorizeTransaction(t.description);
+                    return `
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-description">
+                                    ${t.description}
+                                    <span class="category-badge badge-${cat.class}">${cat.name}</span>
+                                </div>
+                                <div class="transaction-date">${t.date}</div>
+                            </div>
+                            <div class="transaction-amount">NT$ ${t.amount.toLocaleString()}</div>
+                        </div>
+                    `;
+                })
+                .join('');
+            document.getElementById('transactionsList').innerHTML = transactionsHTML;
+        }
+    </script>
+</body>
+</html>
