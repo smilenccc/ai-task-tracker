@@ -182,6 +182,77 @@
         #map {
             flex: 1;
             min-height: 400px;
+            position: relative;
+        }
+
+        /* 地圖圖層控制器 */
+        .layer-control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 1000;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .layer-control-title {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .layer-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            color: #e5e7eb;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .layer-option:hover {
+            color: #fff;
+        }
+
+        .layer-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #d50c2d;
+        }
+
+        .layer-icon {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .layer-icon.service {
+            background: #3b82f6;
+        }
+
+        .layer-icon.shopping {
+            background: #f59e0b;
+            border-top: 3px dashed #f59e0b;
+        }
+
+        .layer-icon.package-completed {
+            background: #10b981;
+        }
+
+        .layer-icon.package-pending {
+            background: #f59e0b;
+            border-top: 3px dashed #f59e0b;
         }
 
         /* 資源統計 */
@@ -436,7 +507,31 @@
                                     </span>
                                 </div>
                             </div>
-                            <div id="map"></div>
+                            <div id="map">
+                                <div class="layer-control">
+                                    <div class="layer-control-title">🗺️ 圖層控制</div>
+                                    <label class="layer-option">
+                                        <input type="checkbox" class="layer-checkbox" id="toggle-service" checked>
+                                        <span class="layer-icon service"></span>
+                                        <span>服務器連線</span>
+                                    </label>
+                                    <label class="layer-option">
+                                        <input type="checkbox" class="layer-checkbox" id="toggle-shopping" checked>
+                                        <span class="layer-icon shopping"></span>
+                                        <span>購物物流</span>
+                                    </label>
+                                    <label class="layer-option">
+                                        <input type="checkbox" class="layer-checkbox" id="toggle-package-completed" checked>
+                                        <span class="layer-icon package-completed"></span>
+                                        <span>包裹已完成路徑</span>
+                                    </label>
+                                    <label class="layer-option">
+                                        <input type="checkbox" class="layer-checkbox" id="toggle-package-pending" checked>
+                                        <span class="layer-icon package-pending"></span>
+                                        <span>包裹運送中路徑</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="stats-grid">
@@ -563,6 +658,12 @@
             maxZoom: 19
         }).addTo(map);
 
+        // 建立圖層組
+        const serviceLinesGroup = L.layerGroup().addTo(map);
+        const shoppingLinesGroup = L.layerGroup().addTo(map);
+        const packageCompletedGroup = L.layerGroup().addTo(map);
+        const packagePendingGroup = L.layerGroup().addTo(map);
+
         // 服務位置標記
         const locations = [
             { name: 'GitHub Pages', coords: [37.7749, -122.4194], desc: 'AI 任務統計', icon: '📋', type: 'service' },
@@ -648,7 +749,7 @@
                 weight: 3,
                 opacity: 0.8,
                 dashArray: '0'
-            }).addTo(map);
+            }).addTo(packageCompletedGroup);
 
             // 添加箭頭到已完成路徑
             L.polylineDecorator(completedPath, {
@@ -668,7 +769,7 @@
                         })
                     }
                 ]
-            }).addTo(map);
+            }).addTo(packageCompletedGroup);
 
             // 繪製路徑：物流中心 → 台中（虛線，進行中）
             const pendingPath = L.polyline([amazonPackage.transit.coords, amazonPackage.destination.coords], {
@@ -676,7 +777,7 @@
                 weight: 3,
                 opacity: 0.6,
                 dashArray: '10, 10'
-            }).addTo(map);
+            }).addTo(packagePendingGroup);
 
             // 添加箭頭到進行中路徑
             L.polylineDecorator(pendingPath, {
@@ -696,7 +797,7 @@
                         })
                     }
                 ]
-            }).addTo(map);
+            }).addTo(packagePendingGroup);
 
             // 調整地圖視角以顯示整個路徑
             const bounds = L.latLngBounds([
@@ -711,14 +812,14 @@
         drawPackageRoute();
 
         // 繪製動畫連線
-        function drawAnimatedLine(from, to, color, dashArray, weight = 2) {
+        function drawAnimatedLine(from, to, color, dashArray, weight = 2, layerGroup = null) {
             const line = L.polyline([from, to], {
                 color: color,
                 weight: weight,
                 opacity: 0.6,
                 dashArray: dashArray,
                 className: 'animated-line'
-            }).addTo(map);
+            });
 
             // 添加箭頭裝飾
             const decorator = L.polylineDecorator(line, {
@@ -739,6 +840,15 @@
                     }
                 ]
             });
+
+            // 添加到指定圖層組或地圖
+            if (layerGroup) {
+                line.addTo(layerGroup);
+                decorator.addTo(layerGroup);
+            } else {
+                line.addTo(map);
+                decorator.addTo(map);
+            }
 
             return { line, decorator };
         }
@@ -766,12 +876,12 @@
                 
                 // 繪製到服務器的連線（實線，代表網路請求）
                 locations.forEach(loc => {
-                    drawAnimatedLine(userCoords, loc.coords, '#3b82f6', '5, 10', 2);
+                    drawAnimatedLine(userCoords, loc.coords, '#3b82f6', '5, 10', 2, serviceLinesGroup);
                 });
 
                 // 繪製到購物地點的連線（虛線，代表物流）
                 shoppingLocations.forEach(loc => {
-                    drawAnimatedLine(userCoords, loc.coords, '#f59e0b', '10, 15', 1.5);
+                    drawAnimatedLine(userCoords, loc.coords, '#f59e0b', '10, 15', 1.5, shoppingLinesGroup);
                 });
 
                 // 調整地圖視角
@@ -792,7 +902,40 @@
             })
             .catch(error => console.error('載入任務失敗:', error));
 
-        console.log('🏠 Dashboard 已載入 - Hetzner 風格');
+        // 圖層控制開關
+        document.getElementById('toggle-service').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(serviceLinesGroup);
+            } else {
+                map.removeLayer(serviceLinesGroup);
+            }
+        });
+
+        document.getElementById('toggle-shopping').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(shoppingLinesGroup);
+            } else {
+                map.removeLayer(shoppingLinesGroup);
+            }
+        });
+
+        document.getElementById('toggle-package-completed').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(packageCompletedGroup);
+            } else {
+                map.removeLayer(packageCompletedGroup);
+            }
+        });
+
+        document.getElementById('toggle-package-pending').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(packagePendingGroup);
+            } else {
+                map.removeLayer(packagePendingGroup);
+            }
+        });
+
+        console.log('🏠 Dashboard 已載入 - Hetzner 風格 + 圖層控制');
     </script>
 </body>
 </html>
