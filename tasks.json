@@ -224,7 +224,17 @@
       "createdAt": "2026-02-10T02:59:20.000Z",
       "updatedAt": "2026-02-10T02:59:20.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 23,
+      "title": "地圖加入連線路徑視覺化",
+      "description": "從台灣到服務器的網路請求路徑（藍色實線）和到購物地點的物流路線（橙色虛線）",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-10T03:01:14.000Z",
+      "updatedAt": "2026-02-10T03:01:14.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-10T02:59:20.000Z"
+  "lastUpdated": "2026-02-10T03:01:14.000Z"
 }
