@@ -20,6 +20,27 @@
             color: #333;
         }
 
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -174,6 +195,7 @@
     </style>
 </head>
 <body>
+    <a href="../index.html" class="home-button">🏠 返回首頁</a>
     <div class="container">
         <header>
             <h1>💳 信用卡消費統計</h1>
