@@ -184,7 +184,17 @@
       "createdAt": "2026-02-10T02:12:22.000Z",
       "updatedAt": "2026-02-10T02:12:22.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 19,
+      "title": "建立統一入口網站 Portal",
+      "description": "整合所有儀表板到一個入口頁面，包含任務統計、Coupang 分析、信用卡統計等",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-10T02:23:13.000Z",
+      "updatedAt": "2026-02-10T02:23:13.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-10T02:12:22.000Z"
+  "lastUpdated": "2026-02-10T02:23:13.000Z"
 }
