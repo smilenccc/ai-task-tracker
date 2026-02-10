@@ -204,7 +204,17 @@
       "createdAt": "2026-02-10T02:25:10.000Z",
       "updatedAt": "2026-02-10T02:25:10.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 21,
+      "title": "重新設計 Dashboard - Hetzner 專業風格",
+      "description": "完全重新設計：側邊欄導航、互動地圖、用戶IP位置追蹤、服務狀態列表",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-10T02:48:47.000Z",
+      "updatedAt": "2026-02-10T02:48:47.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-10T02:25:10.000Z"
+  "lastUpdated": "2026-02-10T02:48:47.000Z"
 }
