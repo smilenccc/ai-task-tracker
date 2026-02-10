@@ -6,6 +6,7 @@
     <title>Dashboard - 個人數據中心</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -416,7 +417,16 @@
                         <div class="map-section">
                             <div class="map-header">
                                 <div class="map-title">🗺️ 全球服務分布</div>
-                                <span style="font-size: 0.85em; color: #6b7280;">即時位置</span>
+                                <div style="display: flex; gap: 20px; font-size: 0.8em; color: #9ca3af;">
+                                    <span style="display: flex; align-items: center; gap: 5px;">
+                                        <span style="width: 20px; height: 2px; background: #3b82f6;"></span>
+                                        網路請求
+                                    </span>
+                                    <span style="display: flex; align-items: center; gap: 5px;">
+                                        <span style="width: 20px; height: 2px; background: #f59e0b; border-top: 2px dashed #f59e0b;"></span>
+                                        物流路線
+                                    </span>
+                                </div>
                             </div>
                             <div id="map"></div>
                         </div>
@@ -533,11 +543,18 @@
 
         // 服務位置標記
         const locations = [
-            { name: 'GitHub Pages', coords: [37.7749, -122.4194], desc: 'AI 任務統計', icon: '📋' },
-            { name: 'Render Singapore', coords: [1.3521, 103.8198], desc: 'Coupang & 信用卡', icon: '🚀' },
-            { name: 'Hetzner Germany', coords: [50.1109, 8.6821], desc: 'OpenClaw Gateway', icon: '🖥️' }
+            { name: 'GitHub Pages', coords: [37.7749, -122.4194], desc: 'AI 任務統計', icon: '📋', type: 'service' },
+            { name: 'Render Singapore', coords: [1.3521, 103.8198], desc: 'Coupang & 信用卡', icon: '🚀', type: 'service' },
+            { name: 'Hetzner Germany', coords: [50.1109, 8.6821], desc: 'OpenClaw Gateway', icon: '🖥️', type: 'service' }
         ];
 
+        // 購物/物流位置（從 Coupang 等推測）
+        const shoppingLocations = [
+            { name: '韓國 Coupang', coords: [37.5665, 126.9780], desc: '酷澎購物', icon: '🛒', type: 'shopping' },
+            { name: '中國物流中心', coords: [31.2304, 121.4737], desc: '商品配送', icon: '📦', type: 'shopping' }
+        ];
+
+        // 繪製服務器標記
         locations.forEach(loc => {
             const marker = L.marker(loc.coords, {
                 icon: L.divIcon({
@@ -546,9 +563,53 @@
                     iconSize: [120, 40]
                 })
             }).addTo(map);
-
             marker.bindPopup(`<b>${loc.name}</b><br>${loc.desc}`);
         });
+
+        // 繪製購物/物流標記
+        shoppingLocations.forEach(loc => {
+            const marker = L.marker(loc.coords, {
+                icon: L.divIcon({
+                    html: `<div style="background: #f59e0b; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; white-space: nowrap; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">${loc.icon} ${loc.name}</div>`,
+                    className: 'shopping-marker',
+                    iconSize: [120, 40]
+                })
+            }).addTo(map);
+            marker.bindPopup(`<b>${loc.name}</b><br>${loc.desc}`);
+        });
+
+        // 繪製動畫連線
+        function drawAnimatedLine(from, to, color, dashArray, weight = 2) {
+            const line = L.polyline([from, to], {
+                color: color,
+                weight: weight,
+                opacity: 0.6,
+                dashArray: dashArray,
+                className: 'animated-line'
+            }).addTo(map);
+
+            // 添加箭頭裝飾
+            const decorator = L.polylineDecorator(line, {
+                patterns: [
+                    {
+                        offset: '50%',
+                        repeat: 0,
+                        symbol: L.Symbol.arrowHead({
+                            pixelSize: 10,
+                            polygon: false,
+                            pathOptions: {
+                                stroke: true,
+                                weight: 2,
+                                color: color,
+                                opacity: 0.6
+                            }
+                        })
+                    }
+                ]
+            });
+
+            return { line, decorator };
+        }
 
         // 獲取用戶 IP 和位置
         fetch('https://ipapi.co/json/')
@@ -558,8 +619,10 @@
                 document.getElementById('userLocation').textContent = `${data.city}, ${data.country_name}`;
                 document.getElementById('userISP').textContent = data.org;
 
+                const userCoords = [data.latitude, data.longitude];
+
                 // 在地圖上標記用戶位置
-                const userMarker = L.marker([data.latitude, data.longitude], {
+                const userMarker = L.marker(userCoords, {
                     icon: L.divIcon({
                         html: `<div style="background: #10b981; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; animation: pulse 2s infinite;">📍 您的位置</div>`,
                         className: 'user-marker',
@@ -569,8 +632,18 @@
 
                 userMarker.bindPopup(`<b>您的位置</b><br>${data.city}, ${data.country_name}`).openPopup();
                 
+                // 繪製到服務器的連線（實線，代表網路請求）
+                locations.forEach(loc => {
+                    drawAnimatedLine(userCoords, loc.coords, '#3b82f6', '5, 10', 2);
+                });
+
+                // 繪製到購物地點的連線（虛線，代表物流）
+                shoppingLocations.forEach(loc => {
+                    drawAnimatedLine(userCoords, loc.coords, '#f59e0b', '10, 15', 1.5);
+                });
+
                 // 調整地圖視角
-                map.setView([data.latitude, data.longitude], 5);
+                map.setView(userCoords, 4);
             })
             .catch(error => {
                 console.error('獲取 IP 失敗:', error);
