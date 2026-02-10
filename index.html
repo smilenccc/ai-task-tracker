@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏠 個人數據中心 - Dashboard Portal</title>
+    <title>Dashboard - 個人數據中心</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,434 +15,579 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
-            background: #0a0f1e;
-            color: #e8eaed;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 60px;
-            padding: 40px 20px;
-        }
-
-        header h1 {
-            color: #ffffff;
-            font-size: 3em;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        header h1::before {
-            content: '🏠 ';
-        }
-
-        header p {
-            color: #9ca3af;
-            font-size: 1.2em;
-            font-weight: 300;
-        }
-
-        .dashboards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin-bottom: 60px;
-        }
-
-        .dashboard-card {
-            background: #1a2332;
-            border-radius: 8px;
-            padding: 32px;
-            border: 1px solid #2d3748;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            position: relative;
+            background: #1a1d23;
+            color: #e5e7eb;
+            height: 100vh;
             overflow: hidden;
         }
 
-        .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: #d50c2d;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
+        .layout {
+            display: flex;
+            height: 100vh;
         }
 
-        .dashboard-card:hover {
-            border-color: #d50c2d;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(213, 12, 45, 0.15);
+        /* 側邊欄 */
+        .sidebar {
+            width: 220px;
+            background: #0f1115;
+            border-right: 1px solid #2d3138;
+            display: flex;
+            flex-direction: column;
         }
 
-        .dashboard-card:hover::before {
-            transform: scaleX(1);
+        .logo {
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #fff;
+            border-bottom: 1px solid #2d3138;
         }
 
-        .dashboard-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
-            display: block;
-            filter: grayscale(0.3);
+        .nav-section {
+            padding: 20px 0;
         }
 
-        .dashboard-title {
-            color: #ffffff;
+        .nav-section-title {
+            padding: 8px 20px;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            color: #6b7280;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            color: #9ca3af;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: #1a1d23;
+            color: #fff;
+            border-left: 3px solid #d50c2d;
+            padding-left: 17px;
+        }
+
+        .nav-item.active {
+            background: #1a1d23;
+            color: #fff;
+            border-left: 3px solid #d50c2d;
+            padding-left: 17px;
+        }
+
+        /* 主要內容 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 頂部欄 */
+        .topbar {
+            height: 60px;
+            background: #0f1115;
+            border-bottom: 1px solid #2d3138;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .topbar-left h1 {
             font-size: 1.5em;
             font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: -0.3px;
+            color: #fff;
         }
 
-        .dashboard-description {
-            color: #9ca3af;
-            font-size: 0.95em;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .dashboard-meta {
+        .topbar-right {
             display: flex;
-            justify-content: space-between;
+            gap: 15px;
             align-items: center;
-            padding-top: 20px;
-            border-top: 1px solid #2d3748;
         }
 
-        .dashboard-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+        .status-badge {
             padding: 6px 12px;
             border-radius: 4px;
             font-size: 0.85em;
             font-weight: 500;
         }
 
-        .status-live {
+        .status-online {
             background: rgba(16, 185, 129, 0.1);
             color: #10b981;
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .status-planned {
-            background: rgba(107, 114, 128, 0.1);
-            color: #6b7280;
-            border: 1px solid rgba(107, 114, 128, 0.3);
-        }
-
-        .dashboard-arrow {
-            font-size: 1.3em;
-            color: #d50c2d;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-        }
-
-        .dashboard-card:hover .dashboard-arrow {
-            opacity: 1;
-            transform: translateX(4px);
-        }
-
-        .info-section {
-            background: #1a2332;
-            border-radius: 8px;
-            padding: 32px;
-            border: 1px solid #2d3748;
-            margin-bottom: 40px;
-        }
-
-        .info-section h2 {
-            color: #ffffff;
-            font-size: 1.4em;
-            margin-bottom: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .info-content {
-            color: #9ca3af;
-            line-height: 1.8;
-            font-size: 0.95em;
-        }
-
-        .info-content p {
-            margin-bottom: 16px;
-        }
-
-        .quick-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .quick-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            background: rgba(213, 12, 45, 0.1);
-            border: 1px solid rgba(213, 12, 45, 0.3);
+        .create-btn {
+            background: #d50c2d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
             border-radius: 4px;
-            color: #d50c2d;
-            text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .quick-link:hover {
-            background: rgba(213, 12, 45, 0.2);
-            border-color: #d50c2d;
-            transform: translateY(-2px);
+        .create-btn:hover {
+            background: #b00a25;
         }
 
-        footer {
-            text-align: center;
-            color: #6b7280;
-            margin-top: 60px;
-            padding: 30px 0;
-            border-top: 1px solid #2d3748;
-        }
-
-        footer p {
-            margin: 8px 0;
-            font-size: 0.9em;
-        }
-
-        .footer-link {
-            color: #d50c2d;
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .footer-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+        /* 內容區域 */
+        .content {
+            flex: 1;
+            overflow-y: auto;
             padding: 30px;
-            background: linear-gradient(135deg, rgba(213, 12, 45, 0.1) 0%, rgba(10, 15, 30, 0.5) 100%);
-            border-radius: 8px;
-            border: 1px solid rgba(213, 12, 45, 0.2);
         }
 
-        .stat-item {
-            text-align: center;
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            height: 100%;
+        }
+
+        /* 地圖區域 */
+        .map-section {
+            background: #0f1115;
+            border-radius: 8px;
+            border: 1px solid #2d3138;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-header {
+            padding: 20px;
+            border-bottom: 1px solid #2d3138;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .map-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        #map {
+            flex: 1;
+            min-height: 400px;
+        }
+
+        /* 資源統計 */
+        .resources-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: #d50c2d;
+        }
+
+        .stat-icon {
+            font-size: 1.8em;
+            margin-bottom: 10px;
         }
 
         .stat-value {
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: 700;
-            color: #d50c2d;
-            margin-bottom: 8px;
+            color: #fff;
+            margin-bottom: 5px;
         }
 
         .stat-label {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        /* 服務列表 */
+        .services-section {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+        }
+
+        .services-header {
+            padding: 20px;
+            border-bottom: 1px solid #2d3138;
+        }
+
+        .services-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .services-list {
+            padding: 10px;
+        }
+
+        .service-item {
+            padding: 15px;
+            border-bottom: 1px solid #2d3138;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .service-item:hover {
+            background: #1a1d23;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .service-icon {
+            font-size: 1.5em;
+        }
+
+        .service-name {
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .service-desc {
+            font-size: 0.85em;
+            color: #6b7280;
+        }
+
+        .service-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .ip-info {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .ip-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .ip-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #2d3138;
+        }
+
+        .ip-item:last-child {
+            border-bottom: none;
+        }
+
+        .ip-label {
+            color: #9ca3af;
+            font-size: 0.9em;
+        }
+
+        .ip-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
+            .sidebar {
+                width: 60px;
             }
 
-            .dashboards {
-                grid-template-columns: 1fr;
+            .logo, .nav-section-title {
+                display: none;
             }
 
-            .dashboard-card {
-                padding: 24px;
-            }
-
-            .stats-bar {
-                grid-template-columns: 1fr 1fr;
+            .nav-item span {
+                display: none;
             }
         }
-
-        /* 載入動畫 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dashboard-card {
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
-        .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
-        .dashboard-card:nth-child(3) { animation-delay: 0.3s; }
-        .dashboard-card:nth-child(4) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>個人數據中心</h1>
-            <p>統一管理所有數據儀表板</p>
-        </header>
-
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value">3</div>
-                <div class="stat-label">線上服務</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">20</div>
-                <div class="stat-label">已完成任務</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">100%</div>
-                <div class="stat-label">自動化</div>
-            </div>
-        </div>
-
-        <div class="dashboards">
-            <!-- 任務統計系統 -->
-            <a href="tasks.html" class="dashboard-card">
-                <span class="dashboard-icon">📋</span>
-                <div class="dashboard-title">AI 任務統計系統</div>
-                <div class="dashboard-description">
-                    追蹤所有交辦給小Linda的任務，包含完成狀態、分類、時間軸等統計資訊。
-                </div>
-                <div class="dashboard-meta">
-                    <span class="dashboard-status status-live">
-                        🟢 線上運行
-                    </span>
-                    <span class="dashboard-arrow">→</span>
-                </div>
-            </a>
-
-            <!-- Coupang 消費分析 -->
-            <a href="https://coupang-dashboard.onrender.com" class="dashboard-card" target="_blank">
-                <span class="dashboard-icon">🛒</span>
-                <div class="dashboard-title">Coupang 消費分析</div>
-                <div class="dashboard-description">
-                    酷澎購物消費記錄統計，包含消費趨勢、類別分布、商品明細等視覺化圖表。
-                </div>
-                <div class="dashboard-meta">
-                    <span class="dashboard-status status-live">
-                        🟢 Render 部署
-                    </span>
-                    <span class="dashboard-arrow">↗</span>
-                </div>
-            </a>
-
-            <!-- 信用卡消費統計 -->
-            <a href="https://credit-card-dashboard.onrender.com" class="dashboard-card" target="_blank">
-                <span class="dashboard-icon">💳</span>
-                <div class="dashboard-title">信用卡消費統計</div>
-                <div class="dashboard-description">
-                    玉山銀行Pi信用卡消費記錄分析，自動分類、每日趨勢、消費明細一目了然。
-                </div>
-                <div class="dashboard-meta">
-                    <span class="dashboard-status status-live">
-                        🟢 Render 部署
-                    </span>
-                    <span class="dashboard-arrow">↗</span>
-                </div>
-            </a>
-
-            <!-- 未來擴充 -->
-            <div class="dashboard-card" style="opacity: 0.5; cursor: default; pointer-events: none;">
-                <span class="dashboard-icon">📊</span>
-                <div class="dashboard-title">更多儀表板</div>
-                <div class="dashboard-description">
-                    未來可以新增更多數據分析工具：收支統計、行程管理、健康追蹤等。
-                </div>
-                <div class="dashboard-meta">
-                    <span class="dashboard-status status-planned">
-                        💡 規劃中
-                    </span>
-                    <span class="dashboard-arrow">→</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-section">
-            <h2>ℹ️ 關於這個數據中心</h2>
-            <div class="info-content">
-                <p>
-                    這是你的個人數據管理中心，集中所有由小Linda建立的統計系統和儀表板。
-                </p>
-                <p>
-                    所有數據都是自動收集、處理和更新的，你只需要查看結果就好！
-                </p>
-
-                <div class="quick-links">
-                    <a href="https://github.com/smilenccc/ai-task-tracker" class="quick-link" target="_blank">
-                        📂 GitHub 倉庫
-                    </a>
-                    <a href="https://dashboard.render.com" class="quick-link" target="_blank">
-                        🚀 Render 控制台
-                    </a>
-                    <a href="mailto:linda.openclaw@gmail.com" class="quick-link">
-                        📧 聯絡小Linda
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>🤖 由小Linda自動維護</p>
-            <p>資料即時同步 | 自動化管理 | 視覺化呈現</p>
-            <p style="margin-top: 15px;">
-                <a href="https://github.com/smilenccc/ai-task-tracker" class="footer-link" target="_blank">
-                    查看原始碼 →
+    <div class="layout">
+        <!-- 側邊欄 -->
+        <div class="sidebar">
+            <div class="logo">🏠 數據中心</div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">主要</div>
+                <a class="nav-item active">
+                    <span>📊</span>
+                    <span>Dashboard</span>
                 </a>
-            </p>
-        </footer>
+                <a href="tasks.html" class="nav-item">
+                    <span>📋</span>
+                    <span>任務系統</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">服務</div>
+                <a href="https://coupang-dashboard.onrender.com" class="nav-item" target="_blank">
+                    <span>🛒</span>
+                    <span>Coupang</span>
+                </a>
+                <a href="https://credit-card-dashboard.onrender.com" class="nav-item" target="_blank">
+                    <span>💳</span>
+                    <span>信用卡</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 主要內容 -->
+        <div class="main-content">
+            <!-- 頂部欄 -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <span class="status-badge status-online">
+                        <span class="status-dot"></span> 所有系統運行正常
+                    </span>
+                    <button class="create-btn" onclick="alert('新功能開發中...')">+ 新增服務</button>
+                </div>
+            </div>
+
+            <!-- 內容 -->
+            <div class="content">
+                <div class="content-grid">
+                    <!-- 左側：地圖 + 統計 -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="map-section">
+                            <div class="map-header">
+                                <div class="map-title">🗺️ 全球服務分布</div>
+                                <span style="font-size: 0.85em; color: #6b7280;">即時位置</span>
+                            </div>
+                            <div id="map"></div>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">🖥️</div>
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">線上服務</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">📋</div>
+                                <div class="stat-value" id="taskCount">20</div>
+                                <div class="stat-label">完成任務</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🌍</div>
+                                <div class="stat-value">2</div>
+                                <div class="stat-label">部署區域</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">⚡</div>
+                                <div class="stat-value">100%</div>
+                                <div class="stat-label">運行時間</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右側：服務列表 + IP 資訊 -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="services-section">
+                            <div class="services-header">
+                                <div class="services-title">🚀 運行中的服務</div>
+                            </div>
+                            <div class="services-list">
+                                <a href="tasks.html" class="service-item">
+                                    <div class="service-info">
+                                        <div class="service-icon">📋</div>
+                                        <div>
+                                            <div class="service-name">AI 任務統計</div>
+                                            <div class="service-desc">GitHub Pages</div>
+                                        </div>
+                                    </div>
+                                    <div class="service-status">
+                                        <span class="status-dot"></span>
+                                        <span style="color: #10b981; font-size: 0.85em;">運行中</span>
+                                    </div>
+                                </a>
+
+                                <a href="https://coupang-dashboard.onrender.com" class="service-item" target="_blank">
+                                    <div class="service-info">
+                                        <div class="service-icon">🛒</div>
+                                        <div>
+                                            <div class="service-name">Coupang 分析</div>
+                                            <div class="service-desc">Render · Singapore</div>
+                                        </div>
+                                    </div>
+                                    <div class="service-status">
+                                        <span class="status-dot"></span>
+                                        <span style="color: #10b981; font-size: 0.85em;">運行中</span>
+                                    </div>
+                                </a>
+
+                                <a href="https://credit-card-dashboard.onrender.com" class="service-item" target="_blank">
+                                    <div class="service-info">
+                                        <div class="service-icon">💳</div>
+                                        <div>
+                                            <div class="service-name">信用卡統計</div>
+                                            <div class="service-desc">Render · Singapore</div>
+                                        </div>
+                                    </div>
+                                    <div class="service-status">
+                                        <span class="status-dot"></span>
+                                        <span style="color: #10b981; font-size: 0.85em;">運行中</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ip-info">
+                            <div class="ip-title">📡 連線資訊</div>
+                            <div class="ip-item">
+                                <span class="ip-label">您的 IP</span>
+                                <span class="ip-value" id="userIP">載入中...</span>
+                            </div>
+                            <div class="ip-item">
+                                <span class="ip-label">位置</span>
+                                <span class="ip-value" id="userLocation">載入中...</span>
+                            </div>
+                            <div class="ip-item">
+                                <span class="ip-label">ISP</span>
+                                <span class="ip-value" id="userISP">載入中...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // 統計點擊
-        document.querySelectorAll('.dashboard-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                if (this.style.pointerEvents !== 'none') {
-                    console.log('點擊儀表板:', this.querySelector('.dashboard-title').textContent);
-                }
-            });
+        // 初始化地圖
+        const map = L.map('map', {
+            center: [25.0, 15.0],
+            zoom: 2,
+            zoomControl: true
         });
 
-        // 動態更新統計
-        console.log('🏠 個人數據中心已載入 - Hetzner 配色風格');
+        // 深色地圖主題
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap contributors © CARTO',
+            maxZoom: 19
+        }).addTo(map);
+
+        // 服務位置標記
+        const locations = [
+            { name: 'GitHub Pages', coords: [37.7749, -122.4194], desc: 'AI 任務統計', icon: '📋' },
+            { name: 'Render Singapore', coords: [1.3521, 103.8198], desc: 'Coupang & 信用卡', icon: '🚀' },
+            { name: 'Hetzner Germany', coords: [50.1109, 8.6821], desc: 'OpenClaw Gateway', icon: '🖥️' }
+        ];
+
+        locations.forEach(loc => {
+            const marker = L.marker(loc.coords, {
+                icon: L.divIcon({
+                    html: `<div style="background: #d50c2d; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; white-space: nowrap; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">${loc.icon} ${loc.name}</div>`,
+                    className: 'custom-marker',
+                    iconSize: [120, 40]
+                })
+            }).addTo(map);
+
+            marker.bindPopup(`<b>${loc.name}</b><br>${loc.desc}`);
+        });
+
+        // 獲取用戶 IP 和位置
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('userIP').textContent = data.ip;
+                document.getElementById('userLocation').textContent = `${data.city}, ${data.country_name}`;
+                document.getElementById('userISP').textContent = data.org;
+
+                // 在地圖上標記用戶位置
+                const userMarker = L.marker([data.latitude, data.longitude], {
+                    icon: L.divIcon({
+                        html: `<div style="background: #10b981; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; animation: pulse 2s infinite;">📍 您的位置</div>`,
+                        className: 'user-marker',
+                        iconSize: [100, 40]
+                    })
+                }).addTo(map);
+
+                userMarker.bindPopup(`<b>您的位置</b><br>${data.city}, ${data.country_name}`).openPopup();
+                
+                // 調整地圖視角
+                map.setView([data.latitude, data.longitude], 5);
+            })
+            .catch(error => {
+                console.error('獲取 IP 失敗:', error);
+                document.getElementById('userIP').textContent = '無法取得';
+                document.getElementById('userLocation').textContent = '無法取得';
+                document.getElementById('userISP').textContent = '無法取得';
+            });
+
+        // 載入任務數量
+        fetch('tasks.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('taskCount').textContent = data.tasks.length;
+            })
+            .catch(error => console.error('載入任務失敗:', error));
+
+        console.log('🏠 Dashboard 已載入 - Hetzner 風格');
     </script>
 </body>
 </html>
