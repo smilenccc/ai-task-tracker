@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 Amazon 包裹追蹤 - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #d50c2d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(213, 12, 45, 0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #b00a25;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(213, 12, 45, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 60px;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #9ca3af;
+            font-size: 1em;
+        }
+
+        .package-card {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .package-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .package-id {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .status-in-transit {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            background: #1a1d23;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 0.85em;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .tracking-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .track-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 24px;
+            background: #d50c2d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .track-btn:hover {
+            background: #b00a25;
+            transform: translateY(-2px);
+        }
+
+        .track-btn.secondary {
+            background: #3b82f6;
+        }
+
+        .track-btn.secondary:hover {
+            background: #2563eb;
+        }
+
+        .timeline {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #2d3138;
+        }
+
+        .timeline-title {
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #d50c2d;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            color: #6b7280;
+            font-size: 0.85em;
+            margin-bottom: 4px;
+        }
+
+        .timeline-text {
+            color: #e5e7eb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .empty-state .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .tracking-links {
+                flex-direction: column;
+            }
+            .track-btn {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://smilenccc.github.io/ai-task-tracker/" class="back-btn">
+        <span>←</span>
+        <span>返回 Dashboard</span>
+    </a>
+
+    <div class="container">
+        <header>
+            <h1>📦 Amazon 包裹追蹤</h1>
+            <p>Amazon.de 國際訂單物流追蹤系統</p>
+        </header>
+
+        <div class="package-card">
+            <div class="package-header">
+                <div>
+                    <div class="package-title">Amazon.de 訂單</div>
+                    <div class="package-id">訂單號: 303-0977485-2042700</div>
+                </div>
+                <div class="status-badge status-in-transit">運送中</div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">追蹤號碼</div>
+                    <div class="info-value">AXIXPPL001333550</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">物流商</div>
+                    <div class="info-value">Amazon Logistics</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">寄送地區</div>
+                    <div class="info-value">德國 → 台灣</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">預計送達</div>
+                    <div class="info-value">查詢中...</div>
+                </div>
+            </div>
+
+            <div class="tracking-links">
+                <a href="https://track.amazon.de/AXIXPPL001333550" class="track-btn" target="_blank">
+                    🔍 快速追蹤
+                </a>
+                <a href="https://www.amazon.de/gp/css/shiptrack/view.html?orderID=303-0977485-2042700" class="track-btn secondary" target="_blank">
+                    📋 訂單詳情
+                </a>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-title">📍 物流動態</div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2026-02-10</div>
+                        <div class="timeline-text">追蹤系統已建立，等待物流更新...</div>
+                    </div>
+                </div>
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <p>目前沒有物流更新</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        Linda 會自動監控你的郵件，一旦有物流更新會立即通知你！
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #0f1115; border: 1px solid #2d3138; border-radius: 8px;">
+            <h3 style="color: #fff; margin-bottom: 15px;">💡 自動監控說明</h3>
+            <ul style="color: #9ca3af; line-height: 1.8; padding-left: 20px;">
+                <li>Linda 會每小時自動檢查你的郵箱</li>
+                <li>偵測到 Amazon 物流更新郵件時會自動提取資訊</li>
+                <li>重要物流狀態變更會主動通知你（Telegram）</li>
+                <li>所有追蹤記錄都會保存在這個頁面</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        console.log('📦 Amazon 追蹤系統已載入');
+        console.log('訂單號: 303-0977485-2042700');
+        console.log('追蹤號: AXIXPPL001333550');
+    </script>
+</body>
+</html>
