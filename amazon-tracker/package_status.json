@@ -1,0 +1,35 @@
+{
+  "order_id": "303-0977485-2042700",
+  "tracking_number": "AXIXPPL001333550",
+  "carrier": "ECMS Express",
+  "current_status": "Dispatched",
+  "status_detail": "Parcel arrived at a carrier facility",
+  "delivery_address": {
+    "name": "Smile Huang",
+    "address": "No. 9, Ln. 676, Sec. 6, Huanzhong E. Rd., Taichu, Dali Dist. 412"
+  },
+  "timeline": [
+    {
+      "status": "Ordered",
+      "completed": true,
+      "timestamp": null
+    },
+    {
+      "status": "Dispatched",
+      "completed": true,
+      "detail": "Parcel arrived at a carrier facility",
+      "timestamp": "2026-02-10T03:43:00Z"
+    },
+    {
+      "status": "Out for delivery",
+      "completed": false,
+      "timestamp": null
+    },
+    {
+      "status": "Delivered",
+      "completed": false,
+      "timestamp": null
+    }
+  ],
+  "last_updated": "2026-02-10T03:43:00Z"
+}
