@@ -554,6 +554,16 @@
             { name: '中國物流中心', coords: [31.2304, 121.4737], desc: '商品配送', icon: '📦', type: 'shopping' }
         ];
 
+        // Amazon 包裹物流路徑
+        const amazonPackage = {
+            origin: { name: 'Amazon.de 倉庫', coords: [50.1109, 8.6821], desc: '德國法蘭克福', icon: '🏭' },
+            transit: { name: 'ECMS 物流中心', coords: [31.2304, 121.4737], desc: '已到達物流中心', icon: '🚛' },
+            destination: { name: '收件地址', coords: [24.0992, 120.6839], desc: '台中市大里區', icon: '🏠' },
+            status: 'dispatched', // dispatched, in_transit, out_for_delivery, delivered
+            trackingNumber: 'AXIXPPL001333550',
+            orderId: '303-0977485-2042700'
+        };
+
         // 繪製服務器標記
         locations.forEach(loc => {
             const marker = L.marker(loc.coords, {
@@ -577,6 +587,106 @@
             }).addTo(map);
             marker.bindPopup(`<b>${loc.name}</b><br>${loc.desc}`);
         });
+
+        // 繪製 Amazon 包裹物流路徑
+        function drawPackageRoute() {
+            // 起點：Amazon 德國倉庫
+            const originMarker = L.marker(amazonPackage.origin.coords, {
+                icon: L.divIcon({
+                    html: `<div style="background: #ff9900; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; white-space: nowrap; box-shadow: 0 4px 12px rgba(255,153,0,0.5);">${amazonPackage.origin.icon} ${amazonPackage.origin.name}</div>`,
+                    className: 'package-marker',
+                    iconSize: [140, 40]
+                })
+            }).addTo(map);
+            originMarker.bindPopup(`<b>${amazonPackage.origin.name}</b><br>${amazonPackage.origin.desc}<br><small>訂單: ${amazonPackage.orderId}</small>`);
+
+            // 中轉點：ECMS 物流中心（目前位置）
+            const transitMarker = L.marker(amazonPackage.transit.coords, {
+                icon: L.divIcon({
+                    html: `<div style="background: #3b82f6; color: white; padding: 10px 14px; border-radius: 4px; font-weight: bold; white-space: nowrap; box-shadow: 0 0 20px rgba(59,130,246,0.8); animation: pulse 2s infinite;">${amazonPackage.transit.icon} ${amazonPackage.transit.name} 📦</div>`,
+                    className: 'package-current',
+                    iconSize: [160, 40]
+                })
+            }).addTo(map);
+            transitMarker.bindPopup(`<b>📦 包裹目前位置</b><br>${amazonPackage.transit.desc}<br><small>追蹤號: ${amazonPackage.trackingNumber}</small><br><small>狀態: 已發貨 (Dispatched)</small>`).openPopup();
+
+            // 終點：台中收件地址
+            const destMarker = L.marker(amazonPackage.destination.coords, {
+                icon: L.divIcon({
+                    html: `<div style="background: #10b981; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; white-space: nowrap; box-shadow: 0 4px 12px rgba(16,185,129,0.5);">${amazonPackage.destination.icon} ${amazonPackage.destination.name}</div>`,
+                    className: 'package-marker',
+                    iconSize: [100, 40]
+                })
+            }).addTo(map);
+            destMarker.bindPopup(`<b>${amazonPackage.destination.name}</b><br>${amazonPackage.destination.desc}<br><small>Smile Huang</small>`);
+
+            // 繪製路徑：德國 → 物流中心（實線，已完成）
+            const completedPath = L.polyline([amazonPackage.origin.coords, amazonPackage.transit.coords], {
+                color: '#10b981',
+                weight: 3,
+                opacity: 0.8,
+                dashArray: '0'
+            }).addTo(map);
+
+            // 添加箭頭到已完成路徑
+            L.polylineDecorator(completedPath, {
+                patterns: [
+                    {
+                        offset: '50%',
+                        repeat: 0,
+                        symbol: L.Symbol.arrowHead({
+                            pixelSize: 12,
+                            polygon: false,
+                            pathOptions: {
+                                stroke: true,
+                                weight: 3,
+                                color: '#10b981',
+                                opacity: 0.8
+                            }
+                        })
+                    }
+                ]
+            }).addTo(map);
+
+            // 繪製路徑：物流中心 → 台中（虛線，進行中）
+            const pendingPath = L.polyline([amazonPackage.transit.coords, amazonPackage.destination.coords], {
+                color: '#f59e0b',
+                weight: 3,
+                opacity: 0.6,
+                dashArray: '10, 10'
+            }).addTo(map);
+
+            // 添加箭頭到進行中路徑
+            L.polylineDecorator(pendingPath, {
+                patterns: [
+                    {
+                        offset: '50%',
+                        repeat: 0,
+                        symbol: L.Symbol.arrowHead({
+                            pixelSize: 12,
+                            polygon: false,
+                            pathOptions: {
+                                stroke: true,
+                                weight: 3,
+                                color: '#f59e0b',
+                                opacity: 0.6
+                            }
+                        })
+                    }
+                ]
+            }).addTo(map);
+
+            // 調整地圖視角以顯示整個路徑
+            const bounds = L.latLngBounds([
+                amazonPackage.origin.coords,
+                amazonPackage.transit.coords,
+                amazonPackage.destination.coords
+            ]);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+
+        // 執行繪製
+        drawPackageRoute();
 
         // 繪製動畫連線
         function drawAnimatedLine(from, to, color, dashArray, weight = 2) {
