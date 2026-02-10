@@ -174,7 +174,17 @@
       "createdAt": "2026-02-10T01:14:42.000Z",
       "updatedAt": "2026-02-10T01:14:42.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 18,
+      "title": "建立信用卡消費統計網站",
+      "description": "從玉山銀行信用卡帳單 PDF 提取消費記錄，建立統計網站並準備部署到 Render",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-10T02:12:22.000Z",
+      "updatedAt": "2026-02-10T02:12:22.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-10T01:14:42.000Z"
+  "lastUpdated": "2026-02-10T02:12:22.000Z"
 }
