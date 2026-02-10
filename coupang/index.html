@@ -33,6 +33,30 @@
       min-height: 100vh;
     }
 
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #d50c2d;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(213, 12, 45, 0.3);
+      transition: all 0.3s;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      background: #b00a25;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(213, 12, 45, 0.4);
+    }
+
     /* ── Header ─────────────────────────── */
     .header {
       background: linear-gradient(135deg, var(--accent) 0%, #8b1a1a 100%);
@@ -286,6 +310,11 @@
   </style>
 </head>
 <body>
+
+<a href="https://smilenccc.github.io/ai-task-tracker/" class="back-btn">
+  <span>←</span>
+  <span>返回 Dashboard</span>
+</a>
 
 <div class="header">
   <h1>Coupang 酷澎 購物統計</h1>
