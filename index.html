@@ -432,6 +432,67 @@
                 display: none;
             }
         }
+
+        /* 防火牆白名單區塊 */
+        .firewall-info {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .firewall-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .firewall-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .firewall-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #2d3138;
+            font-size: 0.9em;
+        }
+
+        .firewall-item:last-child {
+            border-bottom: none;
+        }
+
+        .firewall-ip {
+            font-family: 'Courier New', monospace;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .firewall-status {
+            color: #6b7280;
+            font-size: 0.85em;
+        }
+
+        .firewall-loading {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+        }
+
+        .firewall-error {
+            text-align: center;
+            padding: 20px;
+            color: #ef4444;
+            font-size: 0.85em;
+        }
+
     </style>
 </head>
 <body>
@@ -554,6 +615,16 @@
                                 <div class="stat-icon">⚡</div>
                                 <div class="stat-value">100%</div>
                                 <div class="stat-label">運行時間</div>
+                            </div>
+                        </div>
+
+                        <div class="firewall-info">
+                            <div class="firewall-title">
+                                🛡️ 防火牆白名單
+                                <span style="margin-left: auto; font-size: 0.8em; color: #6b7280; cursor: pointer;" onclick="loadFirewallWhitelist()">🔄</span>
+                            </div>
+                            <div class="firewall-list" id="firewallList">
+                                <div class="firewall-loading">載入中...</div>
                             </div>
                         </div>
                     </div>
@@ -936,6 +1007,45 @@
         });
 
         console.log('🏠 Dashboard 已載入 - Hetzner 風格 + 圖層控制');
+
+        // 載入防火牆白名單
+        async function loadFirewallWhitelist() {
+            const listDiv = document.getElementById('firewallList');
+            listDiv.innerHTML = '<div class="firewall-loading">載入中...</div>';
+            
+            try {
+                const response = await fetch('http://157.180.126.133:5001/webhook/firewall/whitelist', {
+                    headers: {
+                        'X-API-Key': 'linda-firewall-webhook-secret-2026'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.ips) {
+                    if (data.ips.length === 0) {
+                        listDiv.innerHTML = '<div class="firewall-status">目前沒有白名單 IP</div>';
+                        return;
+                    }
+                    
+                    listDiv.innerHTML = data.ips.map(ip => `
+                        <div class="firewall-item">
+                            <span class="firewall-ip">${ip}</span>
+                            <span class="firewall-status">✓ 允許</span>
+                        </div>
+                    `).join('');
+                } else {
+                    listDiv.innerHTML = '<div class="firewall-error">載入失敗：' + (data.error || '未知錯誤') + '</div>';
+                }
+            } catch (error) {
+                console.error('載入防火牆白名單失敗:', error);
+                listDiv.innerHTML = '<div class="firewall-error">連線錯誤</div>';
+            }
+        }
+        
+        // 頁面載入時自動載入防火牆白名單
+        loadFirewallWhitelist();
+
     </script>
 </body>
 </html>
