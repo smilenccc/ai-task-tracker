@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Dashboard - 個人數據中心</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -541,6 +541,12 @@
 
         /* ==================== 手機版響應式設計 ==================== */
         @media (max-width: 768px) {
+            /* 針對 iPhone 的安全區域 */
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
             /* 側邊欄隱藏，改為彈出式 */
             .sidebar {
                 position: fixed;
@@ -597,12 +603,13 @@
 
             .status-badge {
                 padding: 4px 8px;
-                font-size: 0.75em;
+                font-size: 0.7em;
+                display: inline-flex !important;
             }
 
             .create-btn {
                 padding: 8px 12px;
-                font-size: 0.85em;
+                font-size: 0.8em;
             }
 
             /* 內容區域調整 */
@@ -645,25 +652,53 @@
 
             /* 服務列表調整 */
             .service-item {
-                padding: 12px;
+                padding: 15px 12px;
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
             }
 
+            .service-info {
+                width: 100%;
+                gap: 12px;
+            }
+
+            .service-icon {
+                font-size: 1.8em;
+            }
+
+            .service-details {
+                flex: 1;
+            }
+
+            .service-name {
+                font-size: 1em;
+                margin-bottom: 4px;
+            }
+
             .service-meta {
                 width: 100%;
                 justify-content: space-between;
+                margin-top: 8px;
+                padding-top: 8px;
+                border-top: 1px solid #2d3138;
             }
 
             /* 地圖控制器調整 */
             .layer-control {
-                top: auto;
-                bottom: 10px;
+                top: 10px;
                 right: 10px;
+                bottom: auto;
                 min-width: 150px;
                 padding: 10px;
-                font-size: 0.85em;
+                font-size: 0.8em;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            /* 地圖標記彈窗調整 */
+            .leaflet-popup-content-wrapper {
+                font-size: 0.9em;
             }
 
             /* 統計卡片下方調整 */
@@ -703,11 +738,24 @@
         /* 超小螢幕 (< 480px) */
         @media (max-width: 480px) {
             .topbar-left h1 {
-                font-size: 1em;
+                font-size: 1.1em;
+            }
+
+            .topbar-left {
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
 
             .status-badge {
-                display: none;
+                font-size: 0.65em !important;
+                padding: 3px 6px !important;
+                white-space: nowrap;
+            }
+
+            .create-btn {
+                padding: 6px 10px;
+                font-size: 0.75em;
             }
 
             .content {
@@ -715,25 +763,51 @@
             }
 
             .map-header {
-                padding: 15px;
+                padding: 12px;
             }
 
             .map-title {
-                font-size: 1em;
+                font-size: 0.95em;
             }
 
             #map {
-                min-height: 300px;
+                min-height: 350px;
             }
 
             .service-name {
-                font-size: 0.9em;
+                font-size: 0.95em;
+            }
+
+            .service-location {
+                font-size: 0.8em;
             }
 
             .layer-control {
-                min-width: 130px;
+                min-width: 140px;
                 font-size: 0.75em;
                 padding: 8px;
+            }
+
+            /* 統計卡片更緊湊 */
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-icon {
+                font-size: 1.5em;
+            }
+
+            .stat-value {
+                font-size: 1.3em;
+            }
+
+            /* 底部統計卡片 */
+            .bottom-stat-card {
+                padding: 12px;
+            }
+
+            .stat-value-small {
+                font-size: 1.1em;
             }
         }
 
