@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Coupang 訂單自動提取 (VPS版)
 // @namespace    https://github.com/smilenccc/ai-task-tracker
-// @version      1.3
+// @version      1.4
 // @description  自動提取 Coupang 訂單資料並傳送到 VPS 分析 Server
 // @author       小八 + 小Linda
 // @match        https://mc.tw.coupang.com/ssr/desktop/order/*
@@ -9,6 +9,7 @@
 // @grant        GM_notification
 // @connect      157.180.126.133
 // @connect      coupang-dashboard.onrender.com
+// @connect      *
 // ==/UserScript==
 
 (function() {
