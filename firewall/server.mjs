@@ -165,6 +165,8 @@ app.get('/', (req, res) => {
         <h1>🛡️ 防火牆管理</h1>
         <p class="subtitle">請輸入 Authy 驗證碼</p>
         
+        <a href="https://smilenccc.github.io/ai-task-tracker/" style="display: block; text-align: center; margin-bottom: 20px; color: #667eea; text-decoration: none; font-size: 0.9em;">← 返回 Dashboard</a>
+        
         <form onsubmit="login(event)">
             <label for="token">6 位數驗證碼</label>
             <input type="text" id="token" maxlength="6" pattern="[0-9]{6}" required autocomplete="off" autofocus>
