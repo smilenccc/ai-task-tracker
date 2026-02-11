@@ -7,6 +7,7 @@
 
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { authenticator } from 'otplib';
@@ -29,6 +30,7 @@ const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 小時
 
 // Middleware
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
