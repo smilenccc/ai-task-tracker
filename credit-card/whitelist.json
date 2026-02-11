@@ -1,0 +1,24 @@
+{
+  "allowed_duplicates": [
+    "COUPANG",
+    "ＣＯＵＰＡＮＧ",
+    "eTag",
+    "ｅＴａｇ",
+    "統元豆花",
+    "阜爾運通",
+    "中華電信",
+    "酷澎ＷＯＷ",
+    "SPOTIFY"
+  ],
+  "allowed_merchants": [
+    "GOOGLE",
+    "APPLE",
+    "YOUTUBE",
+    "PAYPAL",
+    "NETFLIX"
+  ],
+  "notes": {
+    "allowed_duplicates": "這些商家允許多次刷卡（訂閱、自動儲值、常去商店）",
+    "allowed_merchants": "合法的國外服務商家"
+  }
+}
