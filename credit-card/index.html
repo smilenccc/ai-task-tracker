@@ -240,11 +240,68 @@
             border-radius: 8px;
         }
 
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
         .transactions-section h2 {
             color: #fff;
-            margin-bottom: 20px;
             font-size: 1.2em;
             font-weight: 600;
+            margin: 0;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-label {
+            color: #9ca3af;
+            font-size: 0.9em;
+        }
+
+        .filter-select {
+            background: #1a1d23;
+            color: #e5e7eb;
+            border: 1px solid #2d3138;
+            padding: 8px 32px 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        .filter-select:hover {
+            border-color: #d50c2d;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #d50c2d;
+        }
+
+        .filter-stats {
+            color: #6b7280;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .transactions-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         .transaction-item {
@@ -341,21 +398,115 @@
         </div>
 
         <div class="transactions-section">
-            <h2>📝 消費明細</h2>
+            <div class="transactions-header">
+                <h2>📝 消費明細</h2>
+                <div class="filter-container">
+                    <span class="filter-label">篩選平台：</span>
+                    <select id="platformFilter" class="filter-select" onchange="filterTransactions()">
+                        <option value="all">全部顯示</option>
+                    </select>
+                    <span id="filterStats" class="filter-stats"></span>
+                </div>
+            </div>
             <div id="transactionsList"></div>
         </div>
     </div>
 
     <script>
+        let allTransactions = [];
+        let currentFilter = 'all';
+
         // 載入消費資料
         fetch('transactions.json')
             .then(response => response.json())
             .then(data => {
+                allTransactions = data;
                 renderDashboard(data);
+                buildPlatformFilter(data);
             })
             .catch(error => {
                 console.error('Error loading data:', error);
             });
+
+        function getPlatform(description) {
+            const desc = description.toUpperCase();
+            
+            if (desc.includes('COUPANG') || desc.includes('酷澎')) return 'Coupang';
+            if (desc.includes('PCHOME') || desc.includes('購物')) return 'PChome';
+            if (desc.includes('GOOGLE')) return 'Google';
+            if (desc.includes('APPLE')) return 'Apple';
+            if (desc.includes('SPOTIFY')) return 'Spotify';
+            if (desc.includes('RENDER')) return 'Render';
+            if (desc.includes('康是美')) return '康是美';
+            if (desc.includes('樂天')) return '樂天';
+            if (desc.includes('達美樂')) return '達美樂';
+            if (desc.includes('麥當勞')) return '麥當勞';
+            if (desc.includes('ETAG')) return 'eTag';
+            if (desc.includes('統元豆花')) return '統元豆花';
+            if (desc.includes('中華電信')) return '中華電信';
+            if (desc.includes('特斯拉')) return '特斯拉';
+            if (desc.includes('海洋館')) return '台中海洋館';
+            if (desc.includes('肉圓')) return '肉圓李';
+            if (desc.includes('虎滿麵屋')) return '虎滿麵屋';
+            if (desc.includes('爵林堅果')) return '爵林堅果';
+            if (desc.includes('龜記茗品')) return '龜記茗品';
+            if (desc.includes('COCO')) return 'CoCo';
+            if (desc.includes('運通')) return '阜爾運通';
+            if (desc.includes('國外交易服務費')) return '國外交易服務費';
+            
+            return '其他';
+        }
+
+        function buildPlatformFilter(transactions) {
+            const platforms = {};
+            
+            transactions.forEach(t => {
+                const platform = getPlatform(t.description);
+                if (!platforms[platform]) {
+                    platforms[platform] = { count: 0, total: 0 };
+                }
+                platforms[platform].count++;
+                platforms[platform].total += t.amount;
+            });
+
+            // 排序：按消費總額
+            const sortedPlatforms = Object.entries(platforms)
+                .sort((a, b) => b[1].total - a[1].total);
+
+            const select = document.getElementById('platformFilter');
+            
+            sortedPlatforms.forEach(([platform, stats]) => {
+                const option = document.createElement('option');
+                option.value = platform;
+                option.textContent = `${platform} (${stats.count}筆, NT$${stats.total.toLocaleString()})`;
+                select.appendChild(option);
+            });
+        }
+
+        function filterTransactions() {
+            const select = document.getElementById('platformFilter');
+            currentFilter = select.value;
+
+            let filtered = allTransactions;
+            
+            if (currentFilter !== 'all') {
+                filtered = allTransactions.filter(t => getPlatform(t.description) === currentFilter);
+            }
+
+            renderTransactionsList(filtered);
+            updateFilterStats(filtered);
+        }
+
+        function updateFilterStats(transactions) {
+            const total = transactions.reduce((sum, t) => sum + t.amount, 0);
+            const statsEl = document.getElementById('filterStats');
+            
+            if (currentFilter === 'all') {
+                statsEl.textContent = '';
+            } else {
+                statsEl.textContent = `顯示 ${transactions.length} 筆，共 NT$${total.toLocaleString()}`;
+            }
+        }
 
         function categorizeTransaction(description) {
             const desc = description.toLowerCase();
@@ -581,10 +732,17 @@
             });
 
             // 渲染交易明細
+            renderTransactionsList(transactions);
+        }
+
+        function renderTransactionsList(transactions) {
             const transactionsHTML = transactions
                 .sort((a, b) => b.amount - a.amount)
                 .map(t => {
                     const cat = categorizeTransaction(t.description);
+                    const platform = getPlatform(t.description);
+                    const amountColor = t.amount < 0 ? '#ef4444' : '#d50c2d';
+                    
                     return `
                         <div class="transaction-item">
                             <div class="transaction-info">
@@ -592,9 +750,9 @@
                                     ${t.description}
                                     <span class="category-badge badge-${cat.class}">${cat.name}</span>
                                 </div>
-                                <div class="transaction-date">${t.date}</div>
+                                <div class="transaction-date">${t.date} • ${platform}</div>
                             </div>
-                            <div class="transaction-amount">NT$ ${t.amount.toLocaleString()}</div>
+                            <div class="transaction-amount" style="color: ${amountColor}">NT$ ${t.amount.toLocaleString()}</div>
                         </div>
                     `;
                 })
