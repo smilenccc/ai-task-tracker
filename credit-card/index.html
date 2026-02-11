@@ -429,30 +429,36 @@
             });
 
         function getPlatform(description) {
-            const desc = description.toUpperCase();
+            // 處理全形英文字母轉半形
+            let desc = description.toUpperCase()
+                .replace(/ＣＯＵＰＡＮＧ/g, 'COUPANG')
+                .replace(/ＧＯＯＧＬＥ/g, 'GOOGLE')
+                .replace(/ＡＰＰＬＥ/g, 'APPLE')
+                .replace(/ＥＴＡＧ/g, 'ETAG')
+                .replace(/ＰＣＨＯＭＥ/g, 'PCHOME');
             
-            if (desc.includes('COUPANG') || desc.includes('酷澎')) return 'Coupang';
-            if (desc.includes('PCHOME') || desc.includes('購物')) return 'PChome';
+            if (desc.includes('COUPANG') || description.includes('酷澎')) return 'Coupang';
+            if (desc.includes('PCHOME') || description.includes('購物')) return 'PChome';
             if (desc.includes('GOOGLE')) return 'Google';
             if (desc.includes('APPLE')) return 'Apple';
             if (desc.includes('SPOTIFY')) return 'Spotify';
             if (desc.includes('RENDER')) return 'Render';
-            if (desc.includes('康是美')) return '康是美';
-            if (desc.includes('樂天')) return '樂天';
-            if (desc.includes('達美樂')) return '達美樂';
-            if (desc.includes('麥當勞')) return '麥當勞';
+            if (description.includes('康是美')) return '康是美';
+            if (description.includes('樂天')) return '樂天';
+            if (description.includes('達美樂')) return '達美樂';
+            if (description.includes('麥當勞')) return '麥當勞';
             if (desc.includes('ETAG')) return 'eTag';
-            if (desc.includes('統元豆花')) return '統元豆花';
-            if (desc.includes('中華電信')) return '中華電信';
-            if (desc.includes('特斯拉')) return '特斯拉';
-            if (desc.includes('海洋館')) return '台中海洋館';
-            if (desc.includes('肉圓')) return '肉圓李';
-            if (desc.includes('虎滿麵屋')) return '虎滿麵屋';
-            if (desc.includes('爵林堅果')) return '爵林堅果';
-            if (desc.includes('龜記茗品')) return '龜記茗品';
+            if (description.includes('統元豆花')) return '統元豆花';
+            if (description.includes('中華電信')) return '中華電信';
+            if (description.includes('特斯拉')) return '特斯拉';
+            if (description.includes('海洋館')) return '台中海洋館';
+            if (description.includes('肉圓')) return '肉圓李';
+            if (description.includes('虎滿麵屋')) return '虎滿麵屋';
+            if (description.includes('爵林堅果')) return '爵林堅果';
+            if (description.includes('龜記茗品')) return '龜記茗品';
             if (desc.includes('COCO')) return 'CoCo';
-            if (desc.includes('運通')) return '阜爾運通';
-            if (desc.includes('國外交易服務費')) return '國外交易服務費';
+            if (description.includes('運通')) return '阜爾運通';
+            if (description.includes('國外交易服務費')) return '國外交易服務費';
             
             return '其他';
         }
