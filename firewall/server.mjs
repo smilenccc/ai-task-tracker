@@ -387,17 +387,12 @@ app.get('/whitelist', requireAuth, (req, res) => {
     </div>
 
     <script>
-        const API_BASE = '${WEBHOOK_URL}';
-        const API_KEY = '${WEBHOOK_SECRET}';
-
         async function loadWhitelist() {
             const whitelistDiv = document.getElementById('whitelistDiv');
             whitelistDiv.innerHTML = '<div class="loading">載入中...</div>';
 
             try {
-                const response = await fetch(API_BASE + '/webhook/firewall/whitelist', {
-                    headers: { 'X-API-Key': API_KEY }
-                });
+                const response = await fetch('/api/firewall/whitelist');
 
                 const data = await response.json();
 
@@ -426,9 +421,7 @@ app.get('/whitelist', requireAuth, (req, res) => {
             rulesDiv.innerHTML = '<div class="loading">載入中...</div>';
 
             try {
-                const response = await fetch(API_BASE + '/webhook/firewall/rules', {
-                    headers: { 'X-API-Key': API_KEY }
-                });
+                const response = await fetch('/api/firewall/rules');
 
                 const data = await response.json();
 
@@ -464,6 +457,32 @@ app.get('/whitelist', requireAuth, (req, res) => {
 // 登出
 app.get('/logout', (req, res) => {
     res.send('<script>document.cookie="sessionToken=; path=/; max-age=0"; window.location.href="/";</script>');
+});
+
+// API 代理：取得白名單
+app.get('/api/firewall/whitelist', async (req, res) => {
+    try {
+        const response = await fetch(`${WEBHOOK_URL}/webhook/firewall/whitelist`, {
+            headers: { 'X-API-Key': WEBHOOK_SECRET }
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        res.json({ success: false, error: error.message });
+    }
+});
+
+// API 代理：取得規則
+app.get('/api/firewall/rules', async (req, res) => {
+    try {
+        const response = await fetch(`${WEBHOOK_URL}/webhook/firewall/rules`, {
+            headers: { 'X-API-Key': WEBHOOK_SECRET }
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        res.json({ success: false, error: error.message });
+    }
 });
 
 // 健康檢查
