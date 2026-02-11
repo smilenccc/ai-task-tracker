@@ -1,12 +1,26 @@
 {
   "meta": {
-    "lastUpdated": "2026-02-09T06:39:20.050Z",
+    "lastUpdated": "2026-02-11T06:18:16.872Z",
     "currency": "TWD",
-    "totalSpent": 64622,
-    "totalItems": 76,
+    "totalSpent": 64722,
+    "totalItems": 77,
     "source": "coupang-scraper"
   },
   "purchases": [
+    {
+      "orderId": "test-001",
+      "date": "2026-02-11",
+      "name": "測試商品",
+      "price": 100,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "其他",
+      "status": "測試",
+      "imageUrl": "",
+      "productLink": "",
+      "source": "coupang",
+      "scrapedAt": "2026-02-11T06:18:16.872Z"
+    },
     {
       "orderId": "coupang-2026-02-08-0-0",
       "date": "2026-02-08",
