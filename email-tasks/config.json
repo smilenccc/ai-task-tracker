@@ -1,0 +1,27 @@
+{
+  "allowed_senders": [
+    "smilenccc@gmail.com"
+  ],
+  "allowed_actions": [
+    "dashboard",
+    "網頁",
+    "統計",
+    "信用卡",
+    "資料",
+    "圖表",
+    "報表",
+    "分析",
+    "查詢",
+    "顯示"
+  ],
+  "forbidden_actions": [
+    "修改系統",
+    "刪除檔案",
+    "修改資料庫",
+    "執行指令",
+    "修改防火牆",
+    "改密碼",
+    "sudo",
+    "rm -rf"
+  ]
+}

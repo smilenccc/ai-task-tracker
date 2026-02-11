@@ -1,0 +1,17 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "sender": "smilenccc@gmail.com",
+      "subject": "請製作信用卡統計 dashboard",
+      "content": "請幫我建立一個信用卡消費統計的 dashboard，顯示本月消費總額和分類",
+      "messageId": null,
+      "status": "pending_confirmation",
+      "receivedAt": "2026-02-11T08:53:42.770170",
+      "confirmedAt": null,
+      "completedAt": null,
+      "result": null
+    }
+  ],
+  "lastUpdated": "2026-02-11T08:53:42.770238"
+}
