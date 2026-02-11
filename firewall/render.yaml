@@ -1,18 +1,19 @@
 services:
   - type: web
-    name: linda-firewall
+    name: firewall-viewer
     runtime: node
     plan: free
+    region: singapore
     buildCommand: npm install
     startCommand: npm start
     envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
       - key: TOTP_SECRET
         value: U3KQHZMQ4UMNVTZYXTPGJ2AGLBRPZR5L
       - key: WEBHOOK_URL
-        sync: false  # 需要手動設定
+        value: http://157.180.126.133:5001
       - key: WEBHOOK_SECRET
-        sync: false  # 需要手動設定
+        value: linda-firewall-webhook-secret-2026
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
