@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: tasks-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: tasks-api
+    buildCommand: npm install
+    startCommand: node server.mjs
+    envVars: []
