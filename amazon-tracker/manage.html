@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 Amazon 訂單管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2em;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #d50c2d;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b00a25;
+        }
+
+        .btn-secondary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        /* 新增表單 */
+        .add-form {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .add-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            background: #1a1d23;
+            border: 1px solid #2d3138;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1em;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #d50c2d;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 訂單列表 */
+        .orders-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.2s;
+        }
+
+        .order-card:hover {
+            border-color: #d50c2d;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .order-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .order-number {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(156, 163, 175, 0.1);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+
+        .status-in_transit {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .status-delivered {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            background: #1a1d23;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>📦 Amazon 訂單管理</h1>
+                <p style="color: #9ca3af; margin-top: 5px;">管理你的包裹追蹤</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="../index.html" class="back-btn">← 返回 Dashboard</a>
+                <button class="btn btn-primary" onclick="toggleAddForm()">➕ 新增訂單</button>
+            </div>
+        </header>
+
+        <!-- 新增訂單表單 -->
+        <div class="add-form" id="addForm">
+            <h2 style="color: #fff; margin-bottom: 20px;">新增訂單</h2>
+            <form onsubmit="addOrder(event)">
+                <div class="form-group">
+                    <label for="orderNumber">訂單號 *</label>
+                    <input type="text" id="orderNumber" required placeholder="例如: 303-0977485-2042700">
+                </div>
+                <div class="form-group">
+                    <label for="trackingNumber">追蹤號 *</label>
+                    <input type="text" id="trackingNumber" required placeholder="例如: AXIXPPL001333550">
+                </div>
+                <div class="form-group">
+                    <label for="carrier">物流商</label>
+                    <input type="text" id="carrier" placeholder="例如: ECMS Express">
+                </div>
+                <div class="form-group">
+                    <label for="productName">商品名稱</label>
+                    <input type="text" id="productName" placeholder="例如: Kitchen Master Air Fryer">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">✅ 新增</button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleAddForm()">取消</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 訂單列表 -->
+        <div class="orders-grid" id="ordersList">
+            <div class="empty-state">
+                <div class="empty-icon">📦</div>
+                <div>載入中...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ordersData = [];
+
+        function toggleAddForm() {
+            const form = document.getElementById('addForm');
+            form.classList.toggle('active');
+            
+            // 清空表單
+            if (!form.classList.contains('active')) {
+                document.getElementById('orderNumber').value = '';
+                document.getElementById('trackingNumber').value = '';
+                document.getElementById('carrier').value = '';
+                document.getElementById('productName').value = '';
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await fetch('orders.json');
+                const data = await response.json();
+                ordersData = data.orders || [];
+                renderOrders();
+            } catch (error) {
+                console.error('載入訂單失敗:', error);
+                document.getElementById('ordersList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div>載入失敗：${error.message}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('ordersList');
+            
+            if (ordersData.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <div>目前沒有訂單</div>
+                        <button class="btn btn-primary" onclick="toggleAddForm()" style="margin-top: 20px;">新增第一筆訂單</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const statusLabels = {
+                'pending': '⏳ 待處理',
+                'in_transit': '🚚 運送中',
+                'delivered': '✅ 已送達'
+            };
+
+            container.innerHTML = ordersData.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-title">${order.productName || '包裹 #' + order.id}</div>
+                            <div class="order-number">訂單號: ${order.orderNumber}</div>
+                        </div>
+                        <div class="status-badge status-${order.status}">
+                            ${statusLabels[order.status] || order.status}
+                        </div>
+                    </div>
+                    <div class="order-info">
+                        <div class="info-item">
+                            <div class="info-label">追蹤號</div>
+                            <div class="info-value">${order.trackingNumber}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">物流商</div>
+                            <div class="info-value">${order.carrier}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">目前位置</div>
+                            <div class="info-value">${order.currentLocation}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">目的地</div>
+                            <div class="info-value">${order.destination}</div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn btn-secondary" onclick="viewDetails(${order.id})">📋 查看詳情</button>
+                        <button class="btn btn-danger" onclick="deleteOrder(${order.id})">🗑️ 刪除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addOrder(event) {
+            event.preventDefault();
+            
+            const orderNumber = document.getElementById('orderNumber').value.trim();
+            const trackingNumber = document.getElementById('trackingNumber').value.trim();
+            const carrier = document.getElementById('carrier').value.trim() || 'Unknown';
+            const productName = document.getElementById('productName').value.trim();
+
+            // 這裡應該呼叫後端 API，但現在我們先更新本地
+            alert('⚠️ 訂單已記錄！\n請透過 Telegram 告訴 Linda：\n\n「請新增 Amazon 訂單：' + orderNumber + '」\n\nLinda 會幫你加入系統並開始追蹤。');
+            
+            toggleAddForm();
+        }
+
+        function viewDetails(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (order) {
+                alert(`📦 訂單詳情\n\n訂單號: ${order.orderNumber}\n追蹤號: ${order.trackingNumber}\n物流商: ${order.carrier}\n狀態: ${order.status}\n位置: ${order.currentLocation}`);
+            }
+        }
+
+        function deleteOrder(orderId) {
+            if (confirm('確定要刪除這筆訂單嗎？')) {
+                alert('⚠️ 請透過 Telegram 告訴 Linda：\n\n「請刪除訂單 ID: ' + orderId + '」\n\nLinda 會幫你從系統中移除。');
+            }
+        }
+
+        // 頁面載入時載入訂單
+        loadOrders();
+
+        // 每30秒自動重新載入
+        setInterval(loadOrders, 30000);
+    </script>
+</body>
+</html>
