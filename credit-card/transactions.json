@@ -3,7 +3,13 @@
     "date": "2025/10/09",
     "post_date": "2026/01/13",
     "description": "９１ＡＰＰ－康是美網購ｅＳｈ　分03期之第03期",
-    "amount": 21488
+    "amount": 7162
+  },
+  {
+    "date": "2025/11/04",
+    "post_date": "2026/01/13",
+    "description": "蘋果電腦－台灣－ＥＣ－分期　分03期之第02期",
+    "amount": 2496
   },
   {
     "date": "2025/12/10",
@@ -38,8 +44,14 @@
   {
     "date": "2025/12/14",
     "post_date": "2026/12/15",
-    "description": "GOOGLE*YOUTUBEPREMIUM     USA G.CO/HELPPAY# 12/15",
+    "description": "GOOGLE*YOUTUBEPREMIUM",
     "amount": 479
+  },
+  {
+    "date": "2025/12/14",
+    "post_date": "2026/12/15",
+    "description": "國外交易服務費",
+    "amount": 7
   },
   {
     "date": "2025/12/14",
@@ -50,7 +62,7 @@
   {
     "date": "2025/12/15",
     "post_date": "2026/01/13",
-    "description": "信用卡扣繳中華電信費24XXX025     11411",
+    "description": "信用卡扣繳中華電信費",
     "amount": 74
   },
   {
@@ -68,8 +80,14 @@
   {
     "date": "2025/12/16",
     "post_date": "2026/12/16",
-    "description": "APPLE.COM/BILL            IRL CORK          12/16",
+    "description": "APPLE.COM/BILL",
     "amount": 300
+  },
+  {
+    "date": "2025/12/16",
+    "post_date": "2026/12/16",
+    "description": "國外交易服務費",
+    "amount": 4
   },
   {
     "date": "2025/12/16",
@@ -80,7 +98,7 @@
   {
     "date": "2025/12/19",
     "post_date": "2026/12/23",
-    "description": "連加＊連加＊爵林堅果坊－永康",
+    "description": "連加＊爵林堅果坊－永康",
     "amount": 1290
   },
   {
@@ -128,8 +146,21 @@
   {
     "date": "2025/12/24",
     "post_date": "2026/12/26",
-    "description": "SPOTIFY                   SWE STOCKHOLM     12/25",
+    "description": "SPOTIFY",
     "amount": 168
+  },
+  {
+    "date": "2025/12/24",
+    "post_date": "2026/12/26",
+    "description": "國外交易服務費",
+    "amount": 2
+  },
+  {
+    "date": "2025/12/24",
+    "post_date": "2026/12/30",
+    "description": "連加＊達美樂大里中興店 【退貨】",
+    "amount": -1159,
+    "is_refund": true
   },
   {
     "date": "2025/12/24",
@@ -152,8 +183,14 @@
   {
     "date": "2025/12/25",
     "post_date": "2026/12/26",
-    "description": "GOOGLE*GOOGLE ONE         USA MOUNTAIN VIEW 12/26",
+    "description": "GOOGLE*GOOGLE ONE",
     "amount": 650
+  },
+  {
+    "date": "2025/12/25",
+    "post_date": "2026/12/26",
+    "description": "國外交易服務費",
+    "amount": 9
   },
   {
     "date": "2025/12/26",
@@ -186,49 +223,55 @@
     "amount": 400
   },
   {
-    "date": "2025/01/01",
+    "date": "2026/01/01",
     "post_date": "2026/01/02",
-    "description": "GOOGLE*CLOUD H9BWQL       SGP CC GOOGLE.COM 01/02",
+    "description": "GOOGLE*CLOUD H9BWQL",
     "amount": 6
   },
   {
-    "date": "2025/01/01",
+    "date": "2026/01/01",
     "post_date": "2026/01/07",
     "description": "ＣＯＵＰＡＮＧ",
     "amount": 324
   },
   {
-    "date": "2025/01/03",
+    "date": "2026/01/03",
     "post_date": "2026/01/05",
-    "description": "RENDER.COM                USA SAN FRANCISCO 01/04 USD 7",
+    "description": "RENDER.COM",
     "amount": 220
   },
   {
-    "date": "2025/01/03",
+    "date": "2026/01/03",
+    "post_date": "2026/01/05",
+    "description": "國外交易服務費",
+    "amount": 3
+  },
+  {
+    "date": "2026/01/03",
     "post_date": "2026/01/07",
     "description": "ＣＯＵＰＡＮＧ",
     "amount": 969
   },
   {
-    "date": "2025/01/03",
+    "date": "2026/01/03",
     "post_date": "2026/01/07",
     "description": "ＣＯＵＰＡＮＧ",
     "amount": 10682
   },
   {
-    "date": "2025/01/04",
+    "date": "2026/01/04",
     "post_date": "2026/01/08",
     "description": "連支＊統元豆花",
     "amount": 176
   },
   {
-    "date": "2025/01/06",
+    "date": "2026/01/06",
     "post_date": "2026/01/12",
     "description": "Ｐｉ－ＰＣＨＯＭＥ２４Ｈ購物－３Ｄ",
     "amount": 7169
   },
   {
-    "date": "2025/01/07",
+    "date": "2026/01/07",
     "post_date": "2026/01/12",
     "description": "ｅＴａｇ自動儲值金額─車號EAB-2035",
     "amount": 400
