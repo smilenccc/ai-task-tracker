@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: linda-firewall
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: TOTP_SECRET
+        value: U3KQHZMQ4UMNVTZYXTPGJ2AGLBRPZR5L
+      - key: WEBHOOK_URL
+        sync: false  # 需要手動設定
+      - key: WEBHOOK_SECRET
+        sync: false  # 需要手動設定

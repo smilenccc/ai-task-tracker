@@ -1,0 +1,20 @@
+{
+  "name": "linda-firewall-frontend",
+  "version": "1.0.0",
+  "description": "Linda 防火牆管理前端 (Render)",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "otplib": "^12.0.1",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
