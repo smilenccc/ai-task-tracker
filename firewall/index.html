@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛡️ 防火牆白名單（唯讀）</title>
+    <title>🛡️ 防火牆白名單</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -27,7 +27,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         h1 {
@@ -47,59 +47,98 @@
             font-weight: 600;
         }
 
-        .info-box {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 30px;
-            color: #3b82f6;
-        }
-
-        .section {
+        .info-card {
             background: #0f1115;
             border: 1px solid #2d3138;
-            border-radius: 8px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 30px;
             margin-bottom: 20px;
         }
 
-        .section-title {
-            font-size: 1.3em;
-            font-weight: 600;
+        .info-card h2 {
             color: #fff;
+            font-size: 1.5em;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .refresh-btn {
-            margin-left: auto;
-            background: #d50c2d;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85em;
+        .info-card p {
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
 
-        .refresh-btn:hover {
-            background: #b00a25;
-        }
-
-        .ip-list {
+        .method-list {
             display: grid;
-            gap: 10px;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .method-item {
+            background: #1a1d23;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .method-item:hover {
+            border-color: #d50c2d;
+        }
+
+        .method-title {
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .method-desc {
+            color: #6b7280;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .example {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            color: #3b82f6;
+            font-size: 0.9em;
+        }
+
+        .warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #f59e0b;
+        }
+
+        .current-ips {
+            background: #1a1d23;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .current-ips h3 {
+            color: #fff;
+            margin-bottom: 15px;
         }
 
         .ip-item {
-            background: #1a1d23;
-            border: 1px solid #2d3138;
+            padding: 10px 15px;
+            background: #0f1115;
             border-radius: 6px;
-            padding: 15px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -107,7 +146,6 @@
 
         .ip-address {
             font-family: 'Courier New', monospace;
-            font-size: 1.1em;
             color: #10b981;
             font-weight: 600;
         }
@@ -116,36 +154,6 @@
             color: #6b7280;
             font-size: 0.9em;
         }
-
-        .rules-list {
-            background: #1a1d23;
-            border: 1px solid #2d3138;
-            border-radius: 6px;
-            padding: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            color: #e5e7eb;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #6b7280;
-        }
-
-        .error {
-            text-align: center;
-            padding: 40px;
-            color: #ef4444;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 40px;
-            color: #6b7280;
-        }
     </style>
 </head>
 <body>
@@ -153,109 +161,101 @@
         <header>
             <div>
                 <h1>🛡️ 防火牆白名單</h1>
-                <p style="color: #9ca3af; margin-top: 5px;">唯讀模式 - 查看白名單與規則</p>
+                <p style="color: #9ca3af; margin-top: 5px;">查看與管理白名單 IP</p>
             </div>
             <a href="../index.html" class="back-btn">← 返回 Dashboard</a>
         </header>
 
-        <div class="info-box">
-            💡 這是唯讀頁面。要修改白名單，請透過 Telegram 告訴 Linda 或使用 2FA 管理介面。
+        <div class="warning">
+            ⚠️ 由於安全限制（HTTPS → HTTP），此頁面無法直接呼叫 API。請使用以下方式查看白名單。
         </div>
 
-        <!-- 白名單 IP -->
-        <div class="section">
-            <div class="section-title">
-                📋 白名單 IP
-                <button class="refresh-btn" onclick="loadWhitelist()">🔄 重新整理</button>
-            </div>
-            <div class="ip-list" id="whitelistDiv">
-                <div class="loading">載入中...</div>
+        <div class="info-card">
+            <h2>📋 查看白名單的方式</h2>
+            
+            <div class="method-list">
+                <div class="method-item">
+                    <div class="method-title">1️⃣ 透過 Telegram 詢問 Linda（最簡單）</div>
+                    <div class="method-desc">
+                        直接在 Telegram 問 Linda「查看防火牆白名單」或「有哪些白名單 IP」
+                    </div>
+                    <div class="example">
+                        你：Linda，查看防火牆白名單<br>
+                        Linda：📋 目前的白名單 IP：<br>
+                        &nbsp;&nbsp;• 39.10.61.157<br>
+                        &nbsp;&nbsp;• 106.105.89.219<br>
+                        &nbsp;&nbsp;• 113.200.148.218
+                    </div>
+                </div>
+
+                <div class="method-item">
+                    <div class="method-title">2️⃣ Dashboard 右側顯示（即時更新）</div>
+                    <div class="method-desc">
+                        回到主 Dashboard，右側會顯示防火牆白名單區塊，每 30 秒自動更新
+                    </div>
+                </div>
+
+                <div class="method-item">
+                    <div class="method-title">3️⃣ SSH 連線查看（進階）</div>
+                    <div class="method-desc">
+                        如果你有 SSH 存取權限，可以直接在伺服器上查看
+                    </div>
+                    <div class="example">
+                        cd /root/.openclaw/workspace/firewall<br>
+                        python3 manager.py whitelist
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 防火牆規則 -->
-        <div class="section">
-            <div class="section-title">
-                📜 防火牆規則
-                <button class="refresh-btn" onclick="loadRules()">🔄 重新整理</button>
+        <div class="info-card">
+            <h2>➕ 修改白名單</h2>
+            <p>要新增或移除白名單 IP，有以下方式：</p>
+            
+            <div class="method-list">
+                <div class="method-item">
+                    <div class="method-title">📱 Telegram 指令（推薦）</div>
+                    <div class="method-desc">
+                        直接告訴 Linda 要新增或移除的 IP
+                    </div>
+                    <div class="example">
+                        • 新增：「Linda，加入白名單 1.2.3.4」<br>
+                        • 移除：「Linda，移除白名單 1.2.3.4」<br>
+                        • 我的 IP 變了：「我的新 IP 是 X.X.X.X，請加入」
+                    </div>
+                </div>
+
+                <div class="method-item">
+                    <div class="method-title">🔐 2FA 管理介面（需要 Authy）</div>
+                    <div class="method-desc">
+                        使用 Authy 驗證碼登入管理介面（僅限本地或 VPN）
+                    </div>
+                    <div class="example">
+                        http://157.180.126.133:5000<br>
+                        （需要 2FA 驗證碼）
+                    </div>
+                </div>
             </div>
-            <div class="rules-list" id="rulesDiv">
-                <div class="loading">載入中...</div>
+        </div>
+
+        <div class="current-ips">
+            <h3>📊 已知的白名單 IP（僅供參考）</h3>
+            <div class="ip-item">
+                <span class="ip-address">39.10.61.157</span>
+                <span class="ip-status">台灣-遠傳（公司 IP）</span>
             </div>
+            <div class="ip-item">
+                <span class="ip-address">106.105.89.219</span>
+                <span class="ip-status">台灣-新世紀</span>
+            </div>
+            <div class="ip-item">
+                <span class="ip-address">113.200.148.218</span>
+                <span class="ip-status">中國-聯通</span>
+            </div>
+            <p style="color: #6b7280; margin-top: 15px; font-size: 0.9em;">
+                💡 提示：以上資訊可能不是最新的，請透過 Telegram 詢問 Linda 取得即時資料。
+            </p>
         </div>
     </div>
-
-    <script>
-        const API_BASE = 'http://157.180.126.133:5001';
-        const API_KEY = 'linda-firewall-webhook-secret-2026';
-
-        async function loadWhitelist() {
-            const whitelistDiv = document.getElementById('whitelistDiv');
-            whitelistDiv.innerHTML = '<div class="loading">載入中...</div>';
-
-            try {
-                const response = await fetch(`${API_BASE}/webhook/firewall/whitelist`, {
-                    headers: {
-                        'X-API-Key': API_KEY
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.success && data.ips) {
-                    if (data.ips.length === 0) {
-                        whitelistDiv.innerHTML = '<div class="empty">目前沒有白名單 IP</div>';
-                        return;
-                    }
-
-                    whitelistDiv.innerHTML = data.ips.map(ip => `
-                        <div class="ip-item">
-                            <span class="ip-address">${ip}</span>
-                            <span class="ip-status">✓ 允許</span>
-                        </div>
-                    `).join('');
-                } else {
-                    whitelistDiv.innerHTML = '<div class="error">載入失敗：' + (data.error || '未知錯誤') + '</div>';
-                }
-            } catch (error) {
-                console.error('載入白名單失敗:', error);
-                whitelistDiv.innerHTML = '<div class="error">連線錯誤：' + error.message + '</div>';
-            }
-        }
-
-        async function loadRules() {
-            const rulesDiv = document.getElementById('rulesDiv');
-            rulesDiv.innerHTML = '<div class="loading">載入中...</div>';
-
-            try {
-                const response = await fetch(`${API_BASE}/webhook/firewall/rules`, {
-                    headers: {
-                        'X-API-Key': API_KEY
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.success && data.rules) {
-                    rulesDiv.innerHTML = data.rules;
-                } else {
-                    rulesDiv.innerHTML = '<div class="error">載入失敗：' + (data.error || '未知錯誤') + '</div>';
-                }
-            } catch (error) {
-                console.error('載入規則失敗:', error);
-                rulesDiv.innerHTML = '<div class="error">連線錯誤：' + error.message + '</div>';
-            }
-        }
-
-        // 頁面載入時自動載入
-        loadWhitelist();
-        loadRules();
-
-        // 每30秒自動重新整理
-        setInterval(() => {
-            loadWhitelist();
-            loadRules();
-        }, 30000);
-    </script>
 </body>
 </html>
