@@ -1,9 +1,9 @@
 {
   "meta": {
-    "lastUpdated": "2026-02-11T06:41:12.821Z",
+    "lastUpdated": "2026-02-11T06:41:56.846Z",
     "currency": "TWD",
-    "totalSpent": 65022,
-    "totalItems": 78,
+    "totalSpent": 65808,
+    "totalItems": 80,
     "source": "coupang-scraper"
   },
   "purchases": [
@@ -36,6 +36,34 @@
       "scrapedAt": "2026-02-11T06:41:12.820Z"
     },
     {
+      "orderId": "coupang-2026-02-10-0-0",
+      "date": "2026-02-10",
+      "name": "LION 獅王 趣淨 泡沫洗手慕斯補充瓶 柑橘香, 800ml, 4瓶",
+      "price": 596,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "日用品/清潔",
+      "status": "配送中",
+      "imageUrl": "https://image.coupangcdn.com/image/badge/badge_19a1632f27c.png",
+      "productLink": "",
+      "source": "coupang",
+      "scrapedAt": "2026-02-11T06:41:56.846Z"
+    },
+    {
+      "orderId": "coupang-2026-02-10-0-1",
+      "date": "2026-02-10",
+      "name": "LION 獅王 趣淨 洗手慕斯補充包 清爽柑橘, 450ml, 2包",
+      "price": 190,
+      "currency": "TWD",
+      "quantity": 1,
+      "category": "日用品/清潔",
+      "status": "配送中",
+      "imageUrl": "https://image.coupangcdn.com/image/badge/badge_19a1632f27c.png",
+      "productLink": "",
+      "source": "coupang",
+      "scrapedAt": "2026-02-11T06:41:56.846Z"
+    },
+    {
       "orderId": "coupang-2026-02-08-0-0",
       "date": "2026-02-08",
       "name": "Kao 花王 Magiclean 魔術靈 殺菌瞬潔 馬桶清潔劑 一般款 超分解垢潔淨 免刷洗, 500ml, 6瓶",
@@ -43,11 +71,12 @@
       "currency": "TWD",
       "quantity": 1,
       "category": "日用品/清潔",
-      "status": "配送中",
+      "status": "已送達",
       "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/120x120ex/image/sd_image/bd54/6a4ed1c8bacf0c47a71889caebb85aa89b52ddbf27fabf18c21a13eeb34c.png",
       "productLink": "https://mc.tw.coupang.com/ssr/sdp/link?vendorItemId=263100112519174&sourceType=MyCoupang_my_orders_list_product_image",
       "source": "coupang",
-      "scrapedAt": "2026-02-09T03:53:03.726Z"
+      "scrapedAt": "2026-02-09T03:53:03.726Z",
+      "updatedAt": "2026-02-11T06:41:56.846Z"
     },
     {
       "orderId": "coupang-2026-02-07-1-0",
