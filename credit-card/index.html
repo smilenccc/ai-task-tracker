@@ -66,6 +66,119 @@
             font-size: 1em;
         }
 
+        /* 警示卡片 */
+        .alert-card {
+            background: #0f1115;
+            border: 2px solid;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .alert-card.normal {
+            border-color: #10b981;
+        }
+
+        .alert-card.warning {
+            border-color: #f59e0b;
+        }
+
+        .alert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .alert-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 2em;
+        }
+
+        .alert-text {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .alert-card.normal .alert-text {
+            color: #10b981;
+        }
+
+        .alert-card.warning .alert-text {
+            color: #f59e0b;
+        }
+
+        .alert-count {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .alert-details {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3138;
+            display: none;
+        }
+
+        .alert-details.show {
+            display: block;
+        }
+
+        .alert-item {
+            padding: 12px;
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 3px solid #f59e0b;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .alert-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .alert-item-type {
+            font-weight: 600;
+            color: #f59e0b;
+            font-size: 0.9em;
+        }
+
+        .alert-item-description {
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .alert-item-date {
+            color: #6b7280;
+            font-size: 0.85em;
+        }
+
+        .alert-item.refund {
+            background: rgba(239, 68, 68, 0.05);
+            border-left-color: #ef4444;
+        }
+
+        .alert-item.refund .alert-item-type {
+            color: #ef4444;
+        }
+
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -202,6 +315,18 @@
             <p>玉山銀行 Pi 信用卡 - 114年12月帳單</p>
         </header>
 
+        <!-- 警示卡片 -->
+        <div id="alertCard" class="alert-card" onclick="toggleAlertDetails()">
+            <div class="alert-header">
+                <div class="alert-status">
+                    <div class="alert-icon" id="alertIcon">✅</div>
+                    <div class="alert-text" id="alertText">正常</div>
+                </div>
+                <div id="alertCount" class="alert-count" style="display: none;"></div>
+            </div>
+            <div id="alertDetails" class="alert-details"></div>
+        </div>
+
         <div class="summary-cards" id="summaryCards"></div>
 
         <div class="charts-section">
@@ -249,7 +374,97 @@
             }
         }
 
+        function toggleAlertDetails() {
+            const details = document.getElementById('alertDetails');
+            details.classList.toggle('show');
+        }
+
+        function checkAlerts(transactions) {
+            const alerts = [];
+
+            transactions.forEach(t => {
+                // 檢查刷退
+                if (t.is_refund || t.amount < 0) {
+                    alerts.push({
+                        type: 'refund',
+                        title: '💰 刷退項目',
+                        description: t.description,
+                        amount: t.amount,
+                        date: t.date
+                    });
+                }
+
+                // 檢查高額消費（> 5000）
+                if (t.amount > 5000 && !t.is_refund) {
+                    alerts.push({
+                        type: 'high',
+                        title: '⚠️ 高額消費',
+                        description: t.description,
+                        amount: t.amount,
+                        date: t.date
+                    });
+                }
+
+                // 檢查國外交易
+                if (t.description.includes('國外交易服務費')) {
+                    alerts.push({
+                        type: 'foreign',
+                        title: '🌍 國外交易',
+                        description: t.description,
+                        amount: t.amount,
+                        date: t.date
+                    });
+                }
+            });
+
+            // 更新警示卡片
+            const alertCard = document.getElementById('alertCard');
+            const alertIcon = document.getElementById('alertIcon');
+            const alertText = document.getElementById('alertText');
+            const alertCount = document.getElementById('alertCount');
+            const alertDetails = document.getElementById('alertDetails');
+
+            if (alerts.length === 0) {
+                alertCard.className = 'alert-card normal';
+                alertIcon.textContent = '✅';
+                alertText.textContent = '正常';
+                alertCount.style.display = 'none';
+                alertCard.style.cursor = 'default';
+                alertCard.onclick = null;
+            } else {
+                alertCard.className = 'alert-card warning';
+                alertIcon.textContent = '⚠️';
+                alertText.textContent = '要檢查';
+                alertCount.textContent = `${alerts.length} 項`;
+                alertCount.style.display = 'block';
+
+                // 渲染警示明細
+                const alertsHTML = alerts.map(alert => {
+                    const itemClass = alert.type === 'refund' ? 'refund' : '';
+                    const amountStr = alert.amount > 0 ? 
+                        `NT$ ${alert.amount.toLocaleString()}` : 
+                        `NT$ ${alert.amount.toLocaleString()}`;
+                    
+                    return `
+                        <div class="alert-item ${itemClass}">
+                            <div class="alert-item-header">
+                                <span class="alert-item-type">${alert.title}</span>
+                                <span style="color: ${alert.amount < 0 ? '#ef4444' : '#f59e0b'}; font-weight: 600;">${amountStr}</span>
+                            </div>
+                            <div class="alert-item-description">${alert.description}</div>
+                            <div class="alert-item-date">${alert.date}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                alertDetails.innerHTML = alertsHTML;
+            }
+        }
+
         function renderDashboard(transactions) {
+            // 檢查警示項目
+            checkAlerts(transactions);
+
             // 計算統計
             const total = transactions.reduce((sum, t) => sum + t.amount, 0);
             const count = transactions.length;
