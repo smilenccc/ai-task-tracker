@@ -550,6 +550,28 @@
             color: #9ca3af;
         }
 
+        /* 地圖下方統計卡片 */
+        .bottom-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding: 10px 0;
+        }
+
+        .bottom-stat-card {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .bottom-stat-card:hover {
+            border-color: #d50c2d;
+        }
+
         /* ==================== 手機版響應式設計 ==================== */
         @media (max-width: 768px) {
             /* 針對 iPhone 的安全區域 */
@@ -714,16 +736,25 @@
 
             /* 統計卡片下方調整 */
             .bottom-stats-grid {
-                grid-template-columns: 1fr !important;
+                grid-template-columns: 1fr 1fr;
                 gap: 10px;
+                padding: 10px 0;
             }
 
             .bottom-stat-card {
-                padding: 15px;
+                padding: 12px;
+            }
+
+            .stat-icon-small {
+                font-size: 1.3em;
             }
 
             .stat-value-small {
                 font-size: 1.2em;
+            }
+
+            .stat-label-small {
+                font-size: 0.7em;
             }
 
             /* 連線資訊區塊優化 */
@@ -841,12 +872,25 @@
             }
 
             /* 底部統計卡片 */
+            .bottom-stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
             .bottom-stat-card {
-                padding: 12px;
+                padding: 10px;
+            }
+
+            .stat-icon-small {
+                font-size: 1.2em;
             }
 
             .stat-value-small {
-                font-size: 1.1em;
+                font-size: 1em;
+            }
+
+            .stat-label-small {
+                font-size: 0.65em;
             }
 
             /* 連線資訊更緊湊 */
@@ -981,28 +1025,26 @@
                         </div>
 
                         <!-- 統計卡片（地圖下方） -->
-                        <div style="margin-top: 20px; overflow-x: auto; padding: 10px 0;">
-                            <div style="display: flex; gap: 12px; justify-content: center;">
-                                <div class="stat-card-small">
-                                    <div class="stat-icon-small">🖥️</div>
-                                    <div class="stat-value-small">3</div>
-                                    <div class="stat-label-small">線上服務</div>
-                                </div>
-                                <div class="stat-card-small">
-                                    <div class="stat-icon-small">📋</div>
-                                    <div class="stat-value-small" id="taskCount">23</div>
-                                    <div class="stat-label-small">完成任務</div>
-                                </div>
-                                <div class="stat-card-small">
-                                    <div class="stat-icon-small">🌍</div>
-                                    <div class="stat-value-small">2</div>
-                                    <div class="stat-label-small">部署區域</div>
-                                </div>
-                                <div class="stat-card-small">
-                                    <div class="stat-icon-small">⚡</div>
-                                    <div class="stat-value-small">100%</div>
-                                    <div class="stat-label-small">運行時間</div>
-                                </div>
+                        <div class="bottom-stats-grid">
+                            <div class="bottom-stat-card">
+                                <div class="stat-icon-small">🖥️</div>
+                                <div class="stat-value-small">3</div>
+                                <div class="stat-label-small">線上服務</div>
+                            </div>
+                            <div class="bottom-stat-card">
+                                <div class="stat-icon-small">📋</div>
+                                <div class="stat-value-small" id="taskCount">23</div>
+                                <div class="stat-label-small">完成任務</div>
+                            </div>
+                            <div class="bottom-stat-card">
+                                <div class="stat-icon-small">🌍</div>
+                                <div class="stat-value-small">2</div>
+                                <div class="stat-label-small">部署區域</div>
+                            </div>
+                            <div class="bottom-stat-card">
+                                <div class="stat-icon-small">⚡</div>
+                                <div class="stat-value-small">100%</div>
+                                <div class="stat-label-small">運行時間</div>
                             </div>
                         </div>
                     </div>
