@@ -411,8 +411,10 @@
         .ip-item {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
             padding: 10px 0;
             border-bottom: 1px solid #2d3138;
+            gap: 15px;
         }
 
         .ip-item:last-child {
@@ -422,11 +424,15 @@
         .ip-label {
             color: #9ca3af;
             font-size: 0.9em;
+            flex-shrink: 0;
+            min-width: 60px;
         }
 
         .ip-value {
             color: #fff;
             font-weight: 500;
+            word-break: break-all;
+            overflow-wrap: break-word;
         }
 
         @media (max-width: 1200px) {
@@ -742,8 +748,10 @@
                 flex: 1;
                 text-align: right;
                 word-break: break-all;
+                overflow-wrap: break-word;
                 font-size: 0.8em;
-                max-width: 100%;
+                max-width: calc(100vw - 120px);
+                overflow: hidden;
             }
         }
 
@@ -862,6 +870,7 @@
 
             .ip-value {
                 font-size: 0.75em;
+                max-width: calc(100vw - 100px);
             }
         }
 
