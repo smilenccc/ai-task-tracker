@@ -141,6 +141,17 @@
             background: #b00a25;
         }
 
+        /* 手機選單按鈕 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
         /* 內容區域 */
         .content {
             flex: 1;
@@ -528,6 +539,204 @@
             color: #9ca3af;
         }
 
+        /* ==================== 手機版響應式設計 ==================== */
+        @media (max-width: 768px) {
+            /* 側邊欄隱藏，改為彈出式 */
+            .sidebar {
+                position: fixed;
+                left: -220px;
+                top: 0;
+                height: 100vh;
+                z-index: 2000;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.open {
+                left: 0;
+                box-shadow: 4px 0 12px rgba(0,0,0,0.5);
+            }
+
+            /* 遮罩層 */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1999;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            /* 主要內容區全寬 */
+            .main-content {
+                width: 100%;
+            }
+
+            /* 頂部欄調整 */
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .topbar-left h1 {
+                font-size: 1.2em;
+            }
+
+            /* 顯示漢堡選單 */
+            .menu-toggle {
+                display: block;
+            }
+
+            .topbar-right {
+                gap: 10px;
+            }
+
+            .status-badge {
+                padding: 4px 8px;
+                font-size: 0.75em;
+            }
+
+            .create-btn {
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
+
+            /* 內容區域調整 */
+            .content {
+                padding: 15px;
+            }
+
+            /* 內容網格改為單欄 */
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* 地圖區域調整 */
+            .map-section {
+                order: 2;
+            }
+
+            #map {
+                min-height: 400px;
+            }
+
+            /* 資源統計改為單欄 */
+            .resources-section {
+                order: 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.5em;
+            }
+
+            /* 服務列表調整 */
+            .service-item {
+                padding: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .service-meta {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            /* 地圖控制器調整 */
+            .layer-control {
+                top: auto;
+                bottom: 10px;
+                right: 10px;
+                min-width: 150px;
+                padding: 10px;
+                font-size: 0.85em;
+            }
+
+            /* 統計卡片下方調整 */
+            .bottom-stats-grid {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+
+            .bottom-stat-card {
+                padding: 15px;
+            }
+
+            .stat-value-small {
+                font-size: 1.2em;
+            }
+        }
+
+        /* 平板版 (768px - 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .sidebar {
+                width: 180px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            #map {
+                min-height: 500px;
+            }
+        }
+
+        /* 超小螢幕 (< 480px) */
+        @media (max-width: 480px) {
+            .topbar-left h1 {
+                font-size: 1em;
+            }
+
+            .status-badge {
+                display: none;
+            }
+
+            .content {
+                padding: 10px;
+            }
+
+            .map-header {
+                padding: 15px;
+            }
+
+            .map-title {
+                font-size: 1em;
+            }
+
+            #map {
+                min-height: 300px;
+            }
+
+            .service-name {
+                font-size: 0.9em;
+            }
+
+            .layer-control {
+                min-width: 130px;
+                font-size: 0.75em;
+                padding: 8px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -565,11 +774,15 @@
             </div>
         </div>
 
+        <!-- 側邊欄遮罩（手機版） -->
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
         <!-- 主要內容 -->
         <div class="main-content">
             <!-- 頂部欄 -->
             <div class="topbar">
                 <div class="topbar-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
                     <h1>Dashboard</h1>
                 </div>
                 <div class="topbar-right">
@@ -1102,6 +1315,24 @@
         
         // 頁面載入時自動載入防火牆白名單
         loadFirewallWhitelist();
+
+        // ==================== 手機版側邊欄控制 ====================
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // 點擊側邊欄連結後自動關閉（手機版）
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
 
     </script>
 </body>
