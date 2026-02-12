@@ -283,7 +283,8 @@
       "status": "completed",
       "createdAt": "2026-02-12T09:49:00.000Z",
       "updatedAt": "2026-02-12T09:52:00.000Z",
-      "source": "telegram"
+      "source": "telegram",
+      "detailUrl": "task-28-https-nginx.html"
     }
   ],
   "lastUpdated": "2026-02-12T18:00:11.985834Z"

@@ -331,12 +331,18 @@
                 const statusText = task.status === 'completed' ? '已完成' : '進行中';
                 const statusClass = task.status === 'completed' ? 'status-completed' : 'status-pending';
                 const date = new Date(task.createdAt).toLocaleDateString('zh-TW');
+                const hasDetail = task.detailUrl ? true : false;
+                const clickable = hasDetail ? 'style="cursor: pointer;"' : '';
+                const onClick = hasDetail ? `onclick="window.location.href='${task.detailUrl}'"` : '';
 
                 return `
-                    <div class="task-item">
+                    <div class="task-item" ${clickable} ${onClick}>
                         <div class="task-header">
                             <div>
-                                <div class="task-title">${task.title}</div>
+                                <div class="task-title">
+                                    ${task.title}
+                                    ${hasDetail ? '<span style="color: #d50c2d; margin-left: 8px;">→</span>' : ''}
+                                </div>
                                 <div class="task-desc">${task.description || '無描述'}</div>
                             </div>
                         </div>
@@ -344,6 +350,7 @@
                             <span class="task-badge ${statusClass}">${statusText}</span>
                             <span class="task-badge category-badge">${task.category}</span>
                             <span class="task-date">建立於 ${date}</span>
+                            ${hasDetail ? '<span class="task-badge" style="background: #d50c2d; color: white;">詳細記錄</span>' : ''}
                         </div>
                     </div>
                 `;

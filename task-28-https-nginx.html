@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務 #28 - HTTPS 加密與 Nginx 反向代理</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            background: #d50c2d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: white; }
+        .meta { color: #9ca3af; margin-bottom: 30px; }
+        .section {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #d50c2d;
+            border-bottom: 2px solid #d50c2d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        pre {
+            background: #000;
+            border: 1px solid #2d3138;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            color: #0f0;
+            font-size: 0.9em;
+        }
+        .step {
+            background: #1a1d23;
+            border-left: 4px solid #d50c2d;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success { color: #10b981; }
+        .warning { color: #f59e0b; }
+        ul { margin-left: 20px; line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="tasks.html" class="back-btn">← 返回任務列表</a>
+        
+        <h1>🔒 HTTPS 加密與 Nginx 反向代理</h1>
+        <div class="meta">
+            完成時間：2026-02-12 09:49-09:52 | 類別：開發 | 狀態：✅ 已完成
+        </div>
+
+        <div class="section">
+            <h2>📋 任務目標</h2>
+            <p>提升網站安全性與使用體驗，將所有服務整合到統一入口，移除端口號。</p>
+            <ul>
+                <li>安裝 Let's Encrypt SSL 憑證</li>
+                <li>設定 Nginx 反向代理</li>
+                <li>簡化網址（移除端口號）</li>
+                <li>自動憑證更新</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ 實施步驟</h2>
+            
+            <div class="step">
+                <h3>步驟 1：安裝 Nginx</h3>
+                <pre>apt-get update && apt-get install -y nginx
+systemctl start nginx
+systemctl enable nginx</pre>
+            </div>
+
+            <div class="step">
+                <h3>步驟 2：開放防火牆端口</h3>
+                <pre>/usr/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+/usr/sbin/iptables -I INPUT -p tcp --dport 443 -j ACCEPT
+/usr/sbin/iptables-save > /etc/iptables/rules.v4</pre>
+            </div>
+
+            <div class="step">
+                <h3>步驟 3：設定 Nginx 反向代理</h3>
+                <p>建立配置檔：<code>/etc/nginx/sites-available/smilelinda.conf</code></p>
+                <pre>server {
+    listen 80;
+    server_name smilelinda.duckdns.org;
+    
+    location / {
+        proxy_pass http://localhost:8100;
+    }
+    
+    location /coupang/ {
+        proxy_pass http://localhost:8101/;
+    }
+    
+    location /credit-card/ {
+        proxy_pass http://localhost:8102/;
+    }
+    
+    # ... 其他服務
+}</pre>
+            </div>
+
+            <div class="step">
+                <h3>步驟 4：安裝 Let's Encrypt</h3>
+                <pre>apt-get install -y certbot python3-certbot-nginx
+ln -sf /usr/sbin/nginx /usr/bin/nginx
+certbot --nginx -d smilelinda.duckdns.org \\
+    --non-interactive --agree-tos \\
+    --email linda.openclaw@gmail.com --redirect</pre>
+            </div>
+
+            <div class="step">
+                <h3>步驟 5：修正 Tailscale 端口衝突</h3>
+                <pre>tailscale serve off
+systemctl reload nginx</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ 成果</h2>
+            <ul>
+                <li class="success">✓ HTTPS 憑證安裝成功（有效期至 2026-05-13）</li>
+                <li class="success">✓ 自動更新設定完成（certbot.timer）</li>
+                <li class="success">✓ HTTP 自動跳轉 HTTPS（301 Redirect）</li>
+                <li class="success">✓ 所有服務統一入口</li>
+                <li class="success">✓ 網址大幅簡化</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔗 網址對照表</h2>
+            <table style="width: 100%; border-collapse: collapse; color: #e5e7eb;">
+                <tr style="background: #2d3138;">
+                    <th style="padding: 10px; border: 1px solid #444;">服務</th>
+                    <th style="padding: 10px; border: 1px solid #444;">舊網址</th>
+                    <th style="padding: 10px; border: 1px solid #444;">新網址</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #444;">Task Tracker</td>
+                    <td style="padding: 10px; border: 1px solid #444;">http://smilelinda.duckdns.org:8100</td>
+                    <td style="padding: 10px; border: 1px solid #444; color: #10b981;">https://smilelinda.duckdns.org/</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #444;">Coupang</td>
+                    <td style="padding: 10px; border: 1px solid #444;">http://smilelinda.duckdns.org:8101</td>
+                    <td style="padding: 10px; border: 1px solid #444; color: #10b981;">https://smilelinda.duckdns.org/coupang/</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #444;">信用卡統計</td>
+                    <td style="padding: 10px; border: 1px solid #444;">http://smilelinda.duckdns.org:8102</td>
+                    <td style="padding: 10px; border: 1px solid #444; color: #10b981;">https://smilelinda.duckdns.org/credit-card/</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>📁 相關檔案</h2>
+            <ul>
+                <li><code>/etc/nginx/sites-available/smilelinda.conf</code> - Nginx 配置</li>
+                <li><code>/etc/letsencrypt/live/smilelinda.duckdns.org/</code> - SSL 憑證</li>
+                <li><code>/etc/iptables/rules.v4</code> - 防火牆規則</li>
+                <li><code>/root/.openclaw/workspace/UPGRADE_REPORT.md</code> - 升級報告</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔧 維護指令</h2>
+            <pre># 檢查 Nginx 狀態
+systemctl status nginx
+
+# 測試配置
+nginx -t
+
+# 重新載入
+systemctl reload nginx
+
+# 手動更新憑證
+certbot renew
+
+# 查看憑證狀態
+systemctl status certbot.timer</pre>
+        </div>
+    </div>
+</body>
+</html>
