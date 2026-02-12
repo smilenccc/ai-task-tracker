@@ -234,7 +234,57 @@
       "createdAt": "2026-02-10T03:01:14.000Z",
       "updatedAt": "2026-02-10T03:01:14.000Z",
       "source": "telegram"
+    },
+    {
+      "id": 24,
+      "title": "防火牆管理系統建立",
+      "description": "建立完整的防火牆白名單管理系統，包含 CLI 工具、2FA 網頁介面、Telegram 自然語言控制",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-11T00:00:00.000Z",
+      "updatedAt": "2026-02-11T16:04:00.000Z",
+      "source": "telegram"
+    },
+    {
+      "id": 25,
+      "title": "Task Tracker 遷移到 Hetzner VPS",
+      "description": "將任務統計系統從 GitHub Pages 遷移到自有 VPS，端口 8100",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-12T07:00:00.000Z",
+      "updatedAt": "2026-02-12T07:43:00.000Z",
+      "source": "telegram"
+    },
+    {
+      "id": 26,
+      "title": "DuckDNS 免費域名設定",
+      "description": "註冊 smilelinda.duckdns.org 域名，設定 IP 自動更新機制",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-12T09:00:00.000Z",
+      "updatedAt": "2026-02-12T09:42:00.000Z",
+      "source": "telegram"
+    },
+    {
+      "id": 27,
+      "title": "遷移所有 Render 服務到 VPS",
+      "description": "將 Coupang、信用卡、Tasks API、Amazon Tracker 全部遷移到 VPS，設定 systemd 自動啟動",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-12T09:43:00.000Z",
+      "updatedAt": "2026-02-12T09:47:00.000Z",
+      "source": "telegram"
+    },
+    {
+      "id": 28,
+      "title": "HTTPS 加密與 Nginx 反向代理",
+      "description": "安裝 Let's Encrypt 憑證、設定 Nginx 反向代理、簡化網址（移除端口號）",
+      "category": "開發",
+      "status": "completed",
+      "createdAt": "2026-02-12T09:49:00.000Z",
+      "updatedAt": "2026-02-12T09:52:00.000Z",
+      "source": "telegram"
     }
   ],
-  "lastUpdated": "2026-02-10T03:01:14.000Z"
+  "lastUpdated": "2026-02-12T18:00:11.985834Z"
 }

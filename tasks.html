@@ -317,6 +317,11 @@
                 tasks = allTasks.filter(t => t.status !== 'completed');
             }
 
+            // 按建立時間排序（最新的在最上方）
+            tasks = tasks.sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+
             if (tasks.length === 0) {
                 document.getElementById('tasksList').innerHTML = '<div class="loading">沒有任務</div>';
                 return;
