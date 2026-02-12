@@ -1,0 +1,10 @@
+{
+  "browser_launch": true,
+  "tw_coupang_access": true,
+  "login_page_found": false,
+  "login_form_structure": {},
+  "anti_bot_detected": false,
+  "recommendations": [
+    "可能需要直接訪問登入頁面 URL"
+  ]
+}

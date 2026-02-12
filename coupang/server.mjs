@@ -16,12 +16,13 @@ import cors from 'cors';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = resolve(__dirname, '..');
 
-const PORT = process.env.PORT || 5566;
+const PORT = process.env.PORT || 8101;
 const PURCHASES_PATH = resolve(ROOT, 'purchases.json');
 
 // ── 分類規則（與 config.mjs 同步） ──────────────────
@@ -62,6 +63,16 @@ function savePurchases(data) {
   data.meta.totalSpent = data.purchases.reduce((s, p) => s + (p.price || 0), 0);
   data.meta.totalItems = data.purchases.length;
   writeFileSync(PURCHASES_PATH, JSON.stringify(data, null, 2), 'utf-8');
+  
+  // 自動推送到 GitHub
+  try {
+    execSync('git add purchases.json', { cwd: ROOT });
+    execSync(`git commit -m "Coupang: 更新購物資料 (${data.meta.totalItems} 筆, NT$${data.meta.totalSpent})"`, { cwd: ROOT });
+    execSync('git push origin main', { cwd: ROOT });
+    console.log('✅ 已推送到 GitHub');
+  } catch (e) {
+    console.warn('⚠️ Git 推送失敗:', e.message);
+  }
 }
 
 // ── Server ──────────────────────────────────────────
@@ -85,14 +96,27 @@ app.post('/api/orders', (req, res) => {
   }
 
   console.log(`📦 收到 ${orders.length} 筆訂單`);
+  console.log('詳細資料：', JSON.stringify(orders, null, 2));
 
   const existing = loadPurchases();
-  const existingKeys = new Set(existing.purchases.map(p => `${p.name}|${p.date}|${p.price}`));
+  const existingMap = new Map(existing.purchases.map(p => [`${p.name}|${p.date}|${p.price}`, p]));
   let added = 0;
+  let updated = 0;
 
   for (const order of orders) {
     const key = `${order.name}|${order.date}|${order.price}`;
-    if (existingKeys.has(key)) continue;
+    const existingItem = existingMap.get(key);
+    
+    // 如果存在且狀態不同，更新狀態
+    if (existingItem) {
+      if (existingItem.status !== order.status) {
+        existingItem.status = order.status;
+        existingItem.updatedAt = new Date().toISOString();
+        updated++;
+        console.log(`🔄 更新狀態: ${order.name.substring(0, 30)}... (${existingItem.status})`);
+      }
+      continue;
+    }
 
     existing.purchases.push({
       orderId: order.orderId || `coupang-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -108,17 +132,17 @@ app.post('/api/orders', (req, res) => {
       source: 'coupang',
       scrapedAt: new Date().toISOString(),
     });
-    existingKeys.add(key);
+    existingMap.set(key, existing.purchases[existing.purchases.length - 1]);
     added++;
   }
 
   existing.purchases.sort((a, b) => new Date(b.date) - new Date(a.date));
   savePurchases(existing);
 
-  console.log(`✅ 新增 ${added} 筆，略過 ${orders.length - added} 筆重複`);
+  console.log(`✅ 新增 ${added} 筆，更新 ${updated} 筆，略過 ${orders.length - added - updated} 筆`);
   console.log(`📊 共 ${existing.purchases.length} 筆，NT$${existing.meta.totalSpent.toLocaleString()}`);
 
-  res.json({ success: true, added, total: existing.purchases.length });
+  res.json({ success: true, added, updated, total: existing.purchases.length });
 });
 
 // API：取得統計

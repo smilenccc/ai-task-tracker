@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 個人數據中心 - Dashboard Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3em;
+        }
+
+        .dashboards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .dashboard-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .dashboard-title {
+            color: #2d3748;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-description {
+            color: #718096;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .dashboard-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .status-live {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .status-local {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        .status-pending {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .dashboard-arrow {
+            font-size: 1.5em;
+            color: #a0aec0;
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .info-section h2 {
+            color: #2d3748;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-content {
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #edf2f7;
+            border-radius: 10px;
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #e2e8f0;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            opacity: 0.9;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .dashboards {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏠 個人數據中心</h1>
+            <p>統一管理所有數據儀表板</p>
+        </header>
+
+        <div class="dashboards">
+            <!-- 任務統計系統 -->
+            <a href="https://smilelinda.duckdns.org/" class="dashboard-card">
+                <span class="dashboard-icon">📋</span>
+                <div class="dashboard-title">AI 任務統計系統</div>
+                <div class="dashboard-description">
+                    追蹤所有交辦給小Linda的任務，包含完成狀態、分類、時間軸等統計資訊。
+                </div>
+                <div class="dashboard-meta">
+                    <span class="dashboard-status status-live">
+                        🔒 HTTPS 加密
+                    </span>
+                    <span class="dashboard-arrow">→</span>
+                </div>
+            </a>
+
+            <!-- Coupang 消費分析 -->
+            <a href="https://smilelinda.duckdns.org/coupang" class="dashboard-card" target="_blank">
+                <span class="dashboard-icon">🛒</span>
+                <div class="dashboard-title">Coupang 消費分析</div>
+                <div class="dashboard-description">
+                    酷澎購物消費記錄統計，包含消費趨勢、類別分布、商品明細等視覺化圖表。
+                </div>
+                <div class="dashboard-meta">
+                    <span class="dashboard-status status-live">
+                        🔒 HTTPS 加密
+                    </span>
+                    <span class="dashboard-arrow">→</span>
+                </div>
+            </a>
+
+            <!-- 信用卡消費統計 -->
+            <a href="https://smilelinda.duckdns.org/credit-card" class="dashboard-card" target="_blank">
+                <span class="dashboard-icon">💳</span>
+                <div class="dashboard-title">信用卡消費統計</div>
+                <div class="dashboard-description">
+                    玉山銀行Pi信用卡消費記錄分析，自動分類、每日趨勢、消費明細一目了然。
+                </div>
+                <div class="dashboard-meta">
+                    <span class="dashboard-status status-live">
+                        🔒 HTTPS 加密
+                    </span>
+                    <span class="dashboard-arrow">→</span>
+                </div>
+            </a>
+
+            <!-- 未來擴充 -->
+            <div class="dashboard-card" style="opacity: 0.6; cursor: not-allowed; pointer-events: none;">
+                <span class="dashboard-icon">📊</span>
+                <div class="dashboard-title">更多儀表板</div>
+                <div class="dashboard-description">
+                    未來可以新增更多數據分析工具：收支統計、行程管理、健康追蹤等。
+                </div>
+                <div class="dashboard-meta">
+                    <span class="dashboard-status status-pending">
+                        💡 規劃中
+                    </span>
+                    <span class="dashboard-arrow">→</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>ℹ️ 關於這個數據中心</h2>
+            <div class="info-content">
+                <p style="margin-bottom: 15px;">
+                    這是你的個人數據管理中心，集中所有由小Linda建立的統計系統和儀表板。
+                </p>
+                <p style="margin-bottom: 20px;">
+                    所有數據都是自動收集、處理和更新的，你只需要查看結果就好！
+                </p>
+
+                <div class="quick-links">
+                    <a href="https://github.com/smilenccc/ai-task-tracker" class="quick-link" target="_blank">
+                        📂 GitHub 倉庫
+                    </a>
+                    <a href="https://dashboard.render.com" class="quick-link" target="_blank">
+                        🚀 Render 控制台
+                    </a>
+                    <a href="mailto:linda.openclaw@gmail.com" class="quick-link">
+                        📧 聯絡小Linda
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🤖 由小Linda自動維護</p>
+            <p>資料即時同步 | 自動化管理 | 視覺化呈現</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                <a href="https://github.com/smilenccc/ai-task-tracker" class="footer-link" target="_blank">
+                    查看原始碼
+                </a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 檢查各服務狀態（未來可以實作）
+        console.log('🏠 個人數據中心已載入');
+        
+        // 統計點擊
+        document.querySelectorAll('.dashboard-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (this.style.pointerEvents !== 'none') {
+                    console.log('點擊儀表板:', this.querySelector('.dashboard-title').textContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

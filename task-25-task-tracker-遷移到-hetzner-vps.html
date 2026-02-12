@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務 #25 - Task Tracker 遷移到 Hetzner VPS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            background: #d50c2d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: white; }
+        .meta { color: #9ca3af; margin-bottom: 30px; }
+        .section {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #d50c2d;
+            border-bottom: 2px solid #d50c2d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section h3 { margin: 20px 0 10px 0; color: #f59e0b; }
+        pre {
+            background: #000;
+            border: 1px solid #2d3138;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            color: #0f0;
+            font-size: 0.9em;
+        }
+        .step {
+            background: #1a1d23;
+            border-left: 4px solid #d50c2d;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        ul { margin-left: 20px; line-height: 1.8; }
+        .success { color: #10b981; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="tasks.html" class="back-btn">← 返回任務列表</a>
+        
+        <h1>Task Tracker 遷移到 Hetzner VPS</h1>
+        <div class="meta">
+            完成時間：2026-02-12 07:00-07:43 | 類別：開發 | 狀態：✅ 已完成
+        </div>
+
+        <div class="section">
+            
+<h2>📋 任務目標</h2>
+<p>將任務統計系統從 GitHub Pages 遷移到自有 VPS，實現完全掌控。</p>
+
+<h2>🎯 遷移原因</h2>
+<ul>
+    <li>完全掌控，不依賴第三方</li>
+    <li>本地訪問更快</li>
+    <li>可以整合其他功能</li>
+    <li>支援後端 API</li>
+</ul>
+
+<h2>🛠️ 實施步驟</h2>
+<div class="step">
+    <h3>1. 建立 Express Server</h3>
+    <pre>import express from 'express';
+const app = express();
+const PORT = 8100;
+
+app.use(express.static(__dirname));
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(\`✅ Task Tracker: http://0.0.0.0:\${PORT}\`);
+});</pre>
+</div>
+
+<div class="step">
+    <h3>2. 開放防火牆</h3>
+    <pre>/usr/sbin/iptables -I INPUT -p tcp --dport 8100 -j ACCEPT
+/usr/sbin/iptables-save > /etc/iptables/rules.v4</pre>
+</div>
+
+<div class="step">
+    <h3>3. 建立 systemd 服務</h3>
+    <pre>[Unit]
+Description=Task Tracker Web Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/.openclaw/workspace/task-tracker
+ExecStart=/usr/bin/node server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target</pre>
+</div>
+
+<div class="step">
+    <h3>4. 啟動服務</h3>
+    <pre>systemctl daemon-reload
+systemctl enable task-tracker
+systemctl start task-tracker</pre>
+</div>
+
+<h2>✅ 成果</h2>
+<ul class="success">
+    <li>✓ Express server 運行於 port 8100</li>
+    <li>✓ systemd 服務設定完成</li>
+    <li>✓ 防火牆規則永久儲存</li>
+    <li>✓ 開機自動啟動</li>
+    <li>✓ 訪問速度提升明顯</li>
+</ul>
+
+<h2>📁 檔案位置</h2>
+<ul>
+    <li><code>/root/.openclaw/workspace/task-tracker/server.js</code></li>
+    <li><code>/etc/systemd/system/task-tracker.service</code></li>
+    <li><code>/etc/iptables/rules.v4</code></li>
+</ul>
+
+        </div>
+    </div>
+</body>
+</html>

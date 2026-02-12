@@ -21,7 +21,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = resolve(__dirname, '..');
 
-const PORT = process.env.PORT || 5568;
+const PORT = process.env.PORT || 8103;
 const TASKS_PATH = resolve(ROOT, 'tasks.json');
 
 // ── 資料操作 ────────────────────────────────────────

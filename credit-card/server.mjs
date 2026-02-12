@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5567;
+const PORT = process.env.PORT || 8102;
 
 // CORS 設定
 app.use(cors());

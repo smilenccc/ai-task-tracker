@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 10003;
+const PORT = process.env.PORT || 8104;
 
 // 訂單資料檔案
 const ORDERS_FILE = path.join(__dirname, 'orders.json');

@@ -133,7 +133,8 @@
       "status": "pending",
       "createdAt": "2026-02-09T14:25:02.000Z",
       "updatedAt": "2026-02-09T14:25:02.000Z",
-      "source": "telegram"
+      "source": "telegram",
+      "detailUrl": "task-13-esun-bank-api.html"
     },
     {
       "id": 14,
@@ -243,7 +244,8 @@
       "status": "completed",
       "createdAt": "2026-02-11T00:00:00.000Z",
       "updatedAt": "2026-02-11T16:04:00.000Z",
-      "source": "telegram"
+      "source": "telegram",
+      "detailUrl": "task-24-firewall-system.html"
     },
     {
       "id": 25,
@@ -253,7 +255,8 @@
       "status": "completed",
       "createdAt": "2026-02-12T07:00:00.000Z",
       "updatedAt": "2026-02-12T07:43:00.000Z",
-      "source": "telegram"
+      "source": "telegram",
+      "detailUrl": "task-25-task-tracker-migration-to-hetzner-vps.html"
     },
     {
       "id": 26,
@@ -263,7 +266,8 @@
       "status": "completed",
       "createdAt": "2026-02-12T09:00:00.000Z",
       "updatedAt": "2026-02-12T09:42:00.000Z",
-      "source": "telegram"
+      "source": "telegram",
+      "detailUrl": "task-26-duckdns-免費域名設定.html"
     },
     {
       "id": 27,
@@ -273,7 +277,8 @@
       "status": "completed",
       "createdAt": "2026-02-12T09:43:00.000Z",
       "updatedAt": "2026-02-12T09:47:00.000Z",
-      "source": "telegram"
+      "source": "telegram",
+      "detailUrl": "task-27-遷移所有-render-服務到-vps.html"
     },
     {
       "id": 28,

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務 #26 - DuckDNS 免費域名設定</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            background: #d50c2d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: white; }
+        .meta { color: #9ca3af; margin-bottom: 30px; }
+        .section {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #d50c2d;
+            border-bottom: 2px solid #d50c2d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section h3 { margin: 20px 0 10px 0; color: #f59e0b; }
+        pre {
+            background: #000;
+            border: 1px solid #2d3138;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            color: #0f0;
+            font-size: 0.9em;
+        }
+        .step {
+            background: #1a1d23;
+            border-left: 4px solid #d50c2d;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        ul { margin-left: 20px; line-height: 1.8; }
+        .success { color: #10b981; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="tasks.html" class="back-btn">← 返回任務列表</a>
+        
+        <h1>DuckDNS 免費域名設定</h1>
+        <div class="meta">
+            完成時間：2026-02-12 09:00-09:42 | 類別：開發 | 狀態：✅ 已完成
+        </div>
+
+        <div class="section">
+            
+<h2>📋 任務目標</h2>
+<p>註冊免費域名取代 IP 位址，讓網址更好記且專業。</p>
+
+<h2>🌐 選擇 DuckDNS 的原因</h2>
+<ul>
+    <li>✅ 完全免費</li>
+    <li>✅ 無需信用卡</li>
+    <li>✅ 支援動態 IP 更新</li>
+    <li>✅ 簡單易用的 API</li>
+</ul>
+
+<h2>🛠️ 設定步驟</h2>
+<div class="step">
+    <h3>1. 註冊 DuckDNS</h3>
+    <ul>
+        <li>訪問：https://www.duckdns.org</li>
+        <li>用 Google 帳號登入（linda.openclaw@gmail.com）</li>
+        <li>建立子域名：<code>smilelinda</code></li>
+        <li>設定 IP：<code>157.180.126.133</code></li>
+    </ul>
+</div>
+
+<div class="step">
+    <h3>2. 儲存憑證</h3>
+    <pre># 儲存到檔案
+echo "DUCKDNS_DOMAIN=smilelinda" > .duckdns-credentials
+echo "DUCKDNS_TOKEN=bc53808d-63f4-42cd-81e9-11ebfe8d4e52" >> .duckdns-credentials
+echo "DUCKDNS_IP=157.180.126.133" >> .duckdns-credentials
+chmod 600 .duckdns-credentials</pre>
+</div>
+
+<div class="step">
+    <h3>3. 建立更新腳本</h3>
+    <pre>#!/bin/bash
+source .duckdns-credentials
+RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${DUCKDNS_DOMAIN}&token=${DUCKDNS_TOKEN}&ip=${DUCKDNS_IP}")
+if [ "$RESPONSE" = "OK" ]; then
+    echo "✅ 更新成功"
+else
+    echo "❌ 更新失敗"
+fi</pre>
+</div>
+
+<div class="step">
+    <h3>4. 設定 Cron 自動更新</h3>
+    <pre># 每天凌晨 3:00 自動更新
+0 3 * * * /root/.openclaw/workspace/duckdns-update.sh > /dev/null 2>&1</pre>
+</div>
+
+<h2>✅ 成果</h2>
+<ul class="success">
+    <li>✓ 域名：smilelinda.duckdns.org</li>
+    <li>✓ DNS 解析成功</li>
+    <li>✓ 自動更新機制啟用</li>
+    <li>✓ 憑證安全儲存</li>
+</ul>
+
+<h2>🔗 網址對照</h2>
+<table style="width: 100%; border-collapse: collapse; color: #e5e7eb;">
+    <tr style="background: #2d3138;">
+        <th style="padding: 10px; border: 1px solid #444;">之前</th>
+        <th style="padding: 10px; border: 1px solid #444;">現在</th>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #444;">http://157.180.126.133:8100</td>
+        <td style="padding: 10px; border: 1px solid #444; color: #10b981;">http://smilelinda.duckdns.org:8100</td>
+    </tr>
+</table>
+
+<h2>🔧 維護指令</h2>
+<pre># 手動更新
+/root/.openclaw/workspace/duckdns-update.sh
+
+# 查看更新日誌
+cat /root/.openclaw/workspace/duckdns-update.log
+
+# 測試 DNS 解析
+nslookup smilelinda.duckdns.org</pre>
+
+        </div>
+    </div>
+</body>
+</html>

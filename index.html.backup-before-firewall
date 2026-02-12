@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - 個人數據中心</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -20,14 +20,11 @@
             color: #e5e7eb;
             height: 100vh;
             overflow: hidden;
-            max-width: 100vw;
         }
 
         .layout {
             display: flex;
             height: 100vh;
-            max-width: 100vw;
-            overflow-x: hidden;
         }
 
         /* 側邊欄 */
@@ -144,24 +141,11 @@
             background: #b00a25;
         }
 
-        /* 手機選單按鈕 */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5em;
-            cursor: pointer;
-            padding: 10px;
-        }
-
         /* 內容區域 */
         .content {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden;
             padding: 30px;
-            max-width: 100%;
         }
 
         .content-grid {
@@ -197,7 +181,7 @@
 
         #map {
             flex: 1;
-            min-height: 600px;
+            min-height: 400px;
             position: relative;
         }
 
@@ -411,10 +395,8 @@
         .ip-item {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
             padding: 10px 0;
             border-bottom: 1px solid #2d3138;
-            gap: 15px;
         }
 
         .ip-item:last-child {
@@ -424,15 +406,11 @@
         .ip-label {
             color: #9ca3af;
             font-size: 0.9em;
-            flex-shrink: 0;
-            min-width: 60px;
         }
 
         .ip-value {
             color: #fff;
             font-weight: 500;
-            word-break: break-all;
-            overflow-wrap: break-word;
         }
 
         @media (max-width: 1200px) {
@@ -454,470 +432,6 @@
                 display: none;
             }
         }
-
-        /* 防火牆白名單區塊 */
-        .firewall-info {
-            background: #0f1115;
-            border: 1px solid #2d3138;
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .firewall-title {
-            font-size: 1em;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .firewall-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .firewall-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #2d3138;
-            font-size: 0.9em;
-        }
-
-        .firewall-item:last-child {
-            border-bottom: none;
-        }
-
-        .firewall-ip {
-            font-family: 'Courier New', monospace;
-            color: #10b981;
-            font-weight: 500;
-        }
-
-        .firewall-status {
-            color: #6b7280;
-            font-size: 0.85em;
-        }
-
-        .firewall-loading {
-            text-align: center;
-            padding: 20px;
-            color: #6b7280;
-        }
-
-        .firewall-error {
-            text-align: center;
-            padding: 20px;
-            color: #ef4444;
-            font-size: 0.85em;
-        }
-
-
-        /* 縮小版統計卡片 */
-        .stat-card-small {
-            background: #0f1115;
-            border: 1px solid #2d3138;
-            border-radius: 6px;
-            padding: 12px 16px;
-            min-width: 120px;
-            flex-shrink: 0;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .stat-card-small:hover {
-            border-color: #d50c2d;
-            transform: translateY(-2px);
-        }
-
-        .stat-icon-small {
-            font-size: 1.2em;
-            margin-bottom: 6px;
-        }
-
-        .stat-value-small {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-
-        .stat-label-small {
-            font-size: 0.75em;
-            color: #9ca3af;
-        }
-
-        /* 地圖下方統計卡片 */
-        .bottom-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-            padding: 10px 0;
-        }
-
-        .bottom-stat-card {
-            background: #0f1115;
-            border: 1px solid #2d3138;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .bottom-stat-card:hover {
-            border-color: #d50c2d;
-        }
-
-        /* ==================== 手機版響應式設計 ==================== */
-        @media (max-width: 768px) {
-            /* 針對 iPhone 的安全區域 */
-            body {
-                padding-top: env(safe-area-inset-top);
-                padding-bottom: env(safe-area-inset-bottom);
-            }
-
-            /* 側邊欄隱藏，改為彈出式 */
-            .sidebar {
-                position: fixed;
-                left: -220px;
-                top: 0;
-                height: 100vh;
-                z-index: 2000;
-                transition: left 0.3s ease;
-            }
-
-            .sidebar.open {
-                left: 0;
-                box-shadow: 4px 0 12px rgba(0,0,0,0.5);
-            }
-
-            /* 遮罩層 */
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 1999;
-            }
-
-            .sidebar-overlay.active {
-                display: block;
-            }
-
-            /* 主要內容區全寬 */
-            .main-content {
-                width: 100%;
-            }
-
-            /* 頂部欄調整 */
-            .topbar {
-                padding: 0 15px;
-            }
-
-            .topbar-left h1 {
-                font-size: 1.2em;
-            }
-
-            /* 顯示漢堡選單 */
-            .menu-toggle {
-                display: block;
-            }
-
-            .topbar-right {
-                gap: 10px;
-            }
-
-            .status-badge {
-                padding: 4px 8px;
-                font-size: 0.7em;
-                display: inline-flex !important;
-            }
-
-            .create-btn {
-                padding: 8px 12px;
-                font-size: 0.8em;
-            }
-
-            /* 內容區域調整 */
-            .content {
-                padding: 15px;
-            }
-
-            /* 內容網格改為單欄 */
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            /* 地圖區域調整 */
-            .map-section {
-                order: 2;
-            }
-
-            #map {
-                min-height: 400px;
-            }
-
-            /* 資源統計改為單欄 */
-            .resources-section {
-                order: 1;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .stat-card {
-                padding: 15px;
-            }
-
-            .stat-value {
-                font-size: 1.5em;
-            }
-
-            /* 服務列表調整 */
-            .service-item {
-                padding: 15px 12px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .service-info {
-                width: 100%;
-                gap: 12px;
-            }
-
-            .service-icon {
-                font-size: 1.8em;
-            }
-
-            .service-details {
-                flex: 1;
-            }
-
-            .service-name {
-                font-size: 1em;
-                margin-bottom: 4px;
-            }
-
-            .service-meta {
-                width: 100%;
-                justify-content: space-between;
-                margin-top: 8px;
-                padding-top: 8px;
-                border-top: 1px solid #2d3138;
-            }
-
-            /* 地圖控制器調整 */
-            .layer-control {
-                top: 10px;
-                right: 10px;
-                bottom: auto;
-                min-width: 150px;
-                padding: 10px;
-                font-size: 0.8em;
-                max-height: 200px;
-                overflow-y: auto;
-            }
-
-            /* 地圖標記彈窗調整 */
-            .leaflet-popup-content-wrapper {
-                font-size: 0.9em;
-            }
-
-            /* 統計卡片下方調整 */
-            .bottom-stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-                padding: 10px 0;
-            }
-
-            .bottom-stat-card {
-                padding: 12px;
-            }
-
-            .stat-icon-small {
-                font-size: 1.3em;
-            }
-
-            .stat-value-small {
-                font-size: 1.2em;
-            }
-
-            .stat-label-small {
-                font-size: 0.7em;
-            }
-
-            /* 連線資訊區塊優化 */
-            .ip-info {
-                padding: 15px;
-                overflow: hidden;
-            }
-
-            .ip-item {
-                flex-wrap: wrap;
-                gap: 5px;
-                padding: 8px 0;
-            }
-
-            .ip-label {
-                flex-shrink: 0;
-                min-width: 50px;
-                font-size: 0.85em;
-            }
-
-            .ip-value {
-                flex: 1;
-                text-align: right;
-                word-break: break-all;
-                overflow-wrap: break-word;
-                font-size: 0.8em;
-                max-width: calc(100vw - 120px);
-                overflow: hidden;
-            }
-        }
-
-        /* 平板版 (768px - 1024px) */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .sidebar {
-                width: 180px;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            #map {
-                min-height: 500px;
-            }
-        }
-
-        /* 超小螢幕 (< 480px) */
-        @media (max-width: 480px) {
-            .topbar-left h1 {
-                font-size: 1.1em;
-            }
-
-            .topbar-left {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .status-badge {
-                font-size: 0.65em !important;
-                padding: 3px 6px !important;
-                white-space: nowrap;
-            }
-
-            .create-btn {
-                padding: 6px 10px;
-                font-size: 0.75em;
-            }
-
-            .content {
-                padding: 10px;
-            }
-
-            .map-header {
-                padding: 12px;
-            }
-
-            .map-title {
-                font-size: 0.95em;
-            }
-
-            #map {
-                min-height: 350px;
-            }
-
-            .service-name {
-                font-size: 0.95em;
-            }
-
-            .service-location {
-                font-size: 0.8em;
-            }
-
-            .layer-control {
-                min-width: 140px;
-                font-size: 0.75em;
-                padding: 8px;
-            }
-
-            /* 統計卡片更緊湊 */
-            .stat-card {
-                padding: 12px;
-            }
-
-            .stat-icon {
-                font-size: 1.5em;
-            }
-
-            .stat-value {
-                font-size: 1.3em;
-            }
-
-            /* 底部統計卡片 */
-            .bottom-stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .bottom-stat-card {
-                padding: 10px;
-            }
-
-            .stat-icon-small {
-                font-size: 1.2em;
-            }
-
-            .stat-value-small {
-                font-size: 1em;
-            }
-
-            .stat-label-small {
-                font-size: 0.65em;
-            }
-
-            /* 連線資訊更緊湊 */
-            .ip-info {
-                padding: 12px;
-            }
-
-            .ip-title {
-                font-size: 0.9em;
-                margin-bottom: 10px;
-            }
-
-            .ip-item {
-                padding: 6px 0;
-            }
-
-            .ip-label {
-                font-size: 0.8em;
-                min-width: 45px;
-            }
-
-            .ip-value {
-                font-size: 0.75em;
-                max-width: calc(100vw - 100px);
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -940,11 +454,11 @@
 
             <div class="nav-section">
                 <div class="nav-section-title">服務</div>
-                <a href="https://smilelinda.duckdns.org/coupang" class="nav-item" target="_blank">
+                <a href="https://coupang-dashboard.onrender.com" class="nav-item" target="_blank">
                     <span>🛒</span>
                     <span>Coupang</span>
                 </a>
-                <a href="https://smilelinda.duckdns.org/credit-card" class="nav-item" target="_blank">
+                <a href="https://credit-card-dashboard.onrender.com" class="nav-item" target="_blank">
                     <span>💳</span>
                     <span>信用卡</span>
                 </a>
@@ -955,15 +469,11 @@
             </div>
         </div>
 
-        <!-- 側邊欄遮罩（手機版） -->
-        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
         <!-- 主要內容 -->
         <div class="main-content">
             <!-- 頂部欄 -->
             <div class="topbar">
                 <div class="topbar-left">
-                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
                     <h1>Dashboard</h1>
                 </div>
                 <div class="topbar-right">
@@ -978,7 +488,7 @@
             <div class="content">
                 <div class="content-grid">
                     <!-- 左側：地圖 + 統計 -->
-                    <div style="display: flex; flex-direction: column; gap: 0;">
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
                         <div class="map-section">
                             <div class="map-header">
                                 <div class="map-title">🗺️ 全球服務分布</div>
@@ -1024,27 +534,26 @@
                             </div>
                         </div>
 
-                        <!-- 統計卡片（地圖下方） -->
-                        <div class="bottom-stats-grid">
-                            <div class="bottom-stat-card">
-                                <div class="stat-icon-small">🖥️</div>
-                                <div class="stat-value-small">3</div>
-                                <div class="stat-label-small">線上服務</div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">🖥️</div>
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">線上服務</div>
                             </div>
-                            <div class="bottom-stat-card">
-                                <div class="stat-icon-small">📋</div>
-                                <div class="stat-value-small" id="taskCount">23</div>
-                                <div class="stat-label-small">完成任務</div>
+                            <div class="stat-card">
+                                <div class="stat-icon">📋</div>
+                                <div class="stat-value" id="taskCount">20</div>
+                                <div class="stat-label">完成任務</div>
                             </div>
-                            <div class="bottom-stat-card">
-                                <div class="stat-icon-small">🌍</div>
-                                <div class="stat-value-small">2</div>
-                                <div class="stat-label-small">部署區域</div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🌍</div>
+                                <div class="stat-value">2</div>
+                                <div class="stat-label">部署區域</div>
                             </div>
-                            <div class="bottom-stat-card">
-                                <div class="stat-icon-small">⚡</div>
-                                <div class="stat-value-small">100%</div>
-                                <div class="stat-label-small">運行時間</div>
+                            <div class="stat-card">
+                                <div class="stat-icon">⚡</div>
+                                <div class="stat-value">100%</div>
+                                <div class="stat-label">運行時間</div>
                             </div>
                         </div>
                     </div>
@@ -1070,7 +579,7 @@
                                     </div>
                                 </a>
 
-                                <a href="https://smilelinda.duckdns.org/coupang" class="service-item" target="_blank">
+                                <a href="https://coupang-dashboard.onrender.com" class="service-item" target="_blank">
                                     <div class="service-info">
                                         <div class="service-icon">🛒</div>
                                         <div>
@@ -1084,7 +593,7 @@
                                     </div>
                                 </a>
 
-                                <a href="https://smilelinda.duckdns.org/credit-card" class="service-item" target="_blank">
+                                <a href="https://credit-card-dashboard.onrender.com" class="service-item" target="_blank">
                                     <div class="service-info">
                                         <div class="service-icon">💳</div>
                                         <div>
@@ -1111,34 +620,6 @@
                                         <span style="color: #3b82f6; font-size: 0.85em;">已發貨</span>
                                     </div>
                                 </a>
-
-                                <a href="email-tasks/index.html" class="service-item">
-                                    <div class="service-info">
-                                        <div class="service-icon">📧</div>
-                                        <div>
-                                            <div class="service-name">郵件交辦任務</div>
-                                            <div class="service-desc">smilenccc@gmail.com</div>
-                                        </div>
-                                    </div>
-                                    <div class="service-status">
-                                        <span class="status-dot"></span>
-                                        <span style="color: #10b981; font-size: 0.85em;">運行中</span>
-                                    </div>
-                                </a>
-
-                                <a href="https://smilelinda.duckdns.org/firewall" class="service-item" target="_blank">
-                                    <div class="service-info">
-                                        <div class="service-icon">🛡️</div>
-                                        <div>
-                                            <div class="service-name">防火牆管理</div>
-                                            <div class="service-desc">白名單 · 2FA 認證</div>
-                                        </div>
-                                    </div>
-                                    <div class="service-status">
-                                        <span class="status-dot"></span>
-                                        <span style="color: #10b981; font-size: 0.85em;">運行中</span>
-                                    </div>
-                                </a>
                             </div>
                         </div>
 
@@ -1157,7 +638,6 @@
                                 <span class="ip-value" id="userISP">載入中...</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -1456,63 +936,6 @@
         });
 
         console.log('🏠 Dashboard 已載入 - Hetzner 風格 + 圖層控制');
-
-        // 載入防火牆白名單
-        async function loadFirewallWhitelist() {
-            const listDiv = document.getElementById('firewallList');
-            listDiv.innerHTML = '<div class="firewall-loading">載入中...</div>';
-            
-            try {
-                const response = await fetch('http://157.180.126.133:5001/webhook/firewall/whitelist', {
-                    headers: {
-                        'X-API-Key': 'linda-firewall-webhook-secret-2026'
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (data.success && data.ips) {
-                    if (data.ips.length === 0) {
-                        listDiv.innerHTML = '<div class="firewall-status">目前沒有白名單 IP</div>';
-                        return;
-                    }
-                    
-                    listDiv.innerHTML = data.ips.map(ip => `
-                        <div class="firewall-item">
-                            <span class="firewall-ip">${ip}</span>
-                            <span class="firewall-status">✓ 允許</span>
-                        </div>
-                    `).join('');
-                } else {
-                    listDiv.innerHTML = '<div class="firewall-error">載入失敗：' + (data.error || '未知錯誤') + '</div>';
-                }
-            } catch (error) {
-                console.error('載入防火牆白名單失敗:', error);
-                listDiv.innerHTML = '<div class="firewall-error">連線錯誤</div>';
-            }
-        }
-        
-        // 頁面載入時自動載入防火牆白名單
-        loadFirewallWhitelist();
-
-        // ==================== 手機版側邊欄控制 ====================
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-        }
-
-        // 點擊側邊欄連結後自動關閉（手機版）
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    toggleSidebar();
-                }
-            });
-        });
-
     </script>
 </body>
 </html>

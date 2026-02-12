@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務 #13 - 調查玉山銀行 API 連結方案</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            background: #d50c2d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: white; }
+        .meta { color: #9ca3af; margin-bottom: 30px; }
+        .section {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #d50c2d;
+            border-bottom: 2px solid #d50c2d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        pre {
+            background: #000;
+            border: 1px solid #2d3138;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            color: #0f0;
+            font-size: 0.9em;
+        }
+        .warning { color: #f59e0b; }
+        ul { margin-left: 20px; line-height: 1.8; }
+        .paused {
+            background: #2d1b0e;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="tasks.html" class="back-btn">← 返回任務列表</a>
+        
+        <h1>💳 調查玉山銀行 API 連結方案</h1>
+        <div class="meta">
+            開始時間：2026-02-09 14:25 | 類別：研究 | 狀態：⏳ 進行中（暫停）
+        </div>
+
+        <div class="paused">
+            <h2 class="warning">⚠️ 中斷原因</h2>
+            <p><strong>玉山銀行目前不提供個人用戶的開放銀行 API。</strong></p>
+            <p style="margin-top: 10px;">經過調查，玉山銀行的開放銀行服務（Open Banking）僅提供給企業用戶和第三方金融服務業者，個人用戶無法直接申請 API 連線。</p>
+            <p style="margin-top: 10px;"><strong>替代方案：</strong>已改用 PDF 帳單解析方式，從信用卡電子帳單中提取消費記錄。</p>
+        </div>
+
+        <div class="section">
+            <h2>📋 調查目標</h2>
+            <p>研究玉山銀行是否提供開放銀行 API，以便自動化提取信用卡消費記錄。</p>
+        </div>
+
+        <div class="section">
+            <h2>🔍 調查結果</h2>
+            
+            <h3>玉山銀行開放銀行現況</h3>
+            <ul>
+                <li>✅ 玉山銀行有提供開放銀行服務</li>
+                <li>❌ <strong>僅限企業用戶</strong>（TSP/第三方服務業者）</li>
+                <li>❌ 個人用戶無法申請</li>
+                <li>❌ 需要企業營登、統編等文件</li>
+            </ul>
+
+            <h3>可用的 API 類型</h3>
+            <ul>
+                <li>存款帳戶查詢</li>
+                <li>交易明細查詢</li>
+                <li>轉帳功能</li>
+            </ul>
+            <p class="warning">⚠️ 但這些都需要透過企業身份申請，個人無法直接使用。</p>
+        </div>
+
+        <div class="section">
+            <h2>🔄 替代方案（已實施）</h2>
+            
+            <h3>方案：PDF 帳單解析</h3>
+            <ul>
+                <li>✅ 從 Gmail 自動下載電子帳單 PDF</li>
+                <li>✅ 使用 Python pdfplumber 解析 PDF</li>
+                <li>✅ 提取消費記錄、金額、類別</li>
+                <li>✅ 建立視覺化統計網站</li>
+            </ul>
+
+            <h3>實施成果</h3>
+            <p>已完成任務 #18「建立信用卡消費統計網站」，使用 PDF 解析方式成功提取消費資料。</p>
+        </div>
+
+        <div class="section">
+            <h2>📚 參考資料</h2>
+            <ul>
+                <li>玉山銀行開放銀行官網：https://www.esunbank.com.tw/bank/personal/deposit/service/open-banking</li>
+                <li>金管會開放銀行政策</li>
+                <li>Taiwan Open Banking 規範</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>💡 未來可能性</h2>
+            <p>如果未來玉山銀行開放個人用戶 API，或是透過第三方 TSP 服務（如 Moneybook、CWMoney），可以再重啟這個任務。</p>
+            <p style="margin-top: 10px;"><strong>目前狀態：</strong>以 PDF 解析方案為主，功能已滿足需求。</p>
+        </div>
+    </div>
+</body>
+</html>

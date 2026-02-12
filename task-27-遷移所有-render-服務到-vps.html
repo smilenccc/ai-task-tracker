@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務 #27 - 遷移所有 Render 服務到 VPS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #1a1d23;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            background: #d50c2d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: white; }
+        .meta { color: #9ca3af; margin-bottom: 30px; }
+        .section {
+            background: #0f1115;
+            border: 1px solid #2d3138;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #d50c2d;
+            border-bottom: 2px solid #d50c2d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section h3 { margin: 20px 0 10px 0; color: #f59e0b; }
+        pre {
+            background: #000;
+            border: 1px solid #2d3138;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            color: #0f0;
+            font-size: 0.9em;
+        }
+        .step {
+            background: #1a1d23;
+            border-left: 4px solid #d50c2d;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        ul { margin-left: 20px; line-height: 1.8; }
+        .success { color: #10b981; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="tasks.html" class="back-btn">← 返回任務列表</a>
+        
+        <h1>遷移所有 Render 服務到 VPS</h1>
+        <div class="meta">
+            完成時間：2026-02-12 09:43-09:47 | 類別：開發 | 狀態：✅ 已完成
+        </div>
+
+        <div class="section">
+            
+<h2>📋 任務目標</h2>
+<p>將所有 Render 託管的服務遷移到自有 VPS，實現完全掌控。</p>
+<ul>
+    <li>Coupang Dashboard (8101)</li>
+    <li>Credit Card Dashboard (8102)</li>
+    <li>Tasks API (8103)</li>
+    <li>Amazon Tracker (8104)</li>
+    <li>Firewall Manager (5000)</li>
+</ul>
+
+<h2>🛠️ 實施步驟</h2>
+<div class="step">
+    <h3>1. 開放防火牆端口</h3>
+    <pre>/usr/sbin/iptables -I INPUT -p tcp --dport 8101 -j ACCEPT
+/usr/sbin/iptables -I INPUT -p tcp --dport 8102 -j ACCEPT
+/usr/sbin/iptables -I INPUT -p tcp --dport 8103 -j ACCEPT
+/usr/sbin/iptables -I INPUT -p tcp --dport 8104 -j ACCEPT
+/usr/sbin/iptables-save > /etc/iptables/rules.v4</pre>
+</div>
+
+<div class="step">
+    <h3>2. 修改服務端口</h3>
+    <pre># Coupang
+const PORT = process.env.PORT || 8101;
+
+# Credit Card
+const PORT = process.env.PORT || 8102;
+
+# Tasks API
+const PORT = process.env.PORT || 8103;
+
+# Amazon Tracker
+const PORT = process.env.PORT || 8104;</pre>
+</div>
+
+<div class="step">
+    <h3>3. 建立 systemd 服務</h3>
+    <pre># Coupang
+systemctl enable coupang-dashboard
+systemctl start coupang-dashboard
+
+# Credit Card
+systemctl enable credit-card-dashboard
+systemctl start credit-card-dashboard
+
+# Tasks API
+systemctl enable tasks-api
+systemctl start tasks-api
+
+# Amazon Tracker
+systemctl enable amazon-tracker
+systemctl start amazon-tracker
+
+# Firewall
+systemctl enable firewall-manager
+systemctl start firewall-manager</pre>
+</div>
+
+<div class="step">
+    <h3>4. 更新 Dashboard 連結</h3>
+    <p>修改 index.html 和 portal.html 中的所有 Render 連結為 VPS 本地端口</p>
+</div>
+
+<h2>✅ 成果</h2>
+<ul class="success">
+    <li>✓ 5 個服務全部遷移成功</li>
+    <li>✓ systemd 自動啟動設定完成</li>
+    <li>✓ 防火牆規則永久儲存</li>
+    <li>✓ 所有服務運行正常</li>
+    <li>✓ 資源使用：~100MB RAM, <1% CPU</li>
+</ul>
+
+<h2>🎯 優勢對比</h2>
+<table style="width: 100%; border-collapse: collapse; color: #e5e7eb;">
+    <tr style="background: #2d3138;">
+        <th style="padding: 10px; border: 1px solid #444;">項目</th>
+        <th style="padding: 10px; border: 1px solid #444;">Render</th>
+        <th style="padding: 10px; border: 1px solid #444;">VPS</th>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #444;">冷啟動</td>
+        <td style="padding: 10px; border: 1px solid #444;">⚠️ 15分鐘無訪問會休眠</td>
+        <td style="padding: 10px; border: 1px solid #444; color: #10b981;">✅ 24/7 運行</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #444;">速度</td>
+        <td style="padding: 10px; border: 1px solid #444;">🐌 海外伺服器</td>
+        <td style="padding: 10px; border: 1px solid #444; color: #10b981;">🚀 本地連線</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #444;">掌控權</td>
+        <td style="padding: 10px; border: 1px solid #444;">❌ 受平台限制</td>
+        <td style="padding: 10px; border: 1px solid #444; color: #10b981;">✅ 完全掌控</td>
+    </tr>
+</table>
+
+<h2>📁 相關檔案</h2>
+<ul>
+    <li><code>/etc/systemd/system/coupang-dashboard.service</code></li>
+    <li><code>/etc/systemd/system/credit-card-dashboard.service</code></li>
+    <li><code>/etc/systemd/system/tasks-api.service</code></li>
+    <li><code>/etc/systemd/system/amazon-tracker.service</code></li>
+    <li><code>/etc/systemd/system/firewall-manager.service</code></li>
+    <li><code>/root/.openclaw/workspace/MIGRATION_REPORT.md</code></li>
+</ul>
+
+        </div>
+    </div>
+</body>
+</html>
