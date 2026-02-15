@@ -11,3 +11,4 @@
 {"timestamp": "2026-02-15T02:42:11.654756Z", "role": "user", "content": "請看OpenClaw的AI設定，確認主力和備援模型", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:42:16.545095Z", "role": "assistant", "content": "確認OpenClaw設定：主力anthropic/claude-sonnet-4-5，備援google-gemini-cli/gemini-pro，Telegram bot已啟用", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:45:24.671186Z", "role": "user", "content": "請把OpenClaw備援改成MiniMax OAuth方式", "source": "claude-code", "agent": "Claude Code"}
+{"timestamp": "2026-02-15T02:45:29.688287Z", "role": "assistant", "content": "已啟用minimax-portal-auth plugin並重啟gateway，OAuth登入需用戶在互動終端完成，等待用戶操作", "source": "claude-code", "agent": "Claude Code"}
