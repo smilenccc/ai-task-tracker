@@ -1,3 +1,4 @@
 {"timestamp": "2026-02-15T02:34:22.800225Z", "role": "user", "content": "請同步", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:34:27.959827Z", "role": "assistant", "content": "同步完成，小Linda最近2天無新對話", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:36:03.898433Z", "role": "user", "content": "申請了MiniMax M2.5想當作openclaw下Claude Code用完後的備援", "source": "claude-code", "agent": "Claude Code"}
+{"timestamp": "2026-02-15T02:36:08.884250Z", "role": "assistant", "content": "說明Claude Code無法直接切換MiniMax，建議用aider等支援多模型的CLI工具作為備援", "source": "claude-code", "agent": "Claude Code"}
