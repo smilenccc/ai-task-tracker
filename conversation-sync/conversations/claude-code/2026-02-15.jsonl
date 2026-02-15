@@ -8,3 +8,4 @@
 {"timestamp": "2026-02-15T02:39:01.283471Z", "role": "assistant", "content": "查到MiniMax M2.5官方支援Claude Code，只需設定ANTHROPIC_BASE_URL和AUTH_TOKEN環境變數即可切換", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:41:09.779636Z", "role": "user", "content": "確認ssh goclaw可連上Hetzner，上面有安裝OpenClaw(小Linda)", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:41:14.871494Z", "role": "assistant", "content": "成功SSH連上Hetzner伺服器，確認OpenClaw已安裝但Docker未運行，討論如何加入MiniMax M2.5備援", "source": "claude-code", "agent": "Claude Code"}
+{"timestamp": "2026-02-15T02:42:11.654756Z", "role": "user", "content": "請看OpenClaw的AI設定，確認主力和備援模型", "source": "claude-code", "agent": "Claude Code"}
