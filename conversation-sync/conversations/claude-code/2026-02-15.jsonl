@@ -13,3 +13,4 @@
 {"timestamp": "2026-02-15T02:45:24.671186Z", "role": "user", "content": "請把OpenClaw備援改成MiniMax OAuth方式", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:45:29.688287Z", "role": "assistant", "content": "已啟用minimax-portal-auth plugin並重啟gateway，OAuth登入需用戶在互動終端完成，等待用戶操作", "source": "claude-code", "agent": "Claude Code"}
 {"timestamp": "2026-02-15T02:49:30.554630Z", "role": "user", "content": "MiniMax OAuth登入成功，想改成M2.5", "source": "claude-code", "agent": "Claude Code"}
+{"timestamp": "2026-02-15T02:49:35.626348Z", "role": "assistant", "content": "已在openclaw.json加入MiniMax-M2.5模型定義，fallback從gemini改為minimax-portal/MiniMax-M2.5(OAuth)，重啟gateway確認生效", "source": "claude-code", "agent": "Claude Code"}
